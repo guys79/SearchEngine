@@ -6,9 +6,9 @@ public class Main {
 
             long start = System.nanoTime();
             //String pathToCorpus = "C:\\Users\\guysc\\Downloads\\small";
-            String pathToCorpus = "C:\\Users\\guysc\\Downloads\\corpus";
-            String pathToStopWords = "C:\\Users\\guysc\\Downloads\\stop_words.txt";
-            String des = "C:\\Users\\guysc\\Downloads\\New folder";
+            String pathToCorpus = "C:\\Users\\guy schlesinger\\Downloads\\corpus\\corpus";
+            String pathToStopWords = "C:\\Users\\guy schlesinger\\Downloads\\stop_words.txt";
+            String des = "C:\\Users\\guy schlesinger\\Downloads\\corpus\\neee";
             Indexer indexer = new Indexer(pathToCorpus, pathToStopWords, des, true);
         try {
 
@@ -20,7 +20,7 @@ public class Main {
 
         } catch (Exception e) {
             e.printStackTrace();
-            indexer.shutDown();
+            indexer.shutDownNow();
         }
 
     }

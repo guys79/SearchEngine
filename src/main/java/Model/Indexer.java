@@ -1,135 +1,203 @@
 package Model;
-
 import sun.awt.Mutex;
-
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * This class is the main indexer.
+ * This class is responsible for the way we gather all data from the corpus and for the way we index all the data in the end
+ */
 public class Indexer {
-    private ReadFile readFile;
-    private HashMap<String,Integer> mainDictionary;
-    private TreeMap<String,String> currentMemory;
-    private String postFilePath;
-    private int numOfPostingFile;
-    private ExecutorService executorService;
-    private boolean stem;
-    private String stopWordsPath;
-    private Mutex addNewMutex;
-    private int docNum;
-    private DocIndexer docIndexer;
-    private PostingOfCities postingOfCities;
-    private List<String> fileNames;
+    private ReadFile readFile; //The readfile
+    private HashMap<String, Integer> mainDictionary;//The main dictionary. key - Term, value - df
+    private String postFilePath;//The oath to the posting files. in that path we will create all of the posting files
+    private ExecutorService executorService;//The Threadpool
+    private boolean stem;//True - if we will stem the terms, False - otherwise
+    private String stopWordsPath;//The path to the stop words file.
+    private Mutex addNewMutex;//Tye mutex that is responsible on the addition of a new term to the main dictionary
+    private int docNum;//The document number
+    private DocIndexer docIndexer;//The document indexer
+    private PostingOfCities postingOfCities;//The city indexer
+    private List<String> fileNames;//The list of new file names. This list will contain the names of the final posting files
 
 
-
-    public Indexer(String corpusPath,String stopWordsPath,String postFilepath,boolean stem) {
+    /**
+     * This is the constructor of the class
+     *
+     * @param corpusPath    - The path to the corpus. that is where all the data is.
+     * @param stopWordsPath - The path to the stop words file.
+     * @param postFilepath  - The path to the location of the posting files to be
+     * @param stem          - True - if we will stem the terms, False - otherwise
+     */
+    public Indexer(String corpusPath, String stopWordsPath, String postFilepath, boolean stem) {
+        //Initializing all the variables
         this.fileNames = new ArrayList<>();
         this.docNum = 0;
         this.stopWordsPath = stopWordsPath;
         this.readFile = new ReadFile(corpusPath);
         this.mainDictionary = new HashMap<>();
-        this.currentMemory = new TreeMap<>();
         this.postFilePath = postFilepath;
-        this.numOfPostingFile = 0;
         this.executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
         this.stem = stem;
         this.addNewMutex = new Mutex();
-        this.docIndexer = new DocIndexer(postFilepath,this.readFile);
+        this.docIndexer = new DocIndexer(postFilepath, this.readFile);
         this.postingOfCities = new PostingOfCities(this.postFilePath);
+
+        //Creating the first temporary posting files
         initTempPosting();
 
     }
-    public void shutDown()
-    {
+
+    /**
+     * This function will shut the indexer down immediately
+     * If this function is used, than the indexer will terminate all of the threads that are currently running
+     */
+    public void shutDownNow() {
         this.executorService.shutdownNow();
     }
-    public void printDicKeysandDf()
-    {
-        Set<String>strings =this.mainDictionary.keySet();
 
-        for(String k:strings)
-        {
-            System.out.println("the key - "+k+" ### The df -"+this.mainDictionary.get(k));
-        }
+    /**
+     * This function will shut the indexer down.
+     * If this function is used, than the indexer will not terminate all of the threads that are currently running, but he will not create more threads
+     */
+    public void shutDown() {
+        if (!this.executorService.isShutdown())
+            this.executorService.shutdown();
     }
 
-    public DocIndexer getDocIndexer() {
-        return docIndexer;
-    }
 
+    /**
+     * This function will return the address of the city indexer (shallow copy)
+     *
+     * @return
+     */
     public PostingOfCities getPostingOfCities() {
         return postingOfCities;
     }
 
-    public int getDicSize()
-    {
+    /**
+     * This function will return the size of the dictionary
+     *
+     * @return
+     */
+    public int getDicSize() {
         return this.mainDictionary.size();
     }
-    public boolean getStem()
-    {
+
+    /**
+     * This function will return True if we are stemming the terms
+     *
+     * @return
+     */
+    public boolean getStem() {
         return this.stem;
     }
-    public String getFatherPath()
-    {
+
+    /**
+     * This function will return the path to the directory that the posting files are in (or will be in)
+     *
+     * @return
+     */
+    public String getFatherPath() {
         return this.postFilePath;
     }
-    private void initTempPosting()
-    {
+
+    /**
+     * This function creates all the temporary posting files
+     */
+    private void initTempPosting() {
         File father = new File(this.postFilePath);
         String type = ".txt";
-        for(char c ='a'; c<='z';c++)
-        {
+        for (char c = 'a'; c <= 'z'; c++) {
             try {
-                new File(father,c+"_"+stem+type).createNewFile();
+                new File(father, c + "_" + stem + type).createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         try {
-            new File(father,"other"+"_"+stem+type).createNewFile();
+            new File(father, "other" + "_" + stem + type).createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void parseDocumentsThread()
-    {
-        List<String> fileDoc;
-       fileDoc = this.readFile.getFile();
-       int count=1;
-        ParserThreadReturnValue parserThreadreturnValue;
-        Future<Boolean> futureOfLastFile=null;
-       while(fileDoc!=null) {
-           System.out.println(count);
-           count+=1;
-           //parserFile(fileDoc);
-           futureOfLastFile= this.parserFile(fileDoc);
-           fileDoc = this.readFile.getFile();
-       }
-       if(futureOfLastFile!=null)
-           try {
-               futureOfLastFile.get();
-           } catch (InterruptedException e) {
-               e.printStackTrace();
-           } catch (ExecutionException e) {
-               e.printStackTrace();
-           }
+    /**
+     * This function is the function that starts indexing the data
+     * This function goes through all of the files in the corpus, one file at a time.
+     * For each file, all of his docs will be parsed and indexed
+     */
+    public void parseDocumentsThread() {
+
+        List<String> fileDoc;//The list of document texts in a certain file
+        fileDoc = this.readFile.getFile();
+
+        int count = 1;
+        Future<Boolean> futureOfLastFile = null;
+
+        //This loop goes through every file in the corpus and will parse it and index it
+        while (fileDoc != null) {
+            System.out.println(count);
+            count += 1;
+            futureOfLastFile = this.parserFile(fileDoc);
+            fileDoc = this.readFile.getFile();
+
+        }
+
+        //Indexing the last file
+        if (futureOfLastFile != null)
+            try {
+                futureOfLastFile.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+        //Indexing the city
         this.executorService.submit(this.postingOfCities);
-       int size = this.mainDictionary.size();
+        int size = this.mainDictionary.size();
+        //Indexing the main dictionary
+
+        //Orginizing the indexed file into the wanted state
         sortAndSplit(size);
+        //this.executorService.shutdown();
     }
-    private void sortAndSplit(int dicSize)
-    {
+
+    /**
+     * This function will be summoned when all of the temporary files are filled with all of the data
+     * This function will take that data, sort it, and will write it again in an organized way
+     * @param dicSize - The size of the main dictionary
+     */
+    private void sortAndSplit(int dicSize) {
+        //The number of docs that we want
         int numOfDocs = 1000;
-        int numOfTermsPerDoc = dicSize/numOfDocs;
+        //The number of terms per document
+        int numOfTermsPerDoc = dicSize / numOfDocs;
         Future<List<String>>[] listFuture = new Future[27];
-        for(int i=0;i<26;i++) {
+        int lastIndexThatGotIndexed = -1;
+        System.out.println("Now The split and merge!");
+        //Foreach file, summon a thread that will read the file and assign it into new file in an orginized way
+        for (int i = 0; i < 26; i++) {
+
+            //Submit the thread to the thread pool
             listFuture[i] = this.executorService.submit(new SortAndSplitThread(this.postFilePath, numOfTermsPerDoc, "" + (char) ('a' + i), this.stem));
 
 
             try {
-                this.fileNames.addAll(listFuture[i].get());
+                if (i % 5 == 4)
+                {
+                    lastIndexThatGotIndexed=i;
+                    //Stop indexing every 5 files so that the heap won;t overload
+                    for(int j=i-4;j<=i;j++)
+                    {
+                        System.out.println(j +" out of 27");
+                        this.fileNames.addAll(listFuture[j].get());
+                    }
+
+                }
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (Exception e) {
@@ -137,40 +205,67 @@ public class Indexer {
             }
 
         }
-
-        listFuture[listFuture.length-1] = this.executorService.submit(new SortAndSplitThread(this.postFilePath,numOfTermsPerDoc,"other",this.stem));
+        //Submitting the last file into the ThreadPool
+        listFuture[listFuture.length - 1] = this.executorService.submit(new SortAndSplitThread(this.postFilePath, numOfTermsPerDoc, "other", this.stem));
+        //Waiting for the last threads to finish
+        for(int i=lastIndexThatGotIndexed+1;i<listFuture.length;i++) {
+            System.out.println(i +" out of 27");
+            try {
+                this.fileNames.addAll(listFuture[i].get());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        //Shutdown the ThreadPool
         this.executorService.shutdown();
 
     }
-    public Future<Boolean> parserFile(List<String> file)
-    {
-        DocIndexerThread docIndexerThread =new DocIndexerThread(this.docIndexer);
-        //For every file
-        Future<ParserThreadReturnValue> [] futures= new Future[file.size()];
-        ParserThread [] parserThreads = new ParserThread[file.size()];
-        StringBuilder [] stringBuilders = new StringBuilder[27];
+
+    /**
+     * This function will parse and index a single file
+     * @param file - The single file as an array of all the documents in that file
+     * @return - The Future of the last thread that handles the last doc
+     */
+    public Future<Boolean> parserFile(List<String> file) {
+        //Creating the DocIndexer thread
+        DocIndexerThread docIndexerThread = new DocIndexerThread(this.docIndexer);
+
+        //For every doc
+        Future<ParserThreadReturnValue>[] futures = new Future[file.size()];
+        ParserThread[] parserThreads = new ParserThread[file.size()];
         CityInfo[] cityInfo = new CityInfo[file.size()];
-        for(int i=0;i<stringBuilders.length;i++)
-        {
+
+        //For every posting file
+        StringBuilder[] stringBuilders = new StringBuilder[27];
+        for (int i = 0; i < stringBuilders.length; i++) {
             stringBuilders[i] = new StringBuilder();
         }
+
+        //Creating the mutual mutex
         Mutex mutex = new Mutex();
-        String doc= "";
-        String city ="";
-        for(int i =0; i<parserThreads.length;i++)
-        {
-            doc = file.get(i);
-            city = this.firstWordWithoutSpaces(doc);
-            this.docNum++;
-            parserThreads[i] = new ParserThread(docNum,this,this.findSub("TEXT",doc),new Parser(this.stopWordsPath,city,stem),false,stringBuilders,mutex,city,docIndexerThread,cityInfo);
+
+        //The text of the document
+        String doc = "";
+
+        //The city name of the doc (if exist)
+        String city = "";
+
+        //For every doc
+        for (int i = 0; i < parserThreads.length; i++) {
+            doc = file.get(i);//get the doc
+            city = this.getCityName(doc);//get the city name
+            this.docNum++;//Get the doc number
+            //Create the thread that will parse the document as well as index it and his information
+            parserThreads[i] = new ParserThread(docNum, this, this.findSub("TEXT", doc), new Parser(this.stopWordsPath, city, stem), false, stringBuilders, mutex, city, docIndexerThread, cityInfo);
             futures[i] = this.executorService.submit(parserThreads[i]);
 
 
         }
 
-        for(int i =0; i<futures.length-1;i++)
-        {
-            //System.out.println("h");
+        //Adding the information about the cities
+        for (int i = 0; i < futures.length - 1; i++) {
             try {
                 cityInfo[i] = futures[i].get().cityInfo;
 
@@ -182,128 +277,73 @@ public class Indexer {
 
         }
         this.docNum++;
-        doc = file.get(file.size()-1);
-        city = this.firstWordWithoutSpaces(doc);
-        parserThreads[parserThreads.length-1] = new ParserThread(docNum,this,this.findSub("TEXT",doc),new Parser(this.stopWordsPath,city,stem),true,stringBuilders,mutex,city,docIndexerThread,cityInfo);
-        futures[futures.length-1] = this.executorService.submit(parserThreads[parserThreads.length-1]);
-        Future<Boolean> futureToReturn =null;
+        doc = file.get(file.size() - 1);
+        city = this.getCityName(doc);
+        parserThreads[parserThreads.length - 1] = new ParserThread(docNum, this, this.findSub("TEXT", doc), new Parser(this.stopWordsPath, city, stem), true, stringBuilders, mutex, city, docIndexerThread, cityInfo);
+        futures[futures.length - 1] = this.executorService.submit(parserThreads[parserThreads.length - 1]);
+        Future<Boolean> futureToReturn = null;
         try {
-            futureToReturn = futures[futures.length-1].get().future;
+            futureToReturn = futures[futures.length - 1].get().future;
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
-        parserThreads[parserThreads.length-1].shutDown();
+        parserThreads[parserThreads.length - 1].shutDown();
 
         return futureToReturn;
     }
 
-    private String findSub(String tag, String str)
-    {
+    /**
+     * This function extracts the string between the given tag's type
+     * @param tag - The type of the tag, TEXT, F p=10 and so on
+     * @param str - The String from which we need the substring from
+     * @return - The wanted substring between the two tags
+     */
+    private String findSub(String tag, String str) {
         String start = "<" + tag + ">";
         String end = "</" + tag + ">";
-        int index1=str.indexOf(start);
-        int index2=str.indexOf(end);
-        if(index1==-1 || index2 ==-1)
+        int index1 = str.indexOf(start);
+        int index2 = str.indexOf(end);
+        if (index1 == -1 || index2 == -1)
             return "";
         return str.substring(index1 + start.length(), index2);
 
 
     }
-    private String addToExistingList(String list,int tf,int docid)
-    {
-        list = list +","+tf+","+docid;
-        return list;
-    }
-    private void addWordsToDictionaryTempUnique(String term,int tf, int docid)
-    {
-        String newList="";
-        if(this.currentMemory.containsKey(term))
-        {
-            newList = this.currentMemory.get(term);
-        }
-        this.currentMemory.put(term,this.addToExistingList(newList,tf,docid));
-    }
 
-    private void addRegularToTempDic(String term,int tf,int docId)
-    {
-        String newList= "";
-        if(this.currentMemory.containsKey(term))
-        {
-            newList = this.currentMemory.get(term);
-            if(newList==null)
-                newList ="";
-            this.currentMemory.put(term,this.addToExistingList(newList,tf,docId));
-            return;
-        }
-        String lower = term.toLowerCase();
-        String upper = term.toUpperCase();
-        if(this.mainDictionary.containsKey(lower))
-        {
-            newList = this.currentMemory.get(lower);
-            if(newList==null) {
-                if(this.currentMemory.containsKey(upper))
-                {
-                    newList = this.currentMemory.get(upper);
-                    this.currentMemory.remove(upper);
-                }
-                else
-                {
-                    newList = "";
-                }
-            }
-            this.currentMemory.put(lower,this.addToExistingList(newList,tf,docId));
-            return;
-        }
-        newList = this.currentMemory.get(upper);
-        if(newList==null)
-            newList ="";
-        this.currentMemory.put(upper,this.addToExistingList(newList,tf,docId));
-        return;
-
-
-
-
-
-
-    }
-
-    public void addDictionaries(String term,int tf,int docId,boolean regular)
-    {
+    /**
+     * This function updates the dictionary with a term appearance
+     * @param term - The given term
+     */
+    public void addDictionaries(String term) {
 
         int temp;
         this.addNewMutex.lock();
 
-        //mutex_term.lock
-        if(this.mainDictionary.containsKey(term))
-        {
-            temp=this.mainDictionary.get(term) +1;
-            this.mainDictionary.put(term,temp);
+        if (this.mainDictionary.containsKey(term)) {
+            temp = this.mainDictionary.get(term) + 1;
+            this.mainDictionary.put(term, temp);
 
             this.addNewMutex.unlock();
             return;
         }
         String lower = term.toLowerCase();
         String upper = term.toUpperCase();
-        if(term.charAt(0)>='A' && term.charAt(0)<='Z')
-        {
-            if(this.mainDictionary.containsKey(lower))
-            {
-                temp=this.mainDictionary.get(lower) +1;
-                this.mainDictionary.put(lower,temp);
+        if (term.charAt(0) >= 'A' && term.charAt(0) <= 'Z') {
+            if (this.mainDictionary.containsKey(lower)) {
+                temp = this.mainDictionary.get(lower) + 1;
+                this.mainDictionary.put(lower, temp);
                 this.addNewMutex.unlock();
                 return;
             }
 
         }
-        if(term.charAt(0)>='a' && term.charAt(0)<='z')
-        {
-            if(this.mainDictionary.containsKey(upper))
-            {
-                temp = this.mainDictionary.get(upper)+1;
-                this.mainDictionary.put(lower,temp);
+        if (term.charAt(0) >= 'a' && term.charAt(0) <= 'z') {
+            if (this.mainDictionary.containsKey(upper)) {
+                temp = this.mainDictionary.get(upper) + 1;
+                this.mainDictionary.put(lower, temp);
                 this.mainDictionary.remove(upper);
 
                 this.addNewMutex.unlock();
@@ -311,128 +351,34 @@ public class Indexer {
             }
         }
 
-        this.mainDictionary.put(term,1);
+        this.mainDictionary.put(term, 1);
         this.addNewMutex.unlock();
 
     }
-    public String firstWordWithoutSpaces(String str)
-    {
+
+    /**
+     * This function will return the name of the city (if exists) in the string
+     * @param str - The given string
+     * @return - The name of the city (if exists)
+     */
+    public String getCityName(String str) {
 
         String start = "<F P=104>";
         String end = "</F>";
-        int index1=str.indexOf(start);
+        int index1 = str.indexOf(start);
 
 
-        if(index1==-1)
+        if (index1 == -1)
             return "";
         str = str.substring(index1 + start.length());
-        int index2=str.indexOf(end);
-        //System.out.println(""+index1+" "+index2);
-        //System.out.println(str);
+        int index2 = str.indexOf(end);
         str = str.substring(0, index2);
-       // System.out.println("1 " +str );
         String[] strings = str.split(" ");
-        for(int i=0; i<strings.length;i++)
-        {
-            if(strings[i].length()>0 && !strings[i].equals(" "))
+        for (int i = 0; i < strings.length; i++) {
+            if (strings[i].length() > 0 && !strings[i].equals(" "))
                 return strings[i].toUpperCase();
         }
         return "";
-    }
-    public void test()
-    {
-        /*addRegularWordsToMainDictionary("GUY");
-        this.printMainDic();
-        addRegularWordsToMainDictionary("guy");
-        this.printMainDic();
-        addRegularWordsToMainDictionary("GUY");
-        this.printMainDic();
-        addRegularWordsToMainDictionary("guy");
-        this.printMainDic();
-        addRegularWordsToMainDictionary("ADI");
-        this.printMainDic();
-        addRegularWordsToMainDictionary("ADI");
-        this.printMainDic();
-        addRegularWordsToMainDictionary("adi");
-        this.printMainDic();
-        addRegularWordsToMainDictionary("guy2");
-        this.printMainDic();
-        addRegularWordsToMainDictionary("1-2-3");
-        this.printMainDic();
-        addRegularWordsToMainDictionary("1-2-3");
-        this.printMainDic();*/
-
-        this.addDictionaries("GUY",2,31,true);
-        this.printMainDic();
-        this.printTempDic();
-        this.addDictionaries("GUY2",12,13,true);
-        this.printMainDic();
-        this.printTempDic();
-        this.addDictionaries("guy",42,23,true);
-        this.printMainDic();
-        this.printTempDic();
-        this.addDictionaries("1/2",62,93,false);
-        this.printMainDic();
-        this.printTempDic();
-        this.addDictionaries("1/2",26,39,false);
-        this.printMainDic();
-        this.printTempDic();
-        this.addDictionaries("1.23K",27,63,false);
-        this.printMainDic();
-        this.printTempDic();
-        this.addDictionaries("GUY",27,63,true);
-        this.printMainDic();
-        this.printTempDic();
-        this.addDictionaries("guy",227,633,true);
-        this.printMainDic();
-        this.printTempDic();
-
-
-    }
-
-    private void printMainDic()
-    {
-        Set<String>keys = this.mainDictionary.keySet();
-        for (String key:keys) {
-            System.out.print("term - "+key+" df - "+this.mainDictionary.get(key));
-        }
-        System.out.println();
-    }
-    private void printTempDic()
-    {
-        Set<String>keys = this.currentMemory.keySet();
-        for (String key:keys) {
-
-            System.out.print("term - "+key+" list - " + this.currentMemory.get(key)+" * ");
-        }
-        System.out.println();
-    }
-    private void writeCurrentDictionaryToFile(HashMap<String,String> dictionary)
-    {
-        File father = new File(this.postFilePath);
-        this.numOfPostingFile++;
-        File temp_posting_file = new File(father,""+stem+"_"+this.numOfPostingFile);
-        try {
-            temp_posting_file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        Set<String> keys = dictionary.keySet();
-        StringBuilder stringBuilder = new StringBuilder();
-        for(String key:keys)
-        {
-            stringBuilder.append(key+'\n');
-        }
-        BufferedWriter bufferedWriter = null;
-        try {
-            bufferedWriter = new BufferedWriter(new FileWriter(temp_posting_file.getAbsolutePath(),true));
-            bufferedWriter.write(stringBuilder.toString());
-            bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
     }
 
 

@@ -80,7 +80,7 @@ public class ParserThread implements Callable<ParserThreadReturnValue>
                     sizeOfDoc++;
                     firstNote = ("" + key.charAt(0)).toLowerCase().charAt(0);
                     tf = documentReturnValue.getDictionaryOfUniqueTerms().get(key);
-                    this.indexer.addDictionaries(key, tf, docId, false);
+                    this.indexer.addDictionaries(key);
                     if (firstNote >= 'a' && firstNote <= 'z')
                         this.indexerThreads[firstNote - 'a'].addtoString(docId, tf, key);
                     else
@@ -96,7 +96,7 @@ public class ParserThread implements Callable<ParserThreadReturnValue>
                     sizeOfDoc++;
                     firstNote = ("" + key.charAt(0)).toLowerCase().charAt(0);
                     tf = documentReturnValue.getDictionaryOfWords().get(key);
-                    this.indexer.addDictionaries(key, tf, docId, true);
+                    this.indexer.addDictionaries(key);
                     if (firstNote >= 'a' && firstNote <= 'z')
                         this.indexerThreads[firstNote - 'a'].addtoString(docId, tf, key);
                     else

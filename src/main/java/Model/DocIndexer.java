@@ -16,8 +16,9 @@ public class DocIndexer{
 
     /**
      * this is the constructor.
-     * it should initialaize the parameters and create a file that will save our data
+     * it should initialize the parameters and create a file that will save our data
      * @param readFile- the read file
+     * @param location - The location of the file the posting file that we will create
      */
     public DocIndexer(String location,ReadFile readFile){
         this.mutex = new Mutex();

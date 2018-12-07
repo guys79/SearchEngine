@@ -3,12 +3,16 @@ package Model;
 import sun.awt.Mutex;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
 import java.util.concurrent.Callable;
 
-
+/**
+ * This class is the city indexer.
+ * This class will update the data on the cities and will put it in posting files
+ */
 public class PostingOfCities implements Callable<Boolean>{
     private String postingPath;// the path of the file that we save data in
     private String urlSTR;
@@ -22,6 +26,7 @@ public class PostingOfCities implements Callable<Boolean>{
     /**
      * this is the constructor.
      * it should initialaize the parameters and create a file that will save our data
+     * @param location- The location of the posting file that we will create
      */
     public PostingOfCities(String location) {
         this.mutex = new Mutex();
@@ -51,7 +56,7 @@ public class PostingOfCities implements Callable<Boolean>{
      */
     public boolean uploadToFile() {
         File file = new File(postingPath);
-        //initilaize the thing that will write to the file
+        //initialize the thing that will write to the file
         try (FileWriter fw = new FileWriter(file, true);
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
@@ -62,7 +67,7 @@ public class PostingOfCities implements Callable<Boolean>{
             String detailsDoc = "";
             String toWrite;
             StringBuilder stringBuilder=new StringBuilder();
-            // we write to file all the data. new city is delimitered by ;;;, new doc with the places dell by ;; and all the athors by ;
+            // we write to file all the data. new city is delimitered by #, new doc with the places dell by - and all the athors by ;
             for (int i = 0; i < size; i++) {
                 detailsDoc="";
                 cityName = nameOfCitys.get(i);
@@ -162,7 +167,7 @@ public class PostingOfCities implements Callable<Boolean>{
      * @param sity- this is the set of positions in the doc
      * @return- the name of the city
      */
-    public String addCity(String city, int doc,HashSet sity) throws IOException {
+    public String addCity(String city, int doc,HashSet sity){
         this.mutex.lock();
 
         //we get the list of arrays that we need to append the arrey to
@@ -181,23 +186,41 @@ public class PostingOfCities implements Callable<Boolean>{
         //we get the data from the internet
         if (!DetailsOnCitys_web.containsKey(city)) {
             URL url = null;
-            url = new URL(urlSTR + city);
+            try {
+                url = new URL(urlSTR + city);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
 
             URLConnection conection = null;
 
+            try {
                 conection = url.openConnection();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             InputStream inputstream = null;
 
+            try {
                 inputstream = conection.getInputStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             ArrayList<String> arr = new ArrayList<String>();
             BufferedReader br = new BufferedReader(new InputStreamReader(inputstream));
             //we take all the data from the internet
 
-                String str = br.readLine();
-                while (str != null) {
+            String str = null;
+            try {
+                str = br.readLine();
+
+            while (str != null) {
                     arr.add(str);
                     str = br.readLine();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
 
             String[] arrOfWeb = new String[3];

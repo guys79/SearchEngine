@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * This class is responsible to read the data from the corpus
+ * In addition, this class will contain some data on the document
+ */
 public class ReadFile {
     private HashMap<Integer,String> citys;//A dictionary that the key is the number of the doc and his value is the name of the city
     private HashMap<Integer, Integer> max_values_dict;

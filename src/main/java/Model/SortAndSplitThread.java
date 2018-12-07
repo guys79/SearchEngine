@@ -20,6 +20,14 @@ public class SortAndSplitThread implements Callable<List<String>>{
     ArrayList<String> namesOfFiles;//The name of the new files
     ExecutorService executorService;//The threadpool
     private boolean stem;//true if we need to stem
+
+    /**
+     * This constructor of the class
+     * @param filePath - The folser that the file is in
+     * @param numberOfTermsPerFile - The number of terms that we will put in each document
+     * @param fileName - The name of the file
+     * @param stem - True if we stemmed the terms, False otherwise
+     */
     public SortAndSplitThread(String filePath,int numberOfTermsPerFile,String fileName,boolean stem)
     {
         this.namesOfFiles = new ArrayList<>();
@@ -84,7 +92,7 @@ public class SortAndSplitThread implements Callable<List<String>>{
 
     /**
      * Ths function will gather the data from the file into the map
-     * @param terms
+     * @param terms - Thw term that we want to assign tot eh files
      */
     private void assignToMaps(String [] terms) {
         String term;
@@ -134,10 +142,9 @@ public class SortAndSplitThread implements Callable<List<String>>{
     /**
      * This function will write the data of the file to the assigned file
      * @return - The list of new file names
-     * @throws Exception
      */
     @Override
-    public List<String> call() throws Exception {
+    public List<String> call(){
 
         // Reading the content of the file
         String content ="";

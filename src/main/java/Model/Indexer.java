@@ -22,6 +22,7 @@ public class Indexer {
     private List<String> fileNames;//The list of new file names. This list will contain the names of the final posting files
     private LanguageIndexer languageIndexer;//The languageIndexer .This class will index the languages
     private AddDictionaryToFile addDictionaryToFile;//This class will add the dictionay into a file
+    private List<String> namesOfNonTermPostingFiles;
 
 
     /**
@@ -46,10 +47,27 @@ public class Indexer {
         this.docIndexer = new DocIndexer(postFilepath, this.readFile);
         this.postingOfCities = new PostingOfCities(this.postFilePath);
         this.languageIndexer = new LanguageIndexer(postFilePath);
+        this.namesOfNonTermPostingFiles = new ArrayList<>();
 
         //Creating the first temporary posting files
         initTempPosting();
 
+        //initialize the names of the non term posting file list
+        this.namesOfNonTermPostingFiles.add("dictionary");
+        this.namesOfNonTermPostingFiles.add("citys");
+        this.namesOfNonTermPostingFiles.add("languages");
+        this.namesOfNonTermPostingFiles.add("documents");
+
+    }
+
+
+    /**
+     * This function will set the main dictionary
+     * @param mainDictionary - The gicen main dictionary
+     */
+    public void setMainDictionary(HashMap<String,Integer> mainDictionary)
+    {
+        this.mainDictionary = mainDictionary;
     }
 
     /**
@@ -127,6 +145,15 @@ public class Indexer {
     }
 
     /**
+     * This function will return the names of all of the non terms posting files.
+     * Which means all of the files that are holding data about an entity other than term (city,document and so on)
+     * @return A list of all the names of the non posting file
+     */
+    public List<String> getNamesOfNonTermPostingFiles() {
+        return namesOfNonTermPostingFiles;
+    }
+
+    /**
      * This function is the function that starts indexing the data
      * This function goes through all of the files in the corpus, one file at a time.
      * For each file, all of his docs will be parsed and indexed
@@ -157,7 +184,6 @@ public class Indexer {
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-        System.out.println(";;sl;fs");
         //Indexing the city
         this.executorService.submit(this.postingOfCities);
         //Indexing the languages
@@ -220,18 +246,24 @@ public class Indexer {
         file.delete();
 
     }
-    public HashMap<String,Integer> loadDictionary()
+
+    /**
+     * This function will load The dictionary from a file and will update this instance's main dictionary
+     */
+    public void loadDictionary()
     {
         ExecutorService executorService =Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()+1);
         Future<HashMap<String,Integer>> future=executorService.submit(new LoadDictionary(this.postFilePath+"\\"+"dictionary.txt"));
         try {
-            return future.get();
+            this.setMainDictionary(future.get());
+            return;
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        return null;
+
+        this.setMainDictionary(null);
     }
 
     /**
@@ -247,7 +279,7 @@ public class Indexer {
      * @param file - The single file as an array of all the documents in that file
      * @return - The Future of the last thread that handles the last doc
      */
-    public Future<Boolean> parserFile(List<String> file) {
+    private Future<Boolean> parserFile(List<String> file) {
         //Creating the DocIndexer thread
         DocIndexerThread docIndexerThread = new DocIndexerThread(this.docIndexer);
 
@@ -341,6 +373,15 @@ public class Indexer {
         return str.substring(index1 + start.length(), index2);
 
 
+    }
+
+    /**
+     * This function will return the number of indexed documents
+     * @return - The number of indexed document
+     */
+    public int getNumberOfDocuments()
+    {
+        return this.docNum;
     }
 
     /**

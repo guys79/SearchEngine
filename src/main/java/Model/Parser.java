@@ -37,7 +37,7 @@ public class Parser{
      * @param toStem - TTrue if we need to stem, False otherwise
      */
     public Parser(String pathToStopWordsFile,String cityName,boolean toStem) {
-        this.stopWordsHolder = new StopWordsHolder(pathToStopWordsFile);
+        this.stopWordsHolder = new StopWordsHolder(pathToStopWordsFile+"\\stop_words.txt");
         this.toStem = toStem;
         this.dictionaryOfWords = new HashMap<>();
         this.dictionaryOfUniqueTerms = new HashMap<>();

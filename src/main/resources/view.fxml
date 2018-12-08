@@ -37,22 +37,22 @@
                                 <RowConstraints />
                             </rowConstraints>
                             <children>
-                                <Button fx:id="postingFilePath" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Select Posting" textFill="WHITE" GridPane.rowIndex="1" />
+                                <Button fx:id="postingFilePath" onAction="#choosePostingPath" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Select Posting" textFill="WHITE" GridPane.rowIndex="1" />
                                 <Text fx:id="postingFilePathText" text="" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets left="5.0" />
                                     </GridPane.margin>
                                 </Text>
-                                <Button  fx:id="corpusFilePath" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Select Corpus" textFill="WHITE" GridPane.rowIndex="2" />
+                                <Button  fx:id="corpusFilePath" onAction="#chooseCorpusPath" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Select Corpus" textFill="WHITE" GridPane.rowIndex="2" />
                                 <Text  fx:id="corpusFilePathText" text="" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets left="7.0" />
                                     </GridPane.margin>
                                 </Text>
 
-                                <Button  fx:id="startBtn" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #000000;" text="Start" textFill="WHITE" GridPane.rowIndex="4" />
+                                <Button  fx:id="startBtn" onAction="#start" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #000000;" text="Start" textFill="WHITE" GridPane.rowIndex="4" />
                                 <Separator  prefHeight="200.0" GridPane.columnIndex="2" GridPane.rowSpan="7" />
-                                <Button  fx:id="resetBtn" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Reset" textFill="WHITE" GridPane.rowIndex="3" />
+                                <Button  fx:id="resetBtn" onAction="#reset" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Reset" textFill="WHITE" GridPane.rowIndex="3" />
                                 <CheckBox fx:id="stemCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Use stemming" GridPane.rowIndex="5" />
                                 <ComboBox fx:id="languagesComboBox" prefWidth="150.0" promptText="Language" />
                             </children>
@@ -87,25 +87,25 @@
                     </rowConstraints>
                     <children>
                         <Text  strokeType="OUTSIDE" strokeWidth="0.0" text="Document quantity" GridPane.rowIndex="1" />
-                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Text  strokeType="OUTSIDE" fx:id="documentQuantityText" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Terms quantity" GridPane.rowIndex="2" />
-                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" fx:id="termQuantityText" GridPane.columnIndex="1" GridPane.rowIndex="2">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total Time" GridPane.rowIndex="3" />
-                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" fx:id="totalTimeText" GridPane.columnIndex="1" GridPane.rowIndex="3">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
                         </Text>
-                        <Button fx:id="viewDictionaryButton" mnemonicParsing="false" style="-fx-background-color: #000000;" text="View dictionary" textFill="WHITE" GridPane.rowIndex="5" />
-                        <Button fx:id="loadDictionaryButton" mnemonicParsing="false" style="-fx-background-color: #000000;" text="Load Dictionary" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Button fx:id="viewDictionaryButton" onAction="#viewDictionary" mnemonicParsing="false" style="-fx-background-color: #000000;" text="View dictionary" textFill="WHITE" GridPane.rowIndex="5" />
+                        <Button fx:id="loadDictionaryButton" onAction="#loadDictionary" mnemonicParsing="false" style="-fx-background-color: #000000;" text="Load Dictionary" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
                         <Separator halignment="RIGHT" orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="2" GridPane.rowSpan="7">
                             <GridPane.margin>

@@ -48,6 +48,8 @@ public class ReadFile {
         for (int i = 0; i < directoryListing.length; i++) {
             dir1 = new File(directoryListing[i].toString());
             directoryListing1 = dir1.listFiles();
+            if(directoryListing1==null)
+                continue;
             for (int j = 0; j < directoryListing1.length; j++) {
                 namesInDirectory.add(directoryListing1[j].toString());
             }

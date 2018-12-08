@@ -24,7 +24,7 @@ public class DocIndexer{
         this.mutex = new Mutex();
         tempData= new HashMap<Integer,String>();
         this.readFile = readFile;
-        String name = "postingListOfFile";
+        String name = "documents";
         try {
             PrintWriter postingListOfFile = new PrintWriter(location+"\\"+name+".txt", "UTF-8");
             postingListOfFile.close();

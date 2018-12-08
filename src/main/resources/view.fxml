@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.View">
+    <children>
+        <BorderPane prefHeight="250.0" prefWidth="789.0">
+            <left>
+                <VBox prefHeight="225.0" prefWidth="164.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <GridPane prefHeight="237.0" prefWidth="164.0">
+                            <columnConstraints>
+                                <ColumnConstraints maxWidth="144.0" minWidth="10.0" prefWidth="113.0" />
+                                <ColumnConstraints maxWidth="98.0" minWidth="0.0" prefWidth="42.0" />
+                                <ColumnConstraints maxWidth="83.0" minWidth="0.0" prefWidth="0.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="26.0" minHeight="10.0" prefHeight="22.0" />
+                                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="35.0" />
+                                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" />
+                                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" />
+                                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" />
+                                <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="30.0" />
+                                <RowConstraints />
+                            </rowConstraints>
+                            <children>
+                                <Button fx:id="postingFilePath" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Select Posting" textFill="WHITE" GridPane.rowIndex="1" />
+                                <Text fx:id="postingFilePathText" text="" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                        <Insets left="5.0" />
+                                    </GridPane.margin>
+                                </Text>
+                                <Button  fx:id="corpusFilePath" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Select Corpus" textFill="WHITE" GridPane.rowIndex="2" />
+                                <Text  fx:id="corpusFilePathText" text="" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                        <Insets left="7.0" />
+                                    </GridPane.margin>
+                                </Text>
+
+                                <Button  fx:id="startBtn" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #000000;" text="Start" textFill="WHITE" GridPane.rowIndex="4" />
+                                <Separator  prefHeight="200.0" GridPane.columnIndex="2" GridPane.rowSpan="7" />
+                                <Button  fx:id="resetBtn" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Reset" textFill="WHITE" GridPane.rowIndex="3" />
+                                <CheckBox fx:id="stemCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Use stemming" GridPane.rowIndex="5" />
+                                <ComboBox fx:id="languagesComboBox" prefWidth="150.0" promptText="Language" />
+                            </children>
+                        </GridPane>
+                    </children>
+                </VBox>
+            </left>
+            <center>
+                <TableView  prefHeight="250.0" prefWidth="333.0" BorderPane.alignment="CENTER">
+                    <columns>
+                        <TableColumn  prefWidth="192.0" text="Term Name" />
+                        <TableColumn  prefWidth="165.0" text="Document Frequency" />
+                    </columns>
+                </TableView>
+
+            </center>
+            <right>
+                <GridPane prefHeight="225.0" prefWidth="267.0" BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints  maxWidth="162.0" minWidth="10.0" prefWidth="133.0" />
+                        <ColumnConstraints  maxWidth="204.0" minWidth="10.0" prefWidth="104.0" />
+                        <ColumnConstraints  maxWidth="204.0" minWidth="0.0" prefWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0"  />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0"  />
+                        <RowConstraints minHeight="5.0" prefHeight="5.0" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0"  />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0"  />
+                    </rowConstraints>
+                    <children>
+                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" text="Document quantity" GridPane.rowIndex="1" />
+                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Terms quantity" GridPane.rowIndex="2" />
+                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total Time" GridPane.rowIndex="3" />
+                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Text>
+                        <Button fx:id="viewDictionaryButton" mnemonicParsing="false" style="-fx-background-color: #000000;" text="View dictionary" textFill="WHITE" GridPane.rowIndex="5" />
+                        <Button fx:id="loadDictionaryButton" mnemonicParsing="false" style="-fx-background-color: #000000;" text="Load Dictionary" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                        <Separator halignment="RIGHT" orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="2" GridPane.rowSpan="7">
+                            <GridPane.margin>
+                                <Insets left="10.0" />
+                            </GridPane.margin>
+                        </Separator>
+                    </children>
+                    <padding>
+                        <Insets right="10.0" />
+                    </padding>
+                </GridPane>
+            </right></BorderPane>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+    </rowConstraints>
+</GridPane>

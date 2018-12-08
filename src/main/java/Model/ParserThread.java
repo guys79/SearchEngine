@@ -108,7 +108,7 @@ public class ParserThread implements Callable<ParserThreadReturnValue>
             //Update the doc data
             this.docIndexerThread.addDocData(docId, sizeOfDoc, documentReturnValue.getMaxFrequency(),documentReturnValue.getDocLength());
 
-            //Update the return value with the ciry data
+            //Update the return value with the city data
             ParserThreadReturnValue parserThreadReturnValue = new ParserThreadReturnValue(new CityInfo(city,docId,documentReturnValue.getCityLocations()),null);
 
             //If needed to upload

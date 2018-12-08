@@ -1,7 +1,6 @@
 package Model;
 
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.rmi.UnexpectedException;
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -47,22 +46,28 @@ public class SortAndSplitThread implements Callable<List<String>>{
      */
     private void splitDocs() {
         File file = new File(this.filePath+"\\"+fileName+"_"+stem+".txt");
-        if(!file.delete())
-        {try {
-                throw new UnexpectedException("The file didn't delete");
-            } catch (UnexpectedException e) {
-                e.printStackTrace();
-            }}
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(file);
+            writer.print("");
+            writer.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
 
         StringBuilder stringBuilder=new StringBuilder();
 
         String fileName = this.fileName;
+        if(fileName.equals("other"))
+            fileName="1";
         int counter = 0;
+        this.namesOfFiles.add(fileName);
         for(Map.Entry<String,String>key:this.terms.entrySet())
         {
             counter++;
-            stringBuilder.append(this.terms.get(key.getKey())+"\n");
+            stringBuilder.append(key.getKey()+this.terms.get(key.getKey())+"\n");
             if(counter == this.numOfTermsPerFile)
             {
                 this.executorService.submit(new SplitToFileThread(this.filePath+"\\"+fileName+"_"+stem+".txt",stringBuilder));
@@ -84,8 +89,13 @@ public class SortAndSplitThread implements Callable<List<String>>{
             }
 
         }
-        if(counter!=0)
-            this.executorService.submit(new SplitToFileThread(this.filePath+"\\"+fileName+"_"+stem+".txt",stringBuilder));
+        if(counter!=0) {
+            this.executorService.submit(new SplitToFileThread(this.filePath+ "\\" + fileName + "_" + stem + ".txt", stringBuilder));
+        }
+        else
+        {
+            this.namesOfFiles.remove(fileName);
+        }
         this.executorService.shutdown();
 
     }
@@ -94,49 +104,51 @@ public class SortAndSplitThread implements Callable<List<String>>{
      * Ths function will gather the data from the file into the map
      * @param terms - Thw term that we want to assign tot eh files
      */
-    private void assignToMaps(String [] terms) {
+    private void assignToMaps(String terms) {
         String term;
-        String docId_tf;
         int indexOfStar;
-        String temp;
+        //System.out.println(terms.length);
 
-        for (int i = 0; i < terms.length; i++) {
-            indexOfStar = terms[i].indexOf('*');
-            term = terms[i].substring(0, indexOfStar);
-
+            indexOfStar = terms.indexOf('*');
+            if(indexOfStar == -1) {
+                return;
+            }
+            term = terms.substring(0, indexOfStar);
+            this.terms.put(term,terms.substring(indexOfStar));
+            /*
             if (term.charAt(0) >= 'A' && term.charAt(0) <= 'Z') {
                 term = term.toUpperCase();
                 String lower = term.toLowerCase();
                 if (this.terms.containsKey(lower)) {
 
-                    docId_tf = terms[i].substring(indexOfStar + 1);
+                    docId_tf = terms.substring(indexOfStar + 1);
                     this.terms.put(lower, this.terms.get(lower) + "?" + docId_tf);
-                    continue;
+                    return;
                 }
-                this.terms.put(term,terms[i]);
-                continue;
+                this.terms.put(term,terms);
+                return;
 
             }
             term = term.toLowerCase();
             if (this.terms.containsKey(term)) {
 
-                docId_tf = terms[i].substring(indexOfStar + 1);
+                docId_tf = terms.substring(indexOfStar + 1);
                 this.terms.put(term, this.terms.get(term) + "?" + docId_tf);
             } else {
 
                 String upper = term.toUpperCase();
                 if (this.terms.containsKey(upper)) {
-                    docId_tf = terms[i].substring(indexOfStar);
+                    docId_tf = terms.substring(indexOfStar);
                     temp = this.terms.remove(upper);
                     temp = temp.substring(indexOfStar+1);
                     docId_tf+= "?"+temp;
                     this.terms.put(term, term+docId_tf);
-                    continue;
+                    return;
 
                 }
-                this.terms.put(term,terms[i]);
+                this.terms.put(term,terms);
             }
-        }
+*/
     }
 
     /**
@@ -147,18 +159,15 @@ public class SortAndSplitThread implements Callable<List<String>>{
     public List<String> call(){
 
         // Reading the content of the file
-        String content ="";
-        String [] terms;
+        String term;
         File file = new File(this.filePath+"\\"+this.fileName+"_"+stem+".txt");
-        FileReader reader = null;
+        BufferedReader bufferedReader = null;
         try {
-            reader = new FileReader(file);
-            char[] filleBuffer = new char[(int) file.length()];
-            reader.read(filleBuffer);
-            reader.close();
-            content = new String(filleBuffer);
-            terms = content.split("\n");
-            assignToMaps(terms);
+            bufferedReader = new BufferedReader(new FileReader(file));
+            while((term= bufferedReader.readLine())!=null)
+            {
+                assignToMaps(term);
+            }
             splitDocs();
             return this.namesOfFiles;
         }

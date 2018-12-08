@@ -46,9 +46,9 @@ public class IndexerThread implements Runnable {
 
         mutex.lock();
         this.stringBuilder.append(term);
-        this.stringBuilder.append('*');
-        this.stringBuilder.append(docId);
         this.stringBuilder.append('_');
+        this.stringBuilder.append(docId);
+        this.stringBuilder.append('*');
         this.stringBuilder.append(tf);
         this.stringBuilder.append('\n');
         mutex.unlock();

@@ -19,6 +19,7 @@ public class SplitToFileThread implements Runnable {
      */
     public SplitToFileThread(String filePath,StringBuilder stringBuilder)
     {
+
         this.stringBuilder = stringBuilder;
         this.filePath = filePath;
     }

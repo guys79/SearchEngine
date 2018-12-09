@@ -40,9 +40,9 @@ public class PostingOfCities implements Callable<Boolean>{
         urlSTR = "http://getcitydetails.geobytes.com/GetCityDetails?fqcn=";
         //creating the file that we will write to
         try {
-            PrintWriter postingListOfFile = new PrintWriter(location+"\\"+"citys"+"_"+stem+".txt", "UTF-8");
+            PrintWriter postingListOfFile = new PrintWriter(location+"\\"+"citys"+"&"+stem+".txt", "UTF-8");
             postingListOfFile.close();
-            File file = new File(location+"\\"+"citys"+"_"+stem+".txt");
+            File file = new File(location+"\\"+"citys"+"&"+stem+".txt");
             postingPath = file.getAbsolutePath();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

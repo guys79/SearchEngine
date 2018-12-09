@@ -26,7 +26,7 @@ public class AddDictionaryToFile implements Callable<Boolean> {
     {
         this.mainMap = memory;
         this.filePath = filePath;
-        this.fileName = "dictionary"+"_"+stem+".txt";
+        this.fileName = "dictionary"+"&"+stem+".txt";
     }
 
     /**

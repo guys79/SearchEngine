@@ -87,7 +87,7 @@ public class Indexer {
      */
     public String getLanguageFilePath()
     {
-        return this.postFilePath+"\\"+"languages"+"_"+stem+".txt";
+        return this.postFilePath+"\\"+"languages"+"&"+stem+".txt";
     }
 
     /**
@@ -289,7 +289,7 @@ public class Indexer {
     public void loadDictionary()
     {
         ExecutorService executorService =Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()+1);
-        Future<HashMap<String,int []>> future=executorService.submit(new LoadDictionary(this.postFilePath+"\\"+"dictionary"+"_"+this.stem+".txt"));
+        Future<HashMap<String,int []>> future=executorService.submit(new LoadDictionary(this.postFilePath+"\\"+"dictionary"+"&"+this.stem+".txt"));
         try {
             this.setMainDictionary(future.get());
             return;

@@ -25,7 +25,7 @@ public class LanguageIndexer implements Callable<Boolean> {
     {
         this.languages = new HashSet<>();
         this.fatherPath = fatherPath;
-        this.fileName = "languages"+"_"+stem+".txt";
+        this.fileName = "languages"+"&"+stem+".txt";
     }
 
     /**

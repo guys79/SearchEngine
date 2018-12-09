@@ -88,7 +88,7 @@ public class PostingOfCities implements Callable<Boolean>{
                 //Foreach doc that city appeared in
                 for(int docNumber:keysIn)
                 {
-                    detailsDoc = detailsDoc+"-"+docNumber;
+                    detailsDoc = detailsDoc+"?"+docNumber;
                     keysInIn = this.DetailsOnCitys_doc.get(cityName).get(docNumber);
                     //For each location of the city in the file
                     for(int loc:keysInIn)

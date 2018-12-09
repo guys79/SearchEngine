@@ -5,22 +5,14 @@ import Controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
-import javafx.util.Pair;
-
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.TreeMap;
 
 /**
  * This class is the class that is responsible on the view of the GUI
@@ -37,12 +29,12 @@ public class View implements Initializable {
     public Text totalTimeText;//The text that will display the total amount of time it took to index all the corpus
     public Text documentQuantityText;//The text that will display the the number of documents
     public Text termQuantityText;//The text that will display the number of terms in the corpus
-    public TableView dictionaryTableView;
-    public TableColumn termTableColumn;
-    public TableColumn cfTableColumn;
-    private String corpusPath;
-    private String postingPath;
-    private Controller controller;
+    public TableView dictionaryTableView;//The table view
+    public TableColumn termTableColumn;//The column of the terms
+    public TableColumn cfTableColumn;//The column of the cf
+    private String corpusPath;//The path to the corpus
+    private String postingPath;//The path to the posting
+    private Controller controller;//The controller
 
 
     /**
@@ -156,6 +148,9 @@ public class View implements Initializable {
     {
         startBtn.setDisable(!(!this.corpusPath.equals("") && !this.postingPath.equals("")));
     }
+    /**
+     * This function will check if we can load the dictionary
+     */
     public void checkLoad()
     {
         loadDictionaryButton.setDisable(this.postingPath.equals(""));
@@ -235,10 +230,18 @@ public class View implements Initializable {
         return postingPath;
     }
 
+    /**
+     * This function will display the language list
+     */
     private void languageDisplay()
     {
         controller.languageDisplay();
     }
+
+    /**
+     * This function will add a language to the list of languages
+     * @param language
+     */
     public void addLanguage(String language)
     {
         this.languagesComboBox.getItems().add(language);

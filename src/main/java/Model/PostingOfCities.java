@@ -27,8 +27,9 @@ public class PostingOfCities implements Callable<Boolean>{
      * this is the constructor.
      * it should initialaize the parameters and create a file that will save our data
      * @param location- The location of the posting file that we will create
+     * @param stem - True if we stemmed the terms. False- otherwise
      */
-    public PostingOfCities(String location) {
+    public PostingOfCities(String location,boolean stem) {
         this.mutex = new Mutex();
         //initilaizes the parameters
         placesInDoc = new HashMap<String, Integer>();
@@ -39,9 +40,9 @@ public class PostingOfCities implements Callable<Boolean>{
         urlSTR = "http://getcitydetails.geobytes.com/GetCityDetails?fqcn=";
         //creating the file that we will write to
         try {
-            PrintWriter postingListOfFile = new PrintWriter(location+"\\"+"citys.txt", "UTF-8");
+            PrintWriter postingListOfFile = new PrintWriter(location+"\\"+"citys"+"_"+stem+".txt", "UTF-8");
             postingListOfFile.close();
-            File file = new File(location+"\\"+"citys.txt");
+            File file = new File(location+"\\"+"citys"+"_"+stem+".txt");
             postingPath = file.getAbsolutePath();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

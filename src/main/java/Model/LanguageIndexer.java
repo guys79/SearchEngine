@@ -19,12 +19,13 @@ public class LanguageIndexer implements Callable<Boolean> {
     /**
      * The constructor of the class
      * @param fatherPath - The path to save the file
+     * @param stem - True if we stemmed the terms. False- otherwise
      */
-    public LanguageIndexer(String fatherPath)
+    public LanguageIndexer(String fatherPath,boolean stem)
     {
         this.languages = new HashSet<>();
         this.fatherPath = fatherPath;
-        this.fileName = "languages.txt";
+        this.fileName = "languages"+"_"+stem+".txt";
     }
 
     /**
@@ -44,7 +45,8 @@ public class LanguageIndexer implements Callable<Boolean> {
     {
         for(String key:this.languages)
         {
-            stringBuilder.append(key+"\n");
+            if (key!=null && !key.equals(""))
+                stringBuilder.append(key+"\n");
         }
     }
 

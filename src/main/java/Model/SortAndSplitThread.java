@@ -63,7 +63,7 @@ public class SortAndSplitThread implements Callable<List<String>>{
         if(fileName.equals("other"))
             fileName="1";
         int counter = 0;
-        this.namesOfFiles.add(fileName);
+        this.namesOfFiles.add(fileName+ "_" + stem );
         for(Map.Entry<String,String>key:this.terms.entrySet())
         {
             counter++;
@@ -83,7 +83,7 @@ public class SortAndSplitThread implements Callable<List<String>>{
                 {
                     fileName = key.getKey();
                 }
-                this.namesOfFiles.add(fileName);
+                this.namesOfFiles.add(fileName+ "_" + stem );
                 stringBuilder = new StringBuilder();
                 counter = 0;
             }
@@ -94,7 +94,7 @@ public class SortAndSplitThread implements Callable<List<String>>{
         }
         else
         {
-            this.namesOfFiles.remove(fileName);
+            this.namesOfFiles.remove(fileName+ "_" + stem );
         }
         this.executorService.shutdown();
 
@@ -107,7 +107,6 @@ public class SortAndSplitThread implements Callable<List<String>>{
     private void assignToMaps(String terms) {
         String term;
         int indexOfStar;
-        //System.out.println(terms.length);
 
             indexOfStar = terms.indexOf('*');
             if(indexOfStar == -1) {
@@ -115,40 +114,7 @@ public class SortAndSplitThread implements Callable<List<String>>{
             }
             term = terms.substring(0, indexOfStar);
             this.terms.put(term,terms.substring(indexOfStar));
-            /*
-            if (term.charAt(0) >= 'A' && term.charAt(0) <= 'Z') {
-                term = term.toUpperCase();
-                String lower = term.toLowerCase();
-                if (this.terms.containsKey(lower)) {
 
-                    docId_tf = terms.substring(indexOfStar + 1);
-                    this.terms.put(lower, this.terms.get(lower) + "?" + docId_tf);
-                    return;
-                }
-                this.terms.put(term,terms);
-                return;
-
-            }
-            term = term.toLowerCase();
-            if (this.terms.containsKey(term)) {
-
-                docId_tf = terms.substring(indexOfStar + 1);
-                this.terms.put(term, this.terms.get(term) + "?" + docId_tf);
-            } else {
-
-                String upper = term.toUpperCase();
-                if (this.terms.containsKey(upper)) {
-                    docId_tf = terms.substring(indexOfStar);
-                    temp = this.terms.remove(upper);
-                    temp = temp.substring(indexOfStar+1);
-                    docId_tf+= "?"+temp;
-                    this.terms.put(term, term+docId_tf);
-                    return;
-
-                }
-                this.terms.put(term,terms);
-            }
-*/
     }
 
     /**
@@ -168,6 +134,7 @@ public class SortAndSplitThread implements Callable<List<String>>{
             {
                 assignToMaps(term);
             }
+            bufferedReader.close();
             splitDocs();
             return this.namesOfFiles;
         }

@@ -9,8 +9,8 @@ import java.util.concurrent.Callable;
 /**
  * This class will load a given dictionary from a file
  */
-public class LoadDictionary implements Callable<HashMap<String,Integer>> {
-    private HashMap<String,Integer> mainDictionary;
+public class LoadDictionary implements Callable<HashMap<String,int []>> {
+    private HashMap<String,int []> mainDictionary;
     private String filePath;
 
     /**
@@ -34,11 +34,19 @@ public class LoadDictionary implements Callable<HashMap<String,Integer>> {
             return;
         String value = entry.substring(0,index);
         String key = entry.substring(index+1);
-        this.mainDictionary.put(key,Integer.parseInt(value));
+        index = value.indexOf('^');
+        if(index==-1)
+            return;
+        String df = value.substring(0,index);
+        String cf = value.substring(index+1);
+        int [] arrayInDic = new int[2];
+        arrayInDic[0]=Integer.parseInt(df);
+        arrayInDic[1]=Integer.parseInt(cf);
+        this.mainDictionary.put(key,arrayInDic);
 
     }
     @Override
-    public HashMap<String, Integer> call() throws Exception {
+    public HashMap<String, int []> call() throws Exception {
         // Reading the content of the file
         String term;
         File file = new File(this.filePath);
@@ -49,6 +57,8 @@ public class LoadDictionary implements Callable<HashMap<String,Integer>> {
             {
                 addToDicionary(term);
             }
+            bufferedReader.close();
+            System.out.println("size" + this.mainDictionary.size());
             return this.mainDictionary;
         }
         catch (Exception e)

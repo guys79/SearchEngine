@@ -10,7 +10,7 @@ import java.util.concurrent.*;
  */
 public class Indexer {
     private ReadFile readFile; //The readfile
-    private HashMap<String, Integer> mainDictionary;//The main dictionary. key - Term, value - df
+    private HashMap<String, int []> mainDictionary;//The main dictionary. key - Term, value - df
     private String postFilePath;//The oath to the posting files. in that path we will create all of the posting files
     private ExecutorService executorService;//The Threadpool
     private boolean stem;//True - if we will stem the terms, False - otherwise
@@ -44,30 +44,67 @@ public class Indexer {
         this.executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
         this.stem = stem;
         this.addNewMutex = new Mutex();
-        this.docIndexer = new DocIndexer(postFilepath, this.readFile);
-        this.postingOfCities = new PostingOfCities(this.postFilePath);
-        this.languageIndexer = new LanguageIndexer(postFilePath);
+        this.docIndexer = new DocIndexer(postFilepath, this.readFile,stem);
+        this.postingOfCities = new PostingOfCities(this.postFilePath,stem);
+        this.languageIndexer = new LanguageIndexer(postFilePath,stem);
         this.namesOfNonTermPostingFiles = new ArrayList<>();
 
         //Creating the first temporary posting files
         initTempPosting();
 
-        //initialize the names of the non term posting file list
-        this.namesOfNonTermPostingFiles.add("dictionary");
-        this.namesOfNonTermPostingFiles.add("citys");
-        this.namesOfNonTermPostingFiles.add("languages");
-        this.namesOfNonTermPostingFiles.add("documents");
+        //Initialize the names of the non term posting file list
+        this.namesOfNonTermPostingFiles.add("dictionary"+"_"+stem);
+        this.namesOfNonTermPostingFiles.add("citys"+"_"+stem);
+        this.namesOfNonTermPostingFiles.add("languages"+"_"+stem);
+        this.namesOfNonTermPostingFiles.add("documents"+"_"+stem);
 
     }
 
 
     /**
-     * This function will set the main dictionary
-     * @param mainDictionary - The gicen main dictionary
+     * This function will delete the posting files and will reset the main dictionary
      */
-    public void setMainDictionary(HashMap<String,Integer> mainDictionary)
+    public void reset()
+    {
+
+        List<String> postingFileNames = this.getListOfFileNames();
+        List<String> nonPostingFileNames = this.getNamesOfNonTermPostingFiles();
+
+        for(int i=0;i<postingFileNames.size();i++)
+        {
+            new File(postFilePath+"\\"+postingFileNames.get(i)+".txt").delete();
+        }
+        for(int i=0;i<nonPostingFileNames.size();i++)
+        {
+            new File(postFilePath+"\\"+nonPostingFileNames.get(i)+".txt").delete();
+        }
+        this.mainDictionary = new HashMap<>();
+    }
+
+    /**
+     * This function will return the name of the language file
+     * @return - The name of the language file
+     */
+    public String getLanguageFilePath()
+    {
+        return this.postFilePath+"\\"+"languages"+"_"+stem+".txt";
+    }
+
+    /**
+     * This function will set the main dictionary
+     * @param mainDictionary - The given main dictionary
+     */
+    public void setMainDictionary(HashMap<String,int []> mainDictionary)
     {
         this.mainDictionary = mainDictionary;
+    }
+
+    /**
+     * This function will return the main Dictionary
+     * @return - The main dictionary
+     */
+    public HashMap<String, int[]> getMainDictionary() {
+        return mainDictionary;
     }
 
     /**
@@ -189,11 +226,10 @@ public class Indexer {
         //Indexing the languages
         this.executorService.submit(this.languageIndexer);
         //Indexing the main dictionary
-        this.addDictionaryToFile = new AddDictionaryToFile(this.postFilePath,this.mainDictionary);
+        this.addDictionaryToFile = new AddDictionaryToFile(this.postFilePath,this.mainDictionary,stem);
         this.executorService.submit(this.addDictionaryToFile);
         //Organizing the indexed file into the wanted state
         sortAndSplit();
-       // this.executorService.shutdown();
     }
 
     /**
@@ -253,7 +289,7 @@ public class Indexer {
     public void loadDictionary()
     {
         ExecutorService executorService =Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()+1);
-        Future<HashMap<String,Integer>> future=executorService.submit(new LoadDictionary(this.postFilePath+"\\"+"dictionary.txt"));
+        Future<HashMap<String,int []>> future=executorService.submit(new LoadDictionary(this.postFilePath+"\\"+"dictionary"+"_"+this.stem+".txt"));
         try {
             this.setMainDictionary(future.get());
             return;
@@ -388,13 +424,15 @@ public class Indexer {
      * This function updates the dictionary with a term appearance
      * @param term - The given term
      */
-    public void addDictionaries(String term) {
+    public void addDictionaries(String term,int tf) {
 
-        int temp;
+        int[] temp;
         this.addNewMutex.lock();
 
         if (this.mainDictionary.containsKey(term)) {
-            temp = this.mainDictionary.get(term) + 1;
+            temp = this.mainDictionary.get(term);
+            temp[0]= temp[0]+1;
+            temp[1]= temp[1]+tf;
             this.mainDictionary.put(term, temp);
 
             this.addNewMutex.unlock();
@@ -404,7 +442,9 @@ public class Indexer {
         String upper = term.toUpperCase();
         if (term.charAt(0) >= 'A' && term.charAt(0) <= 'Z') {
             if (this.mainDictionary.containsKey(lower)) {
-                temp = this.mainDictionary.get(lower) + 1;
+                temp = this.mainDictionary.get(lower);
+                temp[0]= temp[0]+1;
+                temp[1]= temp[1]+tf;
                 this.mainDictionary.put(lower, temp);
                 this.addNewMutex.unlock();
                 return;
@@ -413,7 +453,9 @@ public class Indexer {
         }
         if (term.charAt(0) >= 'a' && term.charAt(0) <= 'z') {
             if (this.mainDictionary.containsKey(upper)) {
-                temp = this.mainDictionary.get(upper) + 1;
+                temp = this.mainDictionary.get(upper);
+                temp[0]= temp[0]+1;
+                temp[1]= temp[1]+tf;
                 this.mainDictionary.put(lower, temp);
                 this.mainDictionary.remove(upper);
 
@@ -421,8 +463,10 @@ public class Indexer {
                 return;
             }
         }
-
-        this.mainDictionary.put(term, 1);
+        temp = new int[2];
+        temp[0]=1;
+        temp[1]=tf;
+        this.mainDictionary.put(term, temp);
         this.addNewMutex.unlock();
 
     }
@@ -432,7 +476,7 @@ public class Indexer {
      * @param str - The given string
      * @return - The name of the city (if exists)
      */
-    public String getCityName(String str) {
+    private String getCityName(String str) {
 
         String start = "<F P=104>";
         String end = "</F>";
@@ -456,7 +500,7 @@ public class Indexer {
      * @param str - The given string
      * @return - The name of the city (if exists)
      */
-    public String getLanguage(String str) {
+    private String getLanguage(String str) {
 
         String start = "<F P=105>";
         String end = "</F>";

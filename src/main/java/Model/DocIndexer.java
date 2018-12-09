@@ -19,12 +19,13 @@ public class DocIndexer{
      * it should initialize the parameters and create a file that will save our data
      * @param readFile- the read file
      * @param location - The location of the file the posting file that we will create
+     * @param stem - True if we stemmed the terms. False- otherwise
      */
-    public DocIndexer(String location,ReadFile readFile){
+    public DocIndexer(String location,ReadFile readFile,boolean stem){
         this.mutex = new Mutex();
         tempData= new HashMap<Integer,String>();
         this.readFile = readFile;
-        String name = "documents";
+        String name = "documents"+"_"+stem;
         try {
             PrintWriter postingListOfFile = new PrintWriter(location+"\\"+name+".txt", "UTF-8");
             postingListOfFile.close();

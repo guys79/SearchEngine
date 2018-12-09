@@ -12,7 +12,7 @@ import java.util.concurrent.Callable;
  * This class will get save the dictionary in a file
  */
 public class AddDictionaryToFile implements Callable<Boolean> {
-    private HashMap<String,Integer> mainMap;//The main dictionary
+    private HashMap<String,int[]> mainMap;//The main dictionary
     private String filePath;//The path to the posting file
     private String fileName;//The name of the file
 
@@ -20,12 +20,13 @@ public class AddDictionaryToFile implements Callable<Boolean> {
      * This is the constructor of the class
      * @param filePath - The given path in which we want to save the dictionary in
      * @param memory - The main dictionary
+     * @param stem - True if we stemmed the terms. False- otherwise
      */
-    public AddDictionaryToFile(String filePath,HashMap<String,Integer> memory)
+    public AddDictionaryToFile(String filePath,HashMap<String,int []> memory,boolean stem)
     {
         this.mainMap = memory;
         this.filePath = filePath;
-        this.fileName = "dictionary.txt";
+        this.fileName = "dictionary"+"_"+stem+".txt";
     }
 
     /**
@@ -34,9 +35,11 @@ public class AddDictionaryToFile implements Callable<Boolean> {
      */
     private void convertToStringBuilder(StringBuilder stringBuilder)
     {
-        for(Map.Entry<String,Integer> entry:this.mainMap.entrySet())
+        int []temp;
+        for(Map.Entry<String,int[]> entry:this.mainMap.entrySet())
         {
-            stringBuilder.append(entry.getValue()+"*"+entry.getKey()+"\n");
+            temp = entry.getValue();
+            stringBuilder.append(temp[0]+"^"+temp[1]+"*"+entry.getKey()+"\n");
         }
     }
 

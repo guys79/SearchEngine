@@ -1086,7 +1086,7 @@ public class Parser{
                     continue;
                 }
             }
-            if(currentTerm.length()==0)
+            if(currentTerm.length()==0 || (currentTerm.length()==1 && !(currentTerm.charAt(0)>='0' && currentTerm.charAt(0)<='9')))
             {
                 if (count == lengthOfTokens)
                     break;

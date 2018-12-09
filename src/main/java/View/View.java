@@ -2,20 +2,25 @@ package View;
 
 
 import Controller.Controller;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
+import javafx.util.Pair;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 
 /**
  * This class is the class that is responsible on the view of the GUI
@@ -26,31 +31,51 @@ public class View implements Initializable {
     public Button corpusFilePath;//The button that will browse and get the path of the corpus file
     public Button startBtn;//This button is responsible for the start of the indexing
     public Button resetBtn;//This button is responsible to reset the indexing. Delete the posting files and the dictionary
+    public Button loadDictionaryButton;//The button that is responsible to load the dictionary
     public CheckBox stemCheckBox;//If checked, we will stem the terms
     public ComboBox languagesComboBox;//The combo box that will display the languages
     public Text totalTimeText;//The text that will display the total amount of time it took to index all the corpus
     public Text documentQuantityText;//The text that will display the the number of documents
     public Text termQuantityText;//The text that will display the number of terms in the corpus
+    public TableView dictionaryTableView;
+    public TableColumn termTableColumn;
+    public TableColumn cfTableColumn;
     private String corpusPath;
     private String postingPath;
     private Controller controller;
+
 
     /**
      * This function will start the indexing
      */
     public void start()
     {
+        //Start time
         long start = System.nanoTime();
+        //Disable the start button
         this.startBtn.setDisable(true);
+        //Start indexing
         this.controller.start();
+        //Stop time
         long elapsedTime = System.nanoTime() - start;
+
+        //Writ results
         String totalTime =  (elapsedTime / 1000000000) / 60 + " minutes and " + (elapsedTime / 1000000000) % 60 + " seconds";
         String numOfDocument=""+controller.getNumOfDocuments();
         String numOfTerms=""+controller.getNumOfTerms();
         this.totalTimeText.setText(totalTime);
         this.documentQuantityText.setText(numOfDocument);
         this.termQuantityText.setText(numOfTerms);
-        startBtn.setDisable(false);
+
+        //Return the state to the start state
+        this.corpusFilePath.setStyle("-fx-background-color: #000000;");
+        this.postingFilePath.setStyle("-fx-background-color: #000000;");
+        this.loadDictionaryButton.setStyle("-fx-background-color: #000000;");
+        this.corpusPath = "";
+        this.postingPath="";
+        checkStart();
+        checkLoad();
+        this.languageDisplay();
 
     }
 
@@ -60,7 +85,7 @@ public class View implements Initializable {
      */
     public void reset()
     {
-
+        this.controller.reset();
     }
 
     /**
@@ -76,6 +101,9 @@ public class View implements Initializable {
         this.postingPath ="";
         this.controller=new Controller();
         controller.setView(this);
+        termTableColumn.setCellValueFactory(new PropertyValueFactory<TableContent, String>("term"));
+        cfTableColumn.setCellValueFactory(new PropertyValueFactory<TableContent,Integer>("cf"));
+        loadDictionaryButton.setDisable(true);
 
     }
 
@@ -112,6 +140,7 @@ public class View implements Initializable {
             this.postingFilePath.setStyle("-fx-background-color: #3CB371;");
             this.postingPath=path;
             checkStart();
+            checkLoad();
         }
         else
         {
@@ -126,6 +155,10 @@ public class View implements Initializable {
     public void checkStart()
     {
         startBtn.setDisable(!(!this.corpusPath.equals("") && !this.postingPath.equals("")));
+    }
+    public void checkLoad()
+    {
+        loadDictionaryButton.setDisable(this.postingPath.equals(""));
     }
     /**
      * This function will start a directory chooser with a given title
@@ -151,6 +184,15 @@ public class View implements Initializable {
      */
     public void viewDictionary()
     {
+        HashMap<String,int[]> dictionary = this.controller.getDictionary();
+        //For every key..
+        ObservableList<TableContent> items = FXCollections.observableArrayList();
+        for(Map.Entry<String,int[]> entry:dictionary.entrySet())
+        {
+            items.add(new TableContent(entry.getKey(),entry.getValue()[1]));
+        }
+        this.dictionaryTableView.setItems(items);
+        this.dictionaryTableView.getSortOrder().add(termTableColumn);
 
     }
 
@@ -159,7 +201,13 @@ public class View implements Initializable {
      */
     public void loadDictionary()
     {
+        //Change the button to red and disable the button
+        this.loadDictionaryButton.setDisable(true);
 
+        this.controller.loadDictionary();
+        //Change the button to green and enable the button
+        this.loadDictionaryButton.setStyle("-fx-background-color: #3CB371;");
+        this.loadDictionaryButton.setDisable(false);
     }
 
     /**
@@ -185,5 +233,66 @@ public class View implements Initializable {
      */
     public String getPostingPath() {
         return postingPath;
+    }
+
+    private void languageDisplay()
+    {
+        controller.languageDisplay();
+    }
+    public void addLanguage(String language)
+    {
+        this.languagesComboBox.getItems().add(language);
+    }
+
+    /**
+     * Rhis class will represent a content of a TableView
+     */
+    public class TableContent
+    {
+        public String term;//The term
+        public int cf;//The cf of the term
+
+        /**
+         * This is the constructor of the class
+         * @param term - The given term
+         * @param cf - The given cf
+         */
+        public TableContent(String term, int cf)
+        {
+            this.cf = cf;
+            this.term = term;
+        }
+
+        /**
+         * This function will return the term
+         * @return - The term
+         */
+        public int getCf() {
+            return cf;
+        }
+
+        /**
+         * This function will return the cf of the term
+         * @return - The cf of the term
+         */
+        public String getTerm() {
+            return term;
+        }
+
+        /**
+         * This function will set the cf
+         * @param cf - The given cf
+         */
+        public void setCf(int cf) {
+            this.cf = cf;
+        }
+
+        /**
+         * This function will set the term
+         * @param term - The given term
+         */
+        public void setTerm(String term) {
+            this.term = term;
+        }
     }
 }

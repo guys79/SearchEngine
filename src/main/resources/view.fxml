@@ -61,10 +61,10 @@
                 </VBox>
             </left>
             <center>
-                <TableView  prefHeight="250.0" prefWidth="333.0" BorderPane.alignment="CENTER">
+                <TableView  prefHeight="250.0" prefWidth="333.0" BorderPane.alignment="CENTER" fx:id="dictionaryTableView">
                     <columns>
-                        <TableColumn  prefWidth="192.0" text="Term Name" />
-                        <TableColumn  prefWidth="165.0" text="Document Frequency" />
+                        <TableColumn  fx:id="termTableColumn" prefWidth="192.0" text="Term Name" />
+                        <TableColumn  fx:id="cfTableColumn" prefWidth="165.0" text="Collection frequency" />
                     </columns>
                 </TableView>
 

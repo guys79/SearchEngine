@@ -24,8 +24,12 @@ public class Controller {
     /**
      * This function will delete the posting files and will reset the dictionary
      */
-    public void reset() {
+    public void reset()
+    {
+        if(indexer!=null)
+        {
         this.indexer.reset();
+        }
     }
 
     /**

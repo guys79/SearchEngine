@@ -188,6 +188,7 @@ public class View implements Initializable {
         }
         this.dictionaryTableView.setItems(items);
         this.dictionaryTableView.getSortOrder().add(termTableColumn);
+        //this.dictionaryTableView.getSortOrder().add(cfTableColumn);
 
     }
 
@@ -240,7 +241,7 @@ public class View implements Initializable {
 
     /**
      * This function will add a language to the list of languages
-     * @param language
+     * @param language - The given language
      */
     public void addLanguage(String language)
     {

@@ -34,7 +34,9 @@ public class LanguageIndexer implements Callable<Boolean> {
      */
     public void addLanguage(String language)
     {
-        this.languages.add(language);
+        String [] lanSpllit = language.split(",");
+        if(language.length()>0 &&!(lanSpllit[0].charAt(0)>='0' && lanSpllit[0].charAt(0)<='9'))
+            this.languages.add(language);
     }
 
     /**

@@ -423,6 +423,7 @@ public class Indexer {
     /**
      * This function updates the dictionary with a term appearance
      * @param term - The given term
+     * @param tf - The term frequency
      */
     public void addDictionaries(String term,int tf) {
 

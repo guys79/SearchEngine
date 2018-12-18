@@ -27,6 +27,7 @@ public class AddDictionaryToFile implements Callable<Boolean> {
         this.mainMap = memory;
         this.filePath = filePath;
         this.fileName = "dictionary"+"&"+stem+".txt";
+        //this.fileName = "dictionary"+"&"+stem+".csv";
     }
 
     /**
@@ -40,6 +41,7 @@ public class AddDictionaryToFile implements Callable<Boolean> {
         {
             temp = entry.getValue();
             stringBuilder.append(temp[0]+"^"+temp[1]+"*"+entry.getKey()+"\n");
+
         }
     }
 

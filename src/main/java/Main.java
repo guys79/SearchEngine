@@ -1,3 +1,4 @@
+import Model.Retrieve.Query;
 import Model.Retrieve.RetrieveTermInfo;
 import Model.Retrieve.Searcher;
 import Model.Retrieve.TermInfo;
@@ -28,17 +29,22 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         //launch(args);
-        String postingPath = "C:\\Users\\guy schlesinger\\Downloads\\corpus\\posting";
+        String postingPath = "C:\\Users\\guys7\\Desktop\\posting";
         Searcher searcher=new Searcher(postingPath,true);
-        HashSet<String> terms = new HashSet<>();
-        terms.add("40");
-        terms.add("42");
-        terms.add("42%");
+        searcher.test();
+        Query query = new Query("This guy came to israel on 10-04",postingPath,true);
+
+
+    /*    HashSet<String> terms = new HashSet<>();
+        terms.add("$$$$$$$$");
+        terms.add("$$$$$$$");
+        terms.add("$$$$");
+        terms.add("$$");
 
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
 
         // TODO: 22/12/2018 Check why the size of 40 is ne more than the real size 
-        RetrieveTermInfo retrieveTermInfo =new RetrieveTermInfo("15248_95495254494851_true.txt",terms,postingPath);
+        RetrieveTermInfo retrieveTermInfo =new RetrieveTermInfo("1_true.txt",terms,postingPath);
         HashSet<TermInfo> termInfos;
         try {
             //Future<HashSet<TermInfo>> future = executorService.submit(retrieveTermInfo);
@@ -51,20 +57,10 @@ public class Main extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+*/
     }
 
-    public static void printTermInfo(TermInfo termInfo)
-    {
-        System.out.println();
-        HashMap<Integer,Integer> map = termInfo.getDocIdTfMap();
-        for(Map.Entry<Integer,Integer> entry :map.entrySet())
-        {
-            System.out.println("The term - "+termInfo.getTerm()+" The Size " + map.size()+" The docId - "+ entry.getKey() +" The tf - "+entry.getValue());
-        }
-        System.out.println();
-        System.out.println();
-    }
 
 
 }
+

@@ -1096,7 +1096,7 @@ public class Parser{
             if(this.stopWordsHolder.isStopWord(currentTerm))
                 continue;
             counter++;
-            if(cityName.toLowerCase().equals(currentTerm.toLowerCase()))
+            if(cityName.length()>0 && cityName.toLowerCase().equals(currentTerm.toLowerCase()))
                 this.cityLocations.add(counter);
             if(this.isIntegerThatEndsWithTh(currentTerm))
                 currentTerm = currentTerm.substring(0,length-2);

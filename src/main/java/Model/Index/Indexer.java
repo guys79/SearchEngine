@@ -49,6 +49,11 @@ public class Indexer {
         this.languageIndexer = new LanguageIndexer(postFilePath,stem);
         this.namesOfNonTermPostingFiles = new ArrayList<>();
 
+
+        //Copying the stop_words to the posting
+        File stopWordsFile = new File(this.stopWordsPath+"\\stop_words.txt");
+        File newStpWordsLocation = new File(this.postFilePath+"\\stop_words.txt");
+        copyStopWords(stopWordsFile,newStpWordsLocation);
         //Creating the first temporary posting files
         initTempPosting();
 
@@ -60,6 +65,29 @@ public class Indexer {
 
     }
 
+    public void copyStopWords(File source,File dest)
+    {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        try
+        {
+            inputStream = new FileInputStream(source);
+            outputStream = new FileOutputStream(dest);
+            byte[] buffer = new byte[1024];
+            int length;
+            while((length = inputStream.read(buffer))>0)
+            {
+                outputStream.write(buffer,0,length);
+            }
+            inputStream.close();
+            outputStream.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * This function will delete the posting files and will reset the main dictionary

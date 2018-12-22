@@ -5,6 +5,10 @@ import Model.Index.Indexer;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * This class will retrieve the most relevant documents given a collection of queries
@@ -13,14 +17,18 @@ public class Searcher {
 
     private Indexer indexer;//The indexer
     private List<String> postingFileNames;//The names of the posting files
-    private boolean stem;
+    private boolean stem;//True if we want to retrieve the information of the stemmed posting files, False - if we want to retrieve the information from the non stemmed files
+    private ExecutorService executorService;//The threadpool
+    private String postingFilesPath;//The path to the posting file
 
 
     public Searcher(String postingFilesPath,boolean stem) {
         // TODO: 20/12/2018 Complete the constructor
         postingFileNames = new ArrayList<>();
         File file = new File(postingFilesPath);
+        this.executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
         this.stem = stem;
+        this.postingFilesPath =postingFilesPath;
         if(file.isDirectory()) {
             String stemS = ""+stem;
             String name="";
@@ -28,11 +36,6 @@ public class Searcher {
             File [] children =file.listFiles();
             for(int i=0;i<children.length;i++)
             {
-                try {
-                    new File(children[i].getName().substring(2)).createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 name = children[i].getName();
                 index = name.lastIndexOf(".");
                 if(name.substring(index-stemS.length(),index).equals(stemS))
@@ -44,7 +47,26 @@ public class Searcher {
         this.postingFileNames.sort(String::compareToIgnoreCase);
 
     }
+    private void printTermInfo(TermInfo termInfo)
+    {
+        System.out.println();
+        HashMap<Integer,Integer> map = termInfo.getDocIdTfMap();
+        for(Map.Entry<Integer,Integer> entry :map.entrySet())
+        {
+            System.out.println("The term - "+termInfo.getTerm()+" The Size " + map.size()+" The docId - "+ entry.getKey() +" The tf - "+entry.getValue());
+        }
+        System.out.println();
+        System.out.println();
+    }
+    public void test()
+    {
+        HashSet<TermInfo> termInfos = this.getTheInformationAbouttheTemrs();
+        for (TermInfo termInfo:termInfos)
+        {
+            printTermInfo(termInfo);
+        }
 
+    }
     /**
      * This function will return the name of the file(s) that contains the term
      *
@@ -164,6 +186,78 @@ public class Searcher {
             }
         }
         return fileNamesAndTerms;
+
+    }
+
+    private HashSet<TermInfo> getTheInformationAbouttheTemrs()
+    {
+        List<String> terms  = new ArrayList<>();// TODO: 12/22/2018 The query (Replace with the actual query)
+        terms.add("$$$$$$$$");
+        terms.add("$$$$$$$");
+        terms.add("$$$$");
+        terms.add("$$");
+        terms.add("oligom");
+
+        HashMap<String,List<String>> fileNamesAndTerms = this.getTermsAndFiles(terms);
+        Set<String> keys = fileNamesAndTerms.keySet();
+        Future<HashSet<TermInfo>> [] futures = new Future[keys.size()];
+
+        int i = 0;
+        for(String key:keys)
+        {
+            //public RetrieveTermInfo(String fileName, HashSet<String> terms,String postingFilePath)
+            futures[i] = this.executorService.submit(new RetrieveTermInfo(key,new HashSet(fileNamesAndTerms.get(key)),this.postingFilesPath));
+            i++;
+        }
+
+        HashMap<String,TermInfo> tempDic = new HashMap<>();
+        HashSet<TermInfo> temp;
+        String term;
+        for(int j = 0; j<futures.length;j++)
+        {
+            try {
+                temp = futures[j].get();
+                for(TermInfo key:temp)
+                {
+                    term = key.getTerm();
+                    //If the term is already in the map
+                    if(tempDic.containsKey(term))
+                    {
+                        TermInfo exist = tempDic.get(term);
+                        Set<Integer> setOfKeys;
+                        //If the key's dictionary is bigger than the existing's dictionary
+                        if(key.getDocIdTfMap().size()>exist.getDocIdTfMap().size())
+                        {
+                            setOfKeys = exist.getDocIdTfMap().keySet();
+                            for(int docId:setOfKeys)
+                            {
+                                key.addInfo(docId,exist.getDocIdTfMap().get(docId));
+                            }
+                            //Update the term info
+                            tempDic.put(term,key);
+                        }
+                        else
+                        {
+                            setOfKeys = key.getDocIdTfMap().keySet();
+                            for(int docId:setOfKeys)
+                            {
+                                exist.addInfo(docId,key.getDocIdTfMap().get(docId));
+                            }
+                            //We don't need to update the map
+                        }
+                    }
+                    else
+                    {
+                        tempDic.put(term,key);
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        return new HashSet<>(tempDic.values());
 
     }
 

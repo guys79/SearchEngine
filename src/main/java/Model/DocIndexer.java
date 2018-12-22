@@ -25,7 +25,7 @@ public class DocIndexer{
         this.mutex = new Mutex();
         tempData= new HashMap<Integer,String>();
         this.readFile = readFile;
-        String name = "documents"+"&"+stem;
+        String name = "allDocs"+"&"+stem;
         try {
             PrintWriter postingListOfFile = new PrintWriter(location+"\\"+name+".txt", "UTF-8");
             postingListOfFile.close();
@@ -59,7 +59,7 @@ public class DocIndexer{
 
             String str;
             Set<Integer> keys = tempData.keySet();
-
+            out.print("#");
             for(Integer key : keys)
             {
                 str= tempData.get(key);
@@ -88,7 +88,7 @@ public class DocIndexer{
     public void addToDic(int docNum, int numOfuniqeTerms, int maxValues,int length) {
         this.mutex.lock();
         if(docNum!=-1) {
-            String str = readFile.getNamesOfDocs(docNum) + ";" + numOfuniqeTerms + ";" + maxValues + ";" + readFile.getNameOfCity(docNum)+";"+docNum+";"+length+"#";
+            String str = docNum+readFile.getNamesOfDocs(docNum) + ";" + numOfuniqeTerms + ";" + maxValues + ";" + readFile.getNameOfCity(docNum)+";"+";"+length+"#";
             tempData.put(docNum,str);
         }
         this.mutex.unlock();

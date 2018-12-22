@@ -1,5 +1,4 @@
-import Model.Indexer;
-import Model.OnlyReadFile;
+import Model.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,13 +7,15 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 
 
 public class Main extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(ClassLoader.getSystemResource("view.fxml"));
         primaryStage.setScene(new Scene(root, 900, 400));
         primaryStage.setResizable(false);
@@ -43,10 +44,9 @@ public class Main extends Application {
         }*/
     }
 
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+        public static void main (String[]args){
+            launch(args);
+        }
 
 
 }

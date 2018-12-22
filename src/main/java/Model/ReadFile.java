@@ -22,7 +22,7 @@ public class ReadFile {
     private HashMap<Integer,String> dictionary_doc_name_id;  // A dictionary, The key is the name of the doc, and the value is the dicId
     private Mutex mutexDoc; //this mutex will protect dictionary of id's and numbers (dictionary_doc_name_id)
     private Mutex mutexCity; //this mutex will protect dictionary of the numbers and cities (citys)
-
+    int counter=0;
     /**
      * this is the constructor.
      * it should initialaize the parameters and create a file that will save our data
@@ -80,13 +80,12 @@ public class ReadFile {
         String [] strings;
         if(!found1&&content.get(i).contains("</F>")&&content.get(i).indexOf(endSTR) - 1>content.get(i).indexOf(startSTR) + startSTR.length() + 1) {
             String myString = content.get(i);
-
-            String nameOfFile = myString.substring(myString.indexOf(startSTR) + startSTR.length() + 1, myString.indexOf(endSTR));
+            String nameOfFile = myString.substring(myString.indexOf(startSTR) + startSTR.length(), myString.indexOf(endSTR));
             strings = nameOfFile.split(" ");
             int index = -1;
             for (int j=0;j<strings.length&&index==-1;j++)
             {
-                if(!strings[j].equals(" ")&&strings[j].length()>0)
+                if(!strings[j].equals(" ")&&strings[j].length()>1)
                     index = j;
             }
             nameOfFile = strings[index].toUpperCase();
@@ -128,6 +127,9 @@ public class ReadFile {
             right=myString.substring(myString.indexOf(end)-1-deltaRight,myString.indexOf(end)-deltaRight);
         }
         String nameOfFile=myString.substring(myString.indexOf(start)+start.length()+deltaLeft,myString.indexOf(end)-deltaRight);
+        if("LA021690-0001".equals(nameOfFile)){
+            System.out.println(("fuck"));
+        }
         return  nameOfFile;
     }
 
@@ -145,6 +147,7 @@ public class ReadFile {
         }
         // we save the name of the file.
         String name = findTheName(content,start);
+        counter++;
         dictionary_doc_name_id.put( doc_id_generator,name);
         doc_id_generator = doc_id_generator+1;
         docsInFile.add(newArrey);

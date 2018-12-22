@@ -10,12 +10,21 @@ public class CityInfo {
     private int doc;//doc number in which the city appears
     private HashSet<Integer> cityLoc;// The locations of the city in the document
 
+
+
+    public CityInfo()
+    {
+        city = null;
+        doc = -1;
+        cityLoc= null;
+    }
     /**
      * The constructor of the class
      * @param city - The city name
      * @param doc - The doc number in which the city appears
      * @param cityLoc - The locations of the city name in the document
      */
+
     public CityInfo(String city, int doc,HashSet<Integer> cityLoc)
     {
         this.city = city;
@@ -46,5 +55,17 @@ public class CityInfo {
      */
     public HashSet<Integer> getCityLoc() {
         return cityLoc;
+    }
+
+    public void setCity(String city){
+        this.city=city;
+    }
+
+    public void setCityLoc(HashSet<Integer> cityLoc){
+        this.cityLoc=cityLoc;
+    }
+
+    public void setDoc(int doc){
+        this.doc=doc;
     }
 }

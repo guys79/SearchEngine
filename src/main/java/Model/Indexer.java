@@ -343,7 +343,7 @@ public class Indexer {
         String language="";
 
         //For every doc
-        for (int i = 0; i < parserThreads.length; i++) {
+        for (int i = 0; i < parserThreads.length-1; i++) {
             doc = file.get(i);//get the doc
             city = this.getCityName(doc);//get the city name
             language = this.getLanguage(doc);//get the language

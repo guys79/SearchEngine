@@ -2,30 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7e65b734-29c6-462a-ba06-24a4a65dabc4" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Model/Retrieve/TermInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Model/Retrieve/RetrieveTermInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/AddDictionaryToFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/AddDictionaryToFile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/CityInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/CityInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/DocIndexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/DocIndexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/DocIndexerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/DocIndexerThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/DocumentReturnValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/DocumentReturnValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Indexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/Indexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/IndexerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/IndexerThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/LanguageIndexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/LanguageIndexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/LoadDictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/LoadDictionary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/OnlyReadFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Retrieve/OnlyReadFile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/ParserThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/ParserThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/ParserThreadReturnValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/ParserThreadReturnValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/PostingOfCities.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/PostingOfCities.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/ReadFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/ReadFile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/SortAndSplitThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/SortAndSplitThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/SplitToFileThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/SplitToFileThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/StopWordsHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/StopWordsHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/UpdateCitiesInfoThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/UpdateCitiesInfoThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Retrieve/TermInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Retrieve/TermInfo.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,48 +21,17 @@
       <file leaf-file-name="Indexer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/Indexer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="346" column="43" lean-forward="true" selection-start-line="346" selection-start-column="43" selection-end-line="346" selection-end-column="43" />
+            <state relative-caret-position="288">
+              <caret line="347" column="60" lean-forward="true" selection-start-line="347" selection-start-column="60" selection-end-line="347" selection-end-column="60" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TermInfo.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/TermInfo.java">
+      <file leaf-file-name="RetrieveTermInfo.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/RetrieveTermInfo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
-              <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
-              <folding>
-                <element signature="e#827#828#0" expanded="true" />
-                <element signature="e#872#873#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PostingOfCities.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/PostingOfCities.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ParserThreadReturnValue.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/ParserThreadReturnValue.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OnlyReadFile.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/OnlyReadFile.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
+            <state relative-caret-position="401">
+              <caret line="67" column="17" selection-start-line="67" selection-start-column="17" selection-end-line="67" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -89,20 +39,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AddDictionaryToFile.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/AddDictionaryToFile.java">
+      <file leaf-file-name="TermInfo.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/TermInfo.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DocIndexerThread.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/DocIndexerThread.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+            <state relative-caret-position="26">
+              <caret line="26" column="35" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -110,17 +51,8 @@
       <file leaf-file-name="IndexerThread.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/IndexerThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
+            <state relative-caret-position="-391">
               <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UpdateCitiesInfoThread.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/UpdateCitiesInfoThread.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -128,11 +60,20 @@
       <file leaf-file-name="Searcher.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+            <state relative-caret-position="1964">
+              <caret line="143" column="147" selection-start-line="143" selection-start-column="147" selection-end-line="143" selection-end-column="147" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="298">
+              <caret line="39" column="82" selection-start-line="39" selection-start-column="82" selection-end-line="39" selection-end-column="82" />
             </state>
           </provider>
         </entry>
@@ -152,6 +93,13 @@
       <find>33</find>
       <find>FBIS3</find>
       <find>parserfile</find>
+      <find>bufferedreader</find>
+      <find>filereader</find>
+      <find>exec</find>
+      <find>.get()</find>
+      <find>System.ou</find>
+      <find>futures[i]</find>
+      <find>dla</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -162,13 +110,15 @@
       <list>
         <option value="$PROJECT_DIR$/src/main/java/Model/LoadDictionary.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/AddDictionaryToFile.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/ReadFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/OnlyReadFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/SortAndSplitThread.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/Searcher.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/Index/Indexer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/Retrieve/TermInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Model/Retrieve/RetrieveTermInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Main.java" />
       </list>
     </option>
   </component>
@@ -189,7 +139,7 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
+    <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
@@ -240,6 +190,15 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="Model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SearchEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SearchEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Model" type="462c0819:PsiDirectoryNode" />
+              <item name="Index" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SearchEngine" type="b2602c69:ProjectViewProjectNode" />
@@ -351,12 +310,20 @@
       <workItem from="1545065103349" duration="3678000" />
       <workItem from="1545072323332" duration="214000" />
       <workItem from="1545308360360" duration="8093000" />
-      <workItem from="1545497079745" duration="249000" />
+      <workItem from="1545497079745" duration="5752000" />
     </task>
+    <task id="LOCAL-00001" summary="New structure + searcher + + TermInfo">
+      <created>1545497393143</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1545497393143</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12384000" />
+    <option name="totallyTimeSpent" value="17887000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -372,11 +339,11 @@
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32518598" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32518598" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23489584" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23489584" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32943678" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -384,7 +351,7 @@
       <window_info id="UI Designer" order="2" />
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39915523" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3985122" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -398,17 +365,27 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="New structure + searcher + + TermInfo" />
+    <option name="LAST_COMMIT_MESSAGE" value="New structure + searcher + + TermInfo" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/Main.java</url>
-          <line>11</line>
+          <line>19</line>
           <properties />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Main.java</url>
+          <line>45</line>
+          <properties />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="3" />
+      <option name="time" value="4" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -572,13 +549,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/LoadDictionary.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="31" column="36" selection-start-line="31" selection-start-column="36" selection-end-line="31" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/DocIndexer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -610,31 +580,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/ReadFile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1666">
-          <caret line="103" column="73" selection-start-line="103" selection-start-column="73" selection-end-line="103" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/SortAndSplitThread.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="850">
           <caret line="149" lean-forward="true" selection-start-line="149" selection-end-line="149" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/LanguageIndexer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -680,13 +629,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/IndexerThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/UpdateCitiesInfoThread.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -694,41 +636,89 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/OnlyReadFile.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
-          <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
+          <caret line="126" column="14" selection-start-line="126" selection-start-column="14" selection-end-line="126" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/Indexer.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/StopWordsHolder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="346" column="43" lean-forward="true" selection-start-line="346" selection-start-column="43" selection-end-line="346" selection-end-column="43" />
+        <state relative-caret-position="203">
+          <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/LanguageIndexer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-722">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/LoadDictionary.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="50" column="2" selection-start-line="50" selection-start-column="2" selection-end-line="68" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/IndexerThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-391">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1964">
+          <caret line="143" column="147" selection-start-line="143" selection-start-column="147" selection-end-line="143" selection-end-column="147" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/ReadFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="526">
+          <caret line="187" column="48" selection-start-line="187" selection-start-column="48" selection-end-line="187" selection-end-column="48" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/TermInfo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+        <state relative-caret-position="26">
+          <caret line="26" column="35" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/Indexer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="347" column="60" lean-forward="true" selection-start-line="347" selection-start-column="60" selection-end-line="347" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/RetrieveTermInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="401">
+          <caret line="67" column="17" selection-start-line="67" selection-start-column="17" selection-end-line="67" selection-end-column="17" />
           <folding>
-            <element signature="e#827#828#0" expanded="true" />
-            <element signature="e#872#873#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="298">
+          <caret line="39" column="82" selection-start-line="39" selection-start-column="82" selection-end-line="39" selection-end-column="82" />
         </state>
       </provider>
     </entry>

@@ -72,11 +72,12 @@ public class Searcher {
     }
 
     /**
+     * This function is a recursive helper function
      * This function will return the name of the file(s) that contains the term
-     * The term starts with the alphabet
-     *
-     * @param term      -The given term
-     * @param fileNames - The names of the file that we have gathered so far
+     * @param term - The given term
+     * @param fileNames - The list that we will save the names of the files in (buffer)
+     * @param start - The start index
+     * @param end - The end index
      */
     private void getFileNameRec(String term, List<String> fileNames, int start, int end) {
 
@@ -136,6 +137,12 @@ public class Searcher {
     }
 
     //private HashMap<String,List<String>> gettermsAndFiles(List<String> terms)
+
+    /**
+     * This function will return for a list of a given terms a map of file names and which terms they are containing
+     * @param terms - The given terms
+     * @return - A HashMap. The key is the name of the file, The value is a lis of all the terms that are in the document from the given terms list
+     */
     public HashMap<String,List<String>> getTermsAndFiles(List<String> terms)
     {
 

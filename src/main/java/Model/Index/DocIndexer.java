@@ -1,4 +1,4 @@
-package Model;
+package Model.Index;
 
 import sun.awt.Mutex;
 import java.io.*;

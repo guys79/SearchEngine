@@ -1,4 +1,4 @@
-package Model;
+package Model.Index;
 
 import org.tartarus.snowball.SnowballStemmer;
 import org.tartarus.snowball.ext.porterStemmer;
@@ -1019,7 +1019,7 @@ public class Parser{
     /**
      * This function will teake a text and will pasre every token in the text.
      * @param text - The given text
-     * @return - Model.DocumentReturnValue object containing the parsed text and it's characteristics
+     * @return - Model.Index.DocumentReturnValue object containing the parsed text and it's characteristics
      */
     public DocumentReturnValue motherOfAllFunctions(String text)
     {

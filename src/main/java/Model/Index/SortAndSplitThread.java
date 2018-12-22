@@ -1,7 +1,6 @@
-package Model;
+package Model.Index;
 
 import java.io.*;
-import java.rmi.UnexpectedException;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -76,6 +75,8 @@ public class SortAndSplitThread implements Callable<List<String>>{
                     fileName = "1";//The files that refer to others are the files that starts with 1
                     for(int i=0;i<key.getKey().length();i++)
                     {
+                        if(key.getKey().charAt(i)=='_')
+                            fileName = fileName+'_';
                         fileName = fileName + (int)(key.getKey().charAt(i));
                     }
                 }
@@ -108,12 +109,12 @@ public class SortAndSplitThread implements Callable<List<String>>{
         String term;
         int indexOfStar;
 
-            indexOfStar = terms.indexOf('*');
-            if(indexOfStar == -1) {
-                return;
-            }
-            term = terms.substring(0, indexOfStar);
-            this.terms.put(term,terms.substring(indexOfStar));
+        indexOfStar = terms.indexOf('*');
+        if(indexOfStar == -1) {
+            return;
+        }
+        term = terms.substring(0, indexOfStar);
+        this.terms.put(term,terms.substring(indexOfStar));
 
     }
 

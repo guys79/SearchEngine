@@ -1,5 +1,5 @@
 package Controller;
-import Model.Indexer;
+import Model.Index.Indexer;
 import View.View;
 import java.io.*;
 import java.util.HashMap;

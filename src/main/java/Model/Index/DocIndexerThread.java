@@ -1,4 +1,4 @@
-package Model;
+package Model.Index;
 
 /**
  * This class will index the document as runnable

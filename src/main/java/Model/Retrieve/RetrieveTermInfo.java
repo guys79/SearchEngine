@@ -33,6 +33,10 @@ public class RetrieveTermInfo implements Callable<HashSet<TermInfo>> {
         this.terms = terms;
     }
 
+    /**
+     * This function will return all of the data about the terms that the file contains
+     * @return - The data on the given terms
+     */
     public HashSet<TermInfo> retrieveInfo()
     {
         String filePath = this.postingFilePath+"\\"+this.fileName;
@@ -49,6 +53,10 @@ public class RetrieveTermInfo implements Callable<HashSet<TermInfo>> {
             //While we didn't finish the file and the we didn't go through all of the terms
             while((line= bufferedReader.readLine())!=null)
             {
+                if(line.indexOf('_')==-1)
+                {
+                    continue;
+                }
                 termLine = line.substring(0,line.indexOf('_'));
 
                 if(!term.equalsIgnoreCase(termLine)) {
@@ -81,6 +89,11 @@ public class RetrieveTermInfo implements Callable<HashSet<TermInfo>> {
         return null;
     }
 
+    /**
+     * This function will add another piece of information about a term from this posting file
+     * @param line - The line in the posting file
+     * @param termInfo - The termInfo that we want to add the information to
+     */
     private void parseAndAddToMap(String line,TermInfo termInfo)
     {
         int index1 = line.indexOf('_');
@@ -93,6 +106,11 @@ public class RetrieveTermInfo implements Callable<HashSet<TermInfo>> {
     }
 
 
+    /**
+     * This function will return all of the data about the terms that the file contains
+     * @return
+     * @throws Exception
+     */
     @Override
     public HashSet<TermInfo> call() throws Exception {
         return this.retrieveInfo();

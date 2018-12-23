@@ -30,7 +30,7 @@ public class Main extends Application {
     public static void main(String[] args) {
         //launch(args);
         String postingPath = "C:\\Users\\guys7\\Desktop\\posting";
-        Searcher searcher=new Searcher(postingPath,true);
+        Searcher searcher=new Searcher(postingPath,true,new String[0],"man open door");
         searcher.test();
         Query query = new Query("This guy came to israel on 10-04",postingPath,true);
 

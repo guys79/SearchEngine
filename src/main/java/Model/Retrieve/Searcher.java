@@ -1,5 +1,6 @@
 package Model.Retrieve;
 
+import Model.Index.CityInfo;
 import Model.Index.Indexer;
 
 import java.io.File;
@@ -20,15 +21,24 @@ public class Searcher {
     private boolean stem;//True if we want to retrieve the information of the stemmed posting files, False - if we want to retrieve the information from the non stemmed files
     private ExecutorService executorService;//The threadpool
     private String postingFilesPath;//The path to the posting file
+    private String [] relaventCities;//The array of relevant cities
+    private Query query;//The query!
 
 
-    public Searcher(String postingFilesPath,boolean stem) {
+    public Searcher(String postingFilesPath,boolean stem,String [] relaventCities,String query) {
         // TODO: 20/12/2018 Complete the constructor
+
+        //Initializing the data structures
         postingFileNames = new ArrayList<>();
+        this.relaventCities = relaventCities;
+        this.query = new Query(query,postingFilesPath,stem);
         File file = new File(postingFilesPath);
         this.executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
         this.stem = stem;
         this.postingFilesPath =postingFilesPath;
+
+
+        //Getting the posting files names
         if(file.isDirectory()) {
             String stemS = ""+stem;
             String name="";
@@ -44,6 +54,7 @@ public class Searcher {
             }
 
         }
+        //Sorting the names so that we will be able to preform binary search
         this.postingFileNames.sort(String::compareToIgnoreCase);
 
     }
@@ -60,11 +71,14 @@ public class Searcher {
     }
     public void test()
     {
-        HashSet<TermInfo> termInfos = this.getTheInformationAbouttheTemrs();
+
+        // TODO: 12/23/2018  Check getRelevantData
+        HashSet<TermInfo> termInfos = this.getRelevantData();
         for (TermInfo termInfo:termInfos)
         {
             printTermInfo(termInfo);
         }
+        System.out.println("done");
 
     }
     /**
@@ -158,14 +172,13 @@ public class Searcher {
 
     }
 
-    //private HashMap<String,List<String>> gettermsAndFiles(List<String> terms)
 
     /**
      * This function will return for a list of a given terms a map of file names and which terms they are containing
      * @param terms - The given terms
      * @return - A HashMap. The key is the name of the file, The value is a lis of all the terms that are in the document from the given terms list
      */
-    public HashMap<String,List<String>> getTermsAndFiles(List<String> terms)
+    private HashMap<String,List<String>> getTermsAndFiles(List<String> terms)
     {
 
         List<String>fileNames;
@@ -189,23 +202,23 @@ public class Searcher {
 
     }
 
-    private HashSet<TermInfo> getTheInformationAbouttheTemrs()
+    /**
+     * This function will get all the information about all the terms that are in the given list
+     * @param terms - The given terms that we want to check
+     * @return - The information about all of the terms i
+     */
+    private HashSet<TermInfo> getTheInformationAboutTheTerms(List<String>terms)
     {
-        List<String> terms  = new ArrayList<>();// TODO: 12/22/2018 The query (Replace with the actual query)
-        terms.add("$$$$$$$$");
-        terms.add("$$$$$$$");
-        terms.add("$$$$");
-        terms.add("$$");
-        terms.add("oligom");
 
+        //Getting the names of the files that will contain the terms
         HashMap<String,List<String>> fileNamesAndTerms = this.getTermsAndFiles(terms);
         Set<String> keys = fileNamesAndTerms.keySet();
         Future<HashSet<TermInfo>> [] futures = new Future[keys.size()];
 
         int i = 0;
+        //For each file, get the data about the terms
         for(String key:keys)
         {
-            //public RetrieveTermInfo(String fileName, HashSet<String> terms,String postingFilePath)
             futures[i] = this.executorService.submit(new RetrieveTermInfo(key,new HashSet(fileNamesAndTerms.get(key)),this.postingFilesPath));
             i++;
         }
@@ -217,38 +230,31 @@ public class Searcher {
         {
             try {
                 temp = futures[j].get();
-                for(TermInfo key:temp)
-                {
-                    term = key.getTerm();
-                    //If the term is already in the map
-                    if(tempDic.containsKey(term))
-                    {
-                        TermInfo exist = tempDic.get(term);
-                        Set<Integer> setOfKeys;
-                        //If the key's dictionary is bigger than the existing's dictionary
-                        if(key.getDocIdTfMap().size()>exist.getDocIdTfMap().size())
-                        {
-                            setOfKeys = exist.getDocIdTfMap().keySet();
-                            for(int docId:setOfKeys)
-                            {
-                                key.addInfo(docId,exist.getDocIdTfMap().get(docId));
+                if(temp!=null) {
+                    for (TermInfo key : temp) {
+                        term = key.getTerm();
+                        //If the term is already in the map
+                        if (tempDic.containsKey(term)) {
+                            TermInfo exist = tempDic.get(term);
+                            Set<Integer> setOfKeys;
+                            //If the key's dictionary is bigger than the existing's dictionary
+                            if (key.getDocIdTfMap().size() > exist.getDocIdTfMap().size()) {
+                                setOfKeys = exist.getDocIdTfMap().keySet();
+                                for (int docId : setOfKeys) {
+                                    key.addInfo(docId, exist.getDocIdTfMap().get(docId));
+                                }
+                                //Update the term info
+                                tempDic.put(term, key);
+                            } else {
+                                setOfKeys = key.getDocIdTfMap().keySet();
+                                for (int docId : setOfKeys) {
+                                    exist.addInfo(docId, key.getDocIdTfMap().get(docId));
+                                }
+                                //We don't need to update the map
                             }
-                            //Update the term info
-                            tempDic.put(term,key);
+                        } else {
+                            tempDic.put(term, key);
                         }
-                        else
-                        {
-                            setOfKeys = key.getDocIdTfMap().keySet();
-                            for(int docId:setOfKeys)
-                            {
-                                exist.addInfo(docId,key.getDocIdTfMap().get(docId));
-                            }
-                            //We don't need to update the map
-                        }
-                    }
-                    else
-                    {
-                        tempDic.put(term,key);
                     }
                 }
             } catch (InterruptedException e) {
@@ -261,5 +267,67 @@ public class Searcher {
 
     }
 
+    private HashSet<TermInfo> getRelevantData()
+    {
+        //Getting the terms of the query as a list
+        List<String> queryTerms = this.query.getQueryAsList();
+
+        List<String> citiesToCheck = new ArrayList<>();
+        //Go through all of the cities, if the city is a term in the query, don't add it (saves additional checks)
+        for(int i=0;i<this.relaventCities.length;i++)
+        {
+            if(this.query.getNumOfOccurrences(this.relaventCities[i].toLowerCase())==0 && this.query.getNumOfOccurrences(this.relaventCities[i].toUpperCase())==0)
+                citiesToCheck.add(this.relaventCities[i]);
+        }
+
+
+        //Check the terms data
+        HashSet<TermInfo> termInfos = this.getTheInformationAboutTheTerms(queryTerms);
+        Iterator firstMap = termInfos.iterator();
+
+        if(this.relaventCities.length!=0) {
+            //Check the cities as if they were terms
+            HashSet<TermInfo> citiesInfo = this.getTheInformationAboutTheTerms(citiesToCheck);
+            // TODO: 12/23/2018 Check for doc with the city in the title
+            while (firstMap.hasNext()) {
+                TermInfo current = (TermInfo) firstMap.next();
+                HashMap<Integer, Integer> tempMap = current.getDocIdTfMap();
+                Iterator secodMap = tempMap.entrySet().iterator();
+                while (secodMap.hasNext()) {
+                    Map.Entry<Integer, Integer> entry = (Map.Entry<Integer, Integer>) secodMap.next();
+                    int key = entry.getKey();
+                    if (!checkIfInTermInfo(key, citiesInfo))
+                        secodMap.remove();
+                }
+            }
+        }
+        return termInfos;
+    }
+    private boolean checkIfInTermInfo(int docNum,HashSet<TermInfo> termInfos)
+    {
+        for(TermInfo termInfo : termInfos)
+        {
+            if(termInfo.getDocIdTfMap().containsKey(docNum))
+                return true;
+        }
+        return false;
+    }
+
+
+    public List<Integer> getMostRelaventDocNum()
+    {
+        HashSet<TermInfo> queryData =this.getRelevantData();
+
+        HashSet<Integer> numOfDocs = new HashSet<>();
+
+        //Adding all the relevant docNum (Maybe unnecessary - saves that info twice)
+        for(TermInfo queryTermInfo:queryData)
+        {
+            numOfDocs.addAll(queryTermInfo.docIdTfMap.keySet());
+        }
+        return null;
+    }
+
 
 }
+

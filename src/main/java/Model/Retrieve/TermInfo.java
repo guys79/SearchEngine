@@ -57,4 +57,13 @@ public class TermInfo {
     public HashMap<Integer, Integer> getDocIdTfMap() {
         return docIdTfMap;
     }
+
+    /**
+     * This function wil return the size of the TermInfo
+     * @return - This function will return the size of the TermInfo (number of pieces of information)
+     */
+    public int size()
+    {
+        return this.getDocIdTfMap().size();
+    }
 }

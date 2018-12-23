@@ -12,6 +12,8 @@ public class Query {
     private HashMap <String,Integer> termsAndTf;//A map of term as value and tf as key
     private String [] terms;//The terms in an array of strings
 
+
+
     /**
      * The constructor
      * This function will parse the query and process it
@@ -20,19 +22,45 @@ public class Query {
      * @param stem - True if we want to consider the stemmed files
      */
     public Query(String query,String postingPath,boolean stem) {
-        //Parse the query
-        Parser parser = new Parser(postingPath, "", stem);
-        DocumentReturnValue parsedQuery = parser.motherOfAllFunctions(query);
 
-        //Init the terms array
-        this.terms = new String[parsedQuery.getDictionaryOfWords().size()+parsedQuery.getDictionaryOfUniqueTerms().size()];
+
+        Set<String> terms;
+        //Parse the query
+        Parser parserStemmed = new Parser(postingPath, "", stem);
+        DocumentReturnValue parsedQuery = parserStemmed.motherOfAllFunctions(query);
         int index =0;
+        if(stem)
+        {
+            //Parse the query
+            Parser parserNotStemmed = new Parser(postingPath, "", false);
+            DocumentReturnValue parsedQueryNotStemmed = parserNotStemmed.motherOfAllFunctions(query);
+            this.terms = new String[parsedQuery.getDictionaryOfWords().size()+parsedQuery.getDictionaryOfUniqueTerms().size()+parsedQueryNotStemmed.getDictionaryOfWords().size()];
+            terms = parsedQueryNotStemmed.getDictionaryOfWords().keySet();
+
+            //For each semantic word!!!
+            for (String key : terms) {
+                this.terms[index]=key;
+                index++;
+                this.termsAndTf.put(key, parsedQuery.getDictionaryOfUniqueTerms().get(key));
+            }
+
+        }
+        else
+        {
+            //Init the terms array
+            this.terms = new String[parsedQuery.getDictionaryOfWords().size()+parsedQuery.getDictionaryOfUniqueTerms().size()];
+
+        }
+
+
+
+
 
         //init the map
         this.termsAndTf = new HashMap<>();
 
         //Add the terms to the map and to the array
-        Set<String> terms = parsedQuery.getDictionaryOfUniqueTerms().keySet();
+        terms = parsedQuery.getDictionaryOfUniqueTerms().keySet();
         for (String key : terms) {
             this.terms[index]=key;
             index++;
@@ -44,6 +72,9 @@ public class Query {
             index++;
             this.termsAndTf.put(key, parsedQuery.getDictionaryOfWords().get(key));
         }
+
+
+
         //System.out.println(this.termsAndTf);
 
     }

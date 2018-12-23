@@ -1,5 +1,4 @@
 package Model.Retrieve;
-
 import sun.awt.Mutex;
 
 import java.io.*;
@@ -156,6 +155,11 @@ public class OnlyReadFile {
         return docsInFile;
     }
 
+    /**
+     * This function will return the content of the given document list in their original form (from the corpus)
+     * @param namesOfDocs- the names of the docs we want to get
+     * @return- a list of docs we want to get
+     */
     public ArrayList<String> getTheFiles(ArrayList<String> namesOfDocs){
         ArrayList<String> toReturn= new ArrayList<String>();
         ArrayList<String> arr;

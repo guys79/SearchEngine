@@ -314,7 +314,7 @@ public class Searcher {
     }
 
 
-    public List<Integer> getMostRelaventDocNum()
+    public List<Integer> getMostRelevantDocNum()
     {
         HashSet<TermInfo> queryData =this.getRelevantData();
 
@@ -325,6 +325,8 @@ public class Searcher {
         {
             numOfDocs.addAll(queryTermInfo.docIdTfMap.keySet());
         }
+
+
         return null;
     }
 

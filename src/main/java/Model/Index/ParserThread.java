@@ -1,5 +1,6 @@
 package Model.Index;
 
+import Model.Index.CityInfo;
 import sun.awt.Mutex;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -24,7 +25,7 @@ public class ParserThread implements Callable<ParserThreadReturnValue>
     private Mutex mutex;//A mutex
     private DocIndexerThread docIndexerThread;//The thread that parses a document
     private String city;//the name of the city
-    private CityInfo [] cityInfo;//The list of informations on the cities
+    private CityInfo[] cityInfo;//The list of informations on the cities
 
     /**
      * The constructor of the class

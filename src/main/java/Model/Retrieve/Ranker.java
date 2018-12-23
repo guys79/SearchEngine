@@ -26,8 +26,7 @@ public class Ranker {
     public double Rank(String document)// TODO: 12/23/2018 The document will not be represented as a string but as an object
     {
         // TODO: 12/23/2018 Add the semantics here somewhere
-        //Need to think... every word in the doc can be a similar word (in semantics) to any of the query terms;
-        //Should we compare every word in the doc to every word in the query? (probably not)
+        //We will use the
 
         double bm25 = this.BM25(document);
 

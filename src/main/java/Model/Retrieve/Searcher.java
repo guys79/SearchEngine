@@ -1,8 +1,11 @@
 package Model.Retrieve;
 
 import Model.Index.CityInfo;
+import Model.Index.DocInfo;
 import Model.Index.Indexer;
 import Model.Index.LoadDictionary;
+import org.tartarus.snowball.SnowballStemmer;
+import org.tartarus.snowball.ext.porterStemmer;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +20,6 @@ import java.util.concurrent.Future;
  */
 public class Searcher {
 
-    private Indexer indexer;//The indexer
     private List<String> postingFileNames;//The names of the posting files
     private boolean stem;//True if we want to retrieve the information of the stemmed posting files, False - if we want to retrieve the information from the non stemmed files
     private ExecutorService executorService;//The threadpool
@@ -28,24 +30,25 @@ public class Searcher {
                                           //The first cell in the array is the df, and the second is cf
     private GetCity cityPostingInformation;//The class that we will use to get data on the cities
     private GetDoc documentPostingInformation;//The class that we will use to get data on the cities
-
+    private Future<HashMap<String,int []>> futureMap;
+    private Future<Boolean> futureCity;
+    private Future<Boolean> futureDoc;
 
     public Searcher(String postingFilesPath,boolean stem,String [] relaventCities,String query) {
-        // TODO: 12/23/2018 Where get the futures?? 
-        // TODO: 20/12/2018 Complete the constructor
+        // TODO: 12/23/2018 Where get the futures??
         this.executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
         this.stem = stem;
         this.postingFilesPath =postingFilesPath;
 
         //Getting the info from the three files (dictionary , doc, city)
         //Dictionary
-        Future<HashMap<String,int []>> futureMap=executorService.submit(new LoadDictionary(this.postingFilesPath+"\\"+"dictionary"+"&"+this.stem+".txt"));
+        this.futureMap=executorService.submit(new LoadDictionary(this.postingFilesPath+"\\"+"dictionary"+"&"+this.stem+".txt"));
         //City
         this.cityPostingInformation = new GetCity(this.postingFilesPath+"\\"+"citys"+"&"+stem+".txt");
-        Future<Boolean> futureCity = executorService.submit(this.cityPostingInformation);
+        this.futureCity = executorService.submit(this.cityPostingInformation);
         //Docs
         this.documentPostingInformation = new GetDoc(this.postingFilesPath+"\\"+"allDocs"+"&"+stem+".txt");
-        Future<Boolean> futureDoc = executorService.submit(this.documentPostingInformation);
+        this.futureDoc = executorService.submit(this.documentPostingInformation);
         
         
         //Initializing the data structures
@@ -98,6 +101,8 @@ public class Searcher {
         System.out.println("done");
 
     }
+    
+    
     /**
      * This function will return the name of the file(s) that contains the term
      *
@@ -289,39 +294,78 @@ public class Searcher {
         //Getting the terms of the query as a list
         List<String> queryTerms = this.query.getQueryAsList();
 
-        List<String> citiesToCheck = new ArrayList<>();
-        //Go through all of the cities, if the city is a term in the query, don't add it (saves additional checks)
-        for(int i=0;i<this.relaventCities.length;i++)
-        {
-            if(this.query.getNumOfOccurrences(this.relaventCities[i].toLowerCase())==0 && this.query.getNumOfOccurrences(this.relaventCities[i].toUpperCase())==0)
-                citiesToCheck.add(this.relaventCities[i]);
-        }
-
-
         //Check the terms data
         HashSet<TermInfo> termInfos = this.getTheInformationAboutTheTerms(queryTerms);
-        Iterator firstMap = termInfos.iterator();
 
+        //If there are cities as filter
         if(this.relaventCities.length!=0) {
+
+            List<String> citiesToCheck = new ArrayList<>();
+            //Go through all of the cities, if the city is a term in the query, don't add it (saves additional checks)
+            //Stemming the cities if needed
+            if(stem) {
+                String city;
+                SnowballStemmer stemmer = new porterStemmer();
+                for (int i = 0; i < this.relaventCities.length; i++) {
+
+                    city = this.relaventCities[i].toLowerCase();
+                    if(stemmer.stem())
+                        city = stemmer.getCurrent();
+                    citiesToCheck.add(city);
+
+                }
+
+            }
+            else
+            {
+                citiesToCheck = Arrays.asList(this.relaventCities);
+            }
+
+
+
+            Iterator firstMap = termInfos.iterator();
             //Check the cities as if they were terms
             HashSet<TermInfo> citiesInfo = this.getTheInformationAboutTheTerms(citiesToCheck);
-            // TODO: 12/23/2018 Check for doc with the city in the title
+
+            try {
+                this.futureCity.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            //Adding the docs that are has the city in the title
+            HashSet<Integer> docsInTitle = new HashSet<>();
+            for(int i=0;i<this.relaventCities.length;i++)
+            {
+                HashSet<CityInfo> cityInfoAboutDocument = this.cityPostingInformation.getDetailsOnCitys(this.relaventCities[i]);
+                for(CityInfo cityInfo:cityInfoAboutDocument)
+                {
+                    docsInTitle.add(cityInfo.getDoc());
+                }
+
+            }
+
+            //The filter
             while (firstMap.hasNext()) {
                 TermInfo current = (TermInfo) firstMap.next();
                 HashMap<Integer, Integer> tempMap = current.getDocIdTfMap();
-                Iterator secodMap = tempMap.entrySet().iterator();
-                while (secodMap.hasNext()) {
-                    Map.Entry<Integer, Integer> entry = (Map.Entry<Integer, Integer>) secodMap.next();
+                Iterator secondMap = tempMap.entrySet().iterator();
+                while (secondMap.hasNext()) {
+                    Map.Entry<Integer, Integer> entry = (Map.Entry<Integer, Integer>) secondMap.next();
                     int key = entry.getKey();
-                    if (!checkIfInTermInfo(key, citiesInfo))
-                        secodMap.remove();
+                    if (!checkIfInTermInfo(key, citiesInfo,docsInTitle))
+                        secondMap.remove();
                 }
             }
         }
         return termInfos;
     }
-    private boolean checkIfInTermInfo(int docNum,HashSet<TermInfo> termInfos)
+    private boolean checkIfInTermInfo(int docNum,HashSet<TermInfo> termInfos,HashSet<Integer> docsWithTitle)
     {
+        if(docsWithTitle.contains(docNum))
+            return true;
         for(TermInfo termInfo : termInfos)
         {
             if(termInfo.getDocIdTfMap().containsKey(docNum))
@@ -331,20 +375,106 @@ public class Searcher {
     }
 
 
-    public List<Integer> getMostRelevantDocNum()
+    public int [] getMostRelevantDocNum()
     {
+        //The relevant data
         HashSet<TermInfo> queryData =this.getRelevantData();
+        try {
+            this.mainMap = this.futureMap.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
-        HashSet<Integer> numOfDocs = new HashSet<>();
-
-        //Adding all the relevant docNum (Maybe unnecessary - saves that info twice)
-        for(TermInfo queryTermInfo:queryData)
+        //Updating the df
+        for(TermInfo termInfo:queryData)
         {
-            numOfDocs.addAll(queryTermInfo.docIdTfMap.keySet());
+            termInfo.setDf(this.mainMap.get(termInfo.getTerm())[0]);
         }
 
 
-        return null;
+        //Getting the relevant docNums
+        HashSet<Integer>docNumHash = new HashSet<>();
+        for(TermInfo termInfo:queryData)
+        {
+            docNumHash.addAll(termInfo.docIdTfMap.keySet());
+        }
+
+
+        //Getting the docs info
+        try {
+            this.futureDoc.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        //Getting the info about the docs + calculating the average
+        long sum =0l;
+        HashSet<DocInfo> docNumInfo = new HashSet<>();
+        for(int docNum:docNumHash)
+        {
+            DocInfo docInfo = this.documentPostingInformation.getDetailsOnCitys(docNum);
+            docNumInfo.add(docInfo);
+            sum+= docInfo.getLength();
+        }
+
+        double average = sum*1/0/docNumInfo.size();
+
+        Ranker ranker = new Ranker(queryData,average,docNumInfo.size());
+        double minValue = Double.MIN_VALUE;
+        double score;
+        final int NUM_OF_DOCS_TO_RETURN = 50;
+        double [] scores = new double[NUM_OF_DOCS_TO_RETURN];
+        int [] docsToReturn = new int[NUM_OF_DOCS_TO_RETURN];
+
+        for(int i=0;i<NUM_OF_DOCS_TO_RETURN;i++)
+        {
+            scores[i] = Double.MIN_VALUE;
+            docsToReturn[i] = -1;
+        }
+
+
+        for(DocInfo docInfo:docNumInfo)
+        {
+            score = ranker.Rank(docInfo);
+            if(minValue<score)
+                minValue = update(scores,docsToReturn,docInfo.getDocNum(),score,minValue);
+        }
+
+
+
+
+        return docsToReturn;
+    }
+
+    private double update(double [] scores, int [] id,int doc,double score,double minValue)
+    {
+        int index = -1;
+
+        for(int i=0;i<scores.length;i++)
+        {
+            if(scores[i] == minValue)
+            {
+                index = i;
+                break;
+            }
+        }
+
+        scores[index] = score;
+        id[index] = doc;
+
+        double min = Double.MIN_VALUE;
+
+        for(int i=0;i<scores.length;i++)
+        {
+            if(scores[i]<min)
+                min =scores[i];
+        }
+        return min;
+
     }
 
 

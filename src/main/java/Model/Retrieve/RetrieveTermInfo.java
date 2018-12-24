@@ -42,11 +42,9 @@ public class RetrieveTermInfo implements Callable<HashSet<TermInfo>> {
         String filePath = this.postingFilePath+"\\"+this.fileName;
         File file = new File(filePath);
         BufferedReader bufferedReader = null;
-        int index=0;
         String term="";
         TermInfo current = null;
         String line;
-        boolean firstTime = true;
         String termLine;
         try {
             bufferedReader = new BufferedReader(new FileReader(file));

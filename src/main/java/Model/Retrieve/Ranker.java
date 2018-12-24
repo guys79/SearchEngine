@@ -1,5 +1,7 @@
 package Model.Retrieve;
 
+import Model.Index.DocInfo;
+
 import java.util.HashSet;
 
 /**
@@ -12,10 +14,12 @@ public class Ranker {
     private double beta;//The beta in the BM25  equation
     private double averageDocLength;//The average document length
     private HashSet<TermInfo> queryTermInfo;//The hashSet of termInfo of the query
+    private int numOfDocs;//Number of docs
 
-    public Ranker(HashSet<TermInfo> queryTermInfo,double averageDocLength)
+    public Ranker(HashSet<TermInfo> queryTermInfo,double averageDocLength,int numOfDocs)
     {
         this.averageDocLength = averageDocLength;
+        this.numOfDocs = numOfDocs;
         this.k=1.5;
         this.beta = 0.75;
         this.queryTermInfo = queryTermInfo;
@@ -23,25 +27,26 @@ public class Ranker {
 
     }
 
-    public double Rank(String document)// TODO: 12/23/2018 The document will not be represented as a string but as an object
+    public double Rank(DocInfo document)
     {
         // TODO: 12/23/2018 Add the semantics here somewhere
         //We will use the
 
         double bm25 = this.BM25(document);
 
-        return 0;
+        return bm25;
     }
     
-    private double BM25(String document)// TODO: 12/23/2018 The document will not be represented as a string but as an object
+    private double BM25(DocInfo document)
     {
         int rank = 0;
         for(TermInfo termInfo: queryTermInfo)
         {
             // TODO: 12/23/2018  Need to update to the real value
-            double idf = 0;
-            int tf = 0;
-            int docLength = 0;
+            int df = termInfo.getDf();
+            double idf = Math.log(this.numOfDocs*1.0/df)/Math.log(2);
+            int tf = termInfo.docIdTfMap.get(document.getDocNum());
+            int docLength = document.getLength();
 
             //The BM25 formula
             rank+= idf*((tf*(this.k+1))/(tf+this.k*(1-this.beta+beta*(docLength/this.averageDocLength))));

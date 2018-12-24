@@ -6,8 +6,9 @@ import java.util.HashMap;
  * This class represents information about the terms
  */
 public class TermInfo {
-    String term;//The term
-    HashMap<Integer,Integer> docIdTfMap;//This map is the map of docId as the key and the tf as value
+    private String term;//The term
+    public HashMap<Integer,Integer> docIdTfMap;//This map is the map of docId as the key and the tf as value
+    private int df;//Teh document frequency
 
     /**
      * The constructor
@@ -20,6 +21,7 @@ public class TermInfo {
         this.term = term;
         this.docIdTfMap = new HashMap<>();
         this.docIdTfMap.put(docId,tf);
+        this.df=0;
     }
 
     /**
@@ -30,6 +32,7 @@ public class TermInfo {
     {
         this.term = term;
         this.docIdTfMap = new HashMap<>();
+        this.df=0;
     }
 
     /**
@@ -65,5 +68,21 @@ public class TermInfo {
     public int size()
     {
         return this.getDocIdTfMap().size();
+    }
+
+    /**
+     * This function will return the document frequency of the term
+     * @return - The document frequency of the term
+     */
+    public int getDf() {
+        return df;
+    }
+
+    /**
+     * This function will save the document frequency of the term
+     * @param df - the document frequency of the term
+     */
+    public void setDf(int df) {
+        this.df = df;
     }
 }

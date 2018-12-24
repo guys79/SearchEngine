@@ -170,7 +170,6 @@ public class PostingOfCities implements Callable<Boolean>{
      */
     public String addCity(String city, int doc,HashSet sity){
         this.mutex.lock();
-
         //we get the list of arrays that we need to append the arrey to
         HashMap<Integer,HashSet<Integer>> cityDoc;
         if (!DetailsOnCitys_doc.containsKey(city)) {
@@ -178,6 +177,8 @@ public class PostingOfCities implements Callable<Boolean>{
             nameOfCitys.add(city);
             cityDoc = new HashMap<>();
             DetailsOnCitys_doc.put(city, cityDoc);
+
+
         } else {
             cityDoc = DetailsOnCitys_doc.get(city);
         }
@@ -247,12 +248,6 @@ public class PostingOfCities implements Callable<Boolean>{
         return city;
     }
 
-    /**
-     * @return- a dictionary that its key is the name of the city and the value is where in the file its located
-     */
-    public HashMap<String, Integer> getPlacesInDoc (){
-        return placesInDoc;
-    }
 
     @Override
     public Boolean call() throws Exception {

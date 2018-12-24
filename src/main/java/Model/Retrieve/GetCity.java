@@ -72,21 +72,6 @@ public class GetCity implements Callable<Boolean> {
             }
         }
         return infoToReturn;
-        /*
-        while(dataOnCity.indexOf('?')>0) {
-            dataOnCity = dataOnCity.substring(dataOnCity.indexOf('?') + 1, dataOnCity.length());
-            int idx = dataOnCity.indexOf('?');
-            if (idx > dataOnCity.indexOf(';')) {
-                idx = dataOnCity.indexOf(';');
-            }
-            int numOfDoc = Integer.parseInt(dataOnCity.substring(0, idx));
-            dataOnCity= dataOnCity.substring(idx,dataOnCity.length());
-            if(dataOnCity.indexOf('?')!=-1) {
-                while (dataOnCity.indexOf(';') != -1 && dataOnCity.indexOf(';') < dataOnCity.indexOf('?')) {
-                }
-            }
-        }
-        */
     }
 
     /**

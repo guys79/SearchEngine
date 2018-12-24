@@ -37,8 +37,8 @@ public class ParserThread implements Callable<ParserThreadReturnValue>
      * @param stringBuilders - The string builders for all the files
      * @param mutex - A mutual mutex
      * @param city - The city name, if exists
-     * @param docIndexerThread - The doc indexer as a thred
-     * @param cityInfo - The infromation about the cities
+     * @param docIndexerThread - The doc indexer as a thread
+     * @param cityInfo - The information about the cities
      */
     public ParserThread(int docId, Indexer indexer, String text, Parser parser, boolean uploadToFile, StringBuilder [] stringBuilders, Mutex mutex,String city,DocIndexerThread docIndexerThread,CityInfo[] cityInfo) {
         this.docIndexerThread = docIndexerThread;

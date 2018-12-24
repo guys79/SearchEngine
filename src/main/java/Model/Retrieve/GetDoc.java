@@ -51,10 +51,11 @@ public class GetDoc implements Callable<Boolean> {
 
     /**
      *
-     * @param numOfDoc- the number of the doc that we want to the data on
+     * @param docNum- the number of the doc that we want to the data on
      * @return- the data on the doc (a DocInfo )
      */
-    public DocInfo getDetailsOnCitys(String numOfDoc){
+    public DocInfo getDetailsOnCitys(int docNum){
+        String numOfDoc = ""+docNum;
         DocInfo docInfo = null;
         int locOfDoc=contentOfDocs.indexOf("#"+numOfDoc);
         String dataOnDoc= contentOfDocs.substring(locOfDoc+1,contentOfDocs.length());

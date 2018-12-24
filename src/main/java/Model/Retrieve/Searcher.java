@@ -2,6 +2,7 @@ package Model.Retrieve;
 
 import Model.Index.CityInfo;
 import Model.Index.Indexer;
+import Model.Index.LoadDictionary;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,19 +24,35 @@ public class Searcher {
     private String postingFilesPath;//The path to the posting file
     private String [] relaventCities;//The array of relevant cities
     private Query query;//The query!
+    private HashMap<String,int[]> mainMap;//The main map. The key is the term, and the value is an array in the size of 2
+                                          //The first cell in the array is the df, and the second is cf
+    private GetCity cityPostingInformation;//The class that we will use to get data on the cities
+    private GetDoc documentPostingInformation;//The class that we will use to get data on the cities
 
 
     public Searcher(String postingFilesPath,boolean stem,String [] relaventCities,String query) {
+        // TODO: 12/23/2018 Where get the futures?? 
         // TODO: 20/12/2018 Complete the constructor
+        this.executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
+        this.stem = stem;
+        this.postingFilesPath =postingFilesPath;
 
+        //Getting the info from the three files (dictionary , doc, city)
+        //Dictionary
+        Future<HashMap<String,int []>> futureMap=executorService.submit(new LoadDictionary(this.postingFilesPath+"\\"+"dictionary"+"&"+this.stem+".txt"));
+        //City
+        this.cityPostingInformation = new GetCity(this.postingFilesPath+"\\"+"citys"+"&"+stem+".txt");
+        Future<Boolean> futureCity = executorService.submit(this.cityPostingInformation);
+        //Docs
+        this.documentPostingInformation = new GetDoc(this.postingFilesPath+"\\"+"allDocs"+"&"+stem+".txt");
+        Future<Boolean> futureDoc = executorService.submit(this.documentPostingInformation);
+        
+        
         //Initializing the data structures
         postingFileNames = new ArrayList<>();
         this.relaventCities = relaventCities;
         this.query = new Query(query,postingFilesPath,stem);
         File file = new File(postingFilesPath);
-        this.executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
-        this.stem = stem;
-        this.postingFilesPath =postingFilesPath;
 
 
         //Getting the posting files names

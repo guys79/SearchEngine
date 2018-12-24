@@ -58,10 +58,10 @@ public class Indexer {
         initTempPosting();
 
         //Initialize the names of the non term posting file list
-        this.namesOfNonTermPostingFiles.add("dictionary"+"_"+stem);
-        this.namesOfNonTermPostingFiles.add("citys"+"_"+stem);
-        this.namesOfNonTermPostingFiles.add("languages"+"_"+stem);
-        this.namesOfNonTermPostingFiles.add("documents"+"_"+stem);
+        this.namesOfNonTermPostingFiles.add("dictionary"+"&"+stem);
+        this.namesOfNonTermPostingFiles.add("citys"+"&"+stem);
+        this.namesOfNonTermPostingFiles.add("languages"+"&"+stem);
+        this.namesOfNonTermPostingFiles.add("allDocs"+"&"+stem);
 
     }
 

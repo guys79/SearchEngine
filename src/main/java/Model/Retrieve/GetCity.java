@@ -4,13 +4,30 @@ package Model.Retrieve;
 import Model.Index.CityInfo;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.concurrent.Callable;
 
-public class GetCity {
-    private String contentOfCitys;
+/**
+ * this class should give us the data on a specific City(the data that we saved in the text document)
+ */
+public class GetCity implements Callable<Boolean> {
+    private String contentOfCitys;//The content of the cities
+    private String path;//The path to the file
 
+    /**
+     * The constructor of the class
+     * @param path - Te path to the city file
+     */
     public GetCity(String path){
+        this.path = path;
+    }
+
+    /**
+     * This function will read the content of the cities form the file
+     * @return - True if that process succeeded
+     */
+    private boolean readContent(){
+
         File file = new File(path);
         final BufferedReader s;
         String av;
@@ -20,11 +37,13 @@ public class GetCity {
                 contentOfCitys=av;
             }
             s.close();
+            return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     /**
@@ -70,4 +89,12 @@ public class GetCity {
         */
     }
 
+    /**
+     * This function will read the content of the cities form the file as a callable
+     * @return - True if that process succeeded
+     */
+    @Override
+    public Boolean call() throws Exception {
+        return this.readContent();
+    }
 }

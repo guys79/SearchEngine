@@ -30,6 +30,7 @@ public class Indexer {
      *
      * @param corpusPath    - The path to the corpus. that is where all the data is.
      * @param stopWordsPath - The path to the stop words file.
+     * @param stopWordsPath - The path to the stop words file.
      * @param postFilepath  - The path to the location of the posting files to be
      * @param stem          - True - if we will stem the terms, False - otherwise
      */

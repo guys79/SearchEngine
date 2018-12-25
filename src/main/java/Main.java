@@ -29,7 +29,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         //launch(args);
-        String postingPath = "C:\\Users\\guys7\\Desktop\\posting";
+        String postingPath = "C:\\Users\\guys79\\Desktop\\posting";
         Searcher searcher=new Searcher(postingPath,true,new String[0],false);
 
         String query = "between 9 to 10";

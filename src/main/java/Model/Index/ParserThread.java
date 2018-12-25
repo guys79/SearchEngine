@@ -2,7 +2,10 @@ package Model.Index;
 
 import Model.Index.CityInfo;
 import sun.awt.Mutex;
+
+import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -71,6 +74,8 @@ public class ParserThread implements Callable<ParserThreadReturnValue>
             //Parse the doc
             DocumentReturnValue documentReturnValue = this.parser.motherOfAllFunctions(this.text);
 
+
+
             Set<String> keys = documentReturnValue.getDictionaryOfUniqueTerms().keySet();
             int tf;
             int sizeOfDoc = 0;
@@ -90,20 +95,33 @@ public class ParserThread implements Callable<ParserThreadReturnValue>
 
             }
             documentReturnValue.setDictionaryOfUniqueTerms(null);
-
+            TreeMap<Integer,String>tfToEntity = new TreeMap<>();
             keys = documentReturnValue.getDictionaryOfWords().keySet();
             for (String key : keys) {
                 if (key.length() > 0) {
                     sizeOfDoc++;
-                    firstNote = ("" + key.charAt(0)).toLowerCase().charAt(0);
+                    firstNote = key.charAt(0);
                     tf = documentReturnValue.getDictionaryOfWords().get(key);
                     this.indexer.addDictionaries(key,tf);
                     if (firstNote >= 'a' && firstNote <= 'z')
                         this.indexerThreads[firstNote - 'a'].addtoString(docId, tf, key);
+                    else if ((firstNote >= 'A' && firstNote <= 'Z'))
+                    {
+                        this.indexerThreads[firstNote -'A'].addtoString(docId, tf, key);
+                        tfToEntity.put(tf,key);
+                    }
                     else
                         this.indexerThreads[this.indexerThreads.length - 1].addtoString(docId, tf, key);
                 }
             }
+            String [] entities = new String[tfToEntity.size()];
+            int count=0;
+            for(Integer tfEntity:tfToEntity.keySet())
+            {
+                entities[count]=tfToEntity.get(tfEntity);
+                count++;
+            }
+            this.indexer.addEntities(docId,entities);
             documentReturnValue.setDictionaryOfWords(null);
 
             //Update the doc data

@@ -12,7 +12,7 @@ import java.util.concurrent.Callable;
  * this class should give us the data on a specific City(Only the data that is relevant to the retrieval algorithm)
  */
 public class GetCity implements Callable<Boolean> {
-    private HashMap<String,HashSet<Integer>> CityInfo;//The information about the cities
+    private HashMap<String,HashSet<Integer>> cityInfo;//The information about the cities
     private String path;//The path to the file
 
     /**
@@ -21,6 +21,7 @@ public class GetCity implements Callable<Boolean> {
      */
     public GetCity(String path){
         this.path = path;
+        this.cityInfo = new HashMap<>();
     }
 
 
@@ -30,26 +31,20 @@ public class GetCity implements Callable<Boolean> {
         String cityName = info[0].substring(0,dataOnCity.indexOf('@'));
         String doc;
         HashSet<Integer> docNums = new HashSet<>();
+        int index;
         for(int i=1;i<info.length;i++)
         {
-            doc = info[i].substring(0,info[i].indexOf(';'));
+            index =info[i].indexOf(';');
+            if(index!=-1)
+                doc = info[i].substring(0,index);
+            else
+            {
+                doc = info[i];
+            }
             docNums.add(Integer.parseInt(doc));
         }
-        this.CityInfo.put(cityName,docNums);
-       /* for(int i=1;i<info.length;i++){
-            if(!info[i].contains(";")){
-                infoToReturn.add(new CityInfo(nameOfCity,Integer.parseInt(info[i]),null));
-            }
-            else{
-                HashSet<Integer> loc= new HashSet<Integer>();
-                String[] locs= info[i].split(";");
-                int doc=Integer.parseInt(locs[0]);
-                for(int j=1;j<locs.length;j++){
-                    loc.add(Integer.parseInt(locs[j]));
-                }
-                infoToReturn.add(new CityInfo(nameOfCity,doc,loc));
-            }
-        }*/
+        this.cityInfo.put(cityName,docNums);
+
     }
     /**
      * This function will read the content of the cities form the file
@@ -101,7 +96,7 @@ public class GetCity implements Callable<Boolean> {
             }
         }
         return infoToReturn;*/
-        return this.CityInfo.get(nameOfCity);
+        return this.cityInfo.get(nameOfCity);
     }
 
     /**

@@ -29,9 +29,7 @@ public class Searcher {
                                           //The first cell in the array is the df, and the second is cf
     private GetCity cityPostingInformation;//The class that we will use to get data on the cities
     private GetDoc documentPostingInformation;//The class that we will use to get data on the cities
-    private Future<HashMap<String,int []>> futureMap;
-    private Future<Boolean> futureCity;
-    private Future<Boolean> futureDoc;
+    private EntityRetrieval entityRetrieval;
     private boolean semantic;
 
     public Searcher(String postingFilesPath,boolean stem,String [] relaventCities,boolean semantic) {
@@ -40,15 +38,23 @@ public class Searcher {
         this.stem = stem;
         this.postingFilesPath =postingFilesPath;
         this.semantic = semantic;
+
+        Future<HashMap<String,int []>> futureMap;
+        Future<Boolean> futureCity;
+        Future<Boolean> futureDoc;
+        Future<Boolean> futureEntity;
         //Getting the info from the three files (dictionary , doc, city)
         //Dictionary
-        this.futureMap=executorService.submit(new LoadDictionary(this.postingFilesPath+"\\"+"dictionary"+"&"+this.stem+".txt"));
+        futureMap=executorService.submit(new LoadDictionary(this.postingFilesPath+"\\"+"dictionary"+"&"+this.stem+".txt"));
         //City
         this.cityPostingInformation = new GetCity(this.postingFilesPath+"\\"+"citys"+"&"+stem+".txt");
-        this.futureCity = executorService.submit(this.cityPostingInformation);
+        futureCity = executorService.submit(this.cityPostingInformation);
         //Docs
         this.documentPostingInformation = new GetDoc(this.postingFilesPath+"\\"+"allDocs"+"&"+stem+".txt");
-        this.futureDoc = executorService.submit(this.documentPostingInformation);
+        futureDoc = executorService.submit(this.documentPostingInformation);
+        //Entities
+        this.entityRetrieval = new EntityRetrieval(this.postingFilesPath+"\\"+"entities"+"&"+stem+".txt");
+        futureEntity = executorService.submit(this.entityRetrieval);
         
         
         //Initializing the data structures
@@ -75,6 +81,22 @@ public class Searcher {
         }
         //Sorting the names so that we will be able to preform binary search
         this.postingFileNames.sort(String::compareToIgnoreCase);
+
+        try {
+            System.out.println("getting city");
+            futureCity.get();
+            System.out.println("getting Docs");
+            futureDoc.get();
+            System.out.println("getting Entities");
+            futureEntity.get();
+            System.out.println("getting dictionary");
+            this.mainMap =futureMap.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -271,6 +293,7 @@ public class Searcher {
                 e.printStackTrace();
             }
         }
+        this.executorService.shutdown();
         return new HashSet<>(tempDic.values());
 
     }
@@ -312,13 +335,6 @@ public class Searcher {
             //Check the cities as if they were terms
             HashSet<TermInfo> citiesInfo = this.getTheInformationAboutTheTerms(citiesToCheck);
 
-            try {
-                this.futureCity.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
 
             //Adding the docs that are has the city in the title
             HashSet<Integer> docsInTitle = new HashSet<>();
@@ -362,13 +378,7 @@ public class Searcher {
         Query query = new Query(queryText,this.postingFilesPath,this.stem,this.semantic);
         System.out.println(query.getQueryAsList());
         HashSet<TermInfo> queryData =this.getRelevantData(query);
-        try {
-            this.mainMap = this.futureMap.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+
 
         //Updating the df
         for(TermInfo termInfo:queryData)
@@ -386,14 +396,7 @@ public class Searcher {
 
 
         //Getting the docs info
-        try {
-            this.futureDoc.get();
-            this.executorService.shutdown();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+
 
 
         //Getting the info about the docs + calculating the average
@@ -444,6 +447,7 @@ public class Searcher {
         for(int i=0;i<NUM_OF_DOCS_TO_RETURN;i++)
         {
             docNames[i] = this.documentPostingInformation.getDetailsOnDocs(docsToReturn[i]).getDocName();
+            System.out.println("Entities of doc "+docNames[i]+" are : "+this.entityRetrieval.getEntities(docsToReturn[i]));
         }
 
         return docNames;

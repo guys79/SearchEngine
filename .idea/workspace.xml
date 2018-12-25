@@ -4,13 +4,6 @@
     <list default="true" id="7e65b734-29c6-462a-ba06-24a4a65dabc4" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Index/DocIndexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/DocIndexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Index/LoadDictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/LoadDictionary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Index/PostingOfCities.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/PostingOfCities.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Index/ReadFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/ReadFile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Retrieve/GetCity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Retrieve/GetCity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Retrieve/GetDoc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Retrieve/GetDoc.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Retrieve/Query.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Retrieve/Query.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Model/Retrieve/Ranker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Retrieve/Ranker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java" afterDir="false" />
     </list>
@@ -86,8 +79,8 @@
       <file leaf-file-name="Searcher.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
-              <caret line="224" column="67" selection-start-line="224" selection-start-column="67" selection-end-line="224" selection-end-column="67" />
+            <state relative-caret-position="249">
+              <caret line="191" column="31" selection-start-line="191" selection-start-column="31" selection-end-line="191" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -104,7 +97,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ReadFile.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ReadFile.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/ReadFile.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="207">
@@ -173,11 +166,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="32" column="8" lean-forward="true" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="8" />
+            <state relative-caret-position="163">
+              <caret line="32" column="92" selection-start-line="32" selection-start-column="92" selection-end-line="32" selection-end-column="92" />
             </state>
           </provider>
         </entry>
@@ -185,8 +178,8 @@
       <file leaf-file-name="Ranker.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Ranker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="87">
-              <caret line="41" column="52" selection-start-line="41" selection-start-column="52" selection-end-line="41" selection-end-column="52" />
+            <state relative-caret-position="292">
+              <caret line="47" column="38" lean-forward="true" selection-start-line="47" selection-start-column="38" selection-end-line="47" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -231,8 +224,9 @@
       <find>sys</find>
       <find>new quer</find>
       <find>LA081289-0028</find>
-      <find>getTheInformationAboutTheTerms</find>
       <find>docnum</find>
+      <find>getTheInformationAboutTheTerms</find>
+      <find>query</find>
     </findStrings>
     <replaceStrings>
       <replace>double</replace>
@@ -268,10 +262,10 @@
         <option value="$PROJECT_DIR$/src/main/java/Model/Index/DocInfo.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/Index/LoadDictionary.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/Retrieve/Query.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Model/Index/ReadFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/Retrieve/Ranker.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Model/Index/ReadFile.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Main.java" />
       </list>
     </option>
   </component>
@@ -490,7 +484,7 @@
       <workItem from="1545557362000" duration="6462000" />
       <workItem from="1545573471035" duration="7245000" />
       <workItem from="1545647670920" duration="509000" />
-      <workItem from="1545689431743" duration="9302000" />
+      <workItem from="1545689431743" duration="12134000" />
     </task>
     <task id="LOCAL-00001" summary="New structure + searcher + + TermInfo">
       <created>1545497393143</created>
@@ -534,11 +528,18 @@
       <option name="project" value="LOCAL" />
       <updated>1545680293269</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="complete with some testing">
+      <created>1545698799980</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1545698799980</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58953000" />
+    <option name="totallyTimeSpent" value="61785000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -551,7 +552,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -563,11 +563,11 @@
       <window_info anchor="right" id="Maven Projects" order="8" weight="0.32955465" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Run" order="5" visible="true" weight="0.2879915" />
+      <window_info active="true" anchor="bottom" id="Run" order="5" visible="true" weight="0.2879915" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14791666" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14791666" />
       <window_info anchor="right" id="Database" order="6" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32943678" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -625,7 +625,8 @@
     <MESSAGE value="Ranker + Query + Searcher modifications" />
     <MESSAGE value="Imported Jonathan's work, did NOT use it yet" />
     <MESSAGE value="complete without testing" />
-    <option name="LAST_COMMIT_MESSAGE" value="complete without testing" />
+    <MESSAGE value="complete with some testing" />
+    <option name="LAST_COMMIT_MESSAGE" value="complete with some testing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -636,8 +637,14 @@
           <properties />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Ranker.java</url>
+          <line>43</line>
+          <properties />
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="6" />
+      <option name="time" value="7" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -859,37 +866,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="32" column="8" lean-forward="true" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="202">
           <caret line="260" column="8" selection-start-line="260" selection-start-column="8" selection-end-line="260" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Ranker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="87">
-          <caret line="41" column="52" selection-start-line="41" selection-start-column="52" selection-end-line="41" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="224" column="67" selection-start-line="224" selection-start-column="67" selection-end-line="224" selection-end-column="67" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -914,6 +894,33 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Ranker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="47" column="38" lean-forward="true" selection-start-line="47" selection-start-column="38" selection-end-line="47" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="191" column="31" selection-start-line="191" selection-start-column="31" selection-end-line="191" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="32" column="92" selection-start-line="32" selection-start-column="92" selection-end-line="32" selection-end-column="92" />
         </state>
       </provider>
     </entry>

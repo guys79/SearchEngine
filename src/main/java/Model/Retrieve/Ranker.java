@@ -39,7 +39,7 @@ public class Ranker {
     
     private double BM25(DocInfo document)
     {
-        if(document.getDocName().equals("LA081289-0028"))
+        if(document.getDocName().equals("LA081289-0127"))
             System.out.println("s");
         double rank = 0;
         for(TermInfo termInfo: queryTermInfo)

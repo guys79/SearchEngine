@@ -214,10 +214,8 @@ public class Searcher {
 
         //Getting the names of the files that will contain the terms
         HashMap<String,List<String>> fileNamesAndTerms = this.getTermsAndFiles(terms);
-
         Set<String> keys = fileNamesAndTerms.keySet();
         Future<HashSet<TermInfo>> [] futures = new Future[keys.size()];
-
         int i = 0;
         //For each file, get the data about the terms
         for(String key:keys)
@@ -277,7 +275,6 @@ public class Searcher {
 
         //Check the terms data
         HashSet<TermInfo> termInfos = this.getTheInformationAboutTheTerms(queryTerms);
-
         //If there are cities as filter
         if(this.relaventCities.length!=0) {
 
@@ -403,7 +400,6 @@ public class Searcher {
 
 
         double average = sum*1.0/docNumInfo.size();
-
         Ranker ranker = new Ranker(queryData,average,docNumInfo.size());
         double minValue = Double.MIN_VALUE;
         double score;
@@ -471,7 +467,6 @@ public class Searcher {
     }
 
     private void sortByScore(double [] scores, int [] id) {
-
         double[] scoresCopy = new double[scores.length];
         int[] idCopy = new int[id.length];
         for (int i = 0; i < scores.length; i++) {

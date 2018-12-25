@@ -31,6 +31,8 @@ public class Searcher {
     private GetDoc documentPostingInformation;//The class that we will use to get data on the cities
     private EntityRetrieval entityRetrieval;
     private boolean semantic;
+    private int numOfDoc;
+    private double averageDocLength;
 
     public Searcher(String postingFilesPath,boolean stem,String [] relaventCities,boolean semantic) {
         // TODO: 12/23/2018 Where get the futures??
@@ -38,7 +40,8 @@ public class Searcher {
         this.stem = stem;
         this.postingFilesPath =postingFilesPath;
         this.semantic = semantic;
-
+        this.numOfDoc = -1;
+        this.averageDocLength = -1;
         Future<HashMap<String,int []>> futureMap;
         Future<Boolean> futureCity;
         Future<Boolean> futureDoc;
@@ -65,7 +68,7 @@ public class Searcher {
 
         //Getting the posting files names
         if(file.isDirectory()) {
-            String stemS = ""+stem;
+            String stemS = "_"+stem;
             String name="";
             int index =-1;
             File [] children =file.listFiles();
@@ -83,7 +86,7 @@ public class Searcher {
         this.postingFileNames.sort(String::compareToIgnoreCase);
 
         try {
-            System.out.println("getting city");//
+            System.out.println("getting city");
             futureCity.get();
             System.out.println("getting Docs");
             futureDoc.get();
@@ -100,8 +103,11 @@ public class Searcher {
 
     }
 
-    
-    
+
+    public void shutDown()
+    {
+        this.executorService.shutdown();
+    }
     /**
      * This function will return the name of the file(s) that contains the term
      *
@@ -109,8 +115,6 @@ public class Searcher {
      * @return - The list of files that contains the term
      */
     public List<String> getFileName(String term) {
-        if(term.equals("9"))
-            System.out.println();
         ArrayList<String> fileNames = new ArrayList<>();
         char note = (("" + term.charAt(0)).toLowerCase()).charAt(0);
 
@@ -121,9 +125,7 @@ public class Searcher {
                 termOther = termOther +"^"+ (int) (term.charAt(i));
             }
 
-            System.out.println(term);
             term = termOther+"^"+(int)('_');
-            System.out.println(term);
         }
 
 
@@ -146,7 +148,6 @@ public class Searcher {
         final int middle = (start + end) / 2;//Get the middle index
         String fullName = this.postingFileNames.get(middle);
         String name = fullName.substring(0,fullName.indexOf("_"));
-        System.out.println("full - "+fullName+" name - "+name+" weird "+name+"^"+(int)'_');
         int comp = name.compareToIgnoreCase(term);
         boolean equal = comp==0 || (name+"^"+(int)'_').compareToIgnoreCase(term)==0 ;
         //Problem
@@ -242,13 +243,14 @@ public class Searcher {
 
         //Getting the names of the files that will contain the terms
         HashMap<String,List<String>> fileNamesAndTerms = this.getTermsAndFiles(terms);
-        System.out.println(fileNamesAndTerms);
+       // System.out.println(fileNamesAndTerms);
         Set<String> keys = fileNamesAndTerms.keySet();
         Future<HashSet<TermInfo>> [] futures = new Future[keys.size()];
         int i = 0;
         //For each file, get the data about the terms
         for(String key:keys)
         {
+            //public RetrieveTermInfo(String fileName, HashSet<String> terms,String postingFilePath)
             futures[i] = this.executorService.submit(new RetrieveTermInfo(key,new HashSet(fileNamesAndTerms.get(key)),this.postingFilesPath));
             i++;
         }
@@ -293,7 +295,7 @@ public class Searcher {
                 e.printStackTrace();
             }
         }
-        this.executorService.shutdown();
+
         return new HashSet<>(tempDic.values());
 
     }
@@ -342,7 +344,7 @@ public class Searcher {
             {
                 docsInTitle.addAll(this.cityPostingInformation.getDetailsOnCitys(this.relaventCities[i]));
             }
-
+            this.sizesOfRelevantDocsCity(citiesInfo,docsInTitle);
             //The filter
             while (firstMap.hasNext()) {
                 TermInfo current = (TermInfo) firstMap.next();
@@ -355,6 +357,10 @@ public class Searcher {
                         secondMap.remove();
                 }
             }
+        }
+        else
+        {
+            sizesOfRelevantDocsNoCity();
         }
         return termInfos;
     }
@@ -370,20 +376,54 @@ public class Searcher {
         return false;
     }
 
+    private void sizesOfRelevantDocsCity(HashSet<TermInfo> termInfos,HashSet<Integer> docsWithTitle)
+    {
+
+        HashSet<Integer> everyThing= new HashSet<>(docsWithTitle);
+        double sum =0;
+        for(TermInfo termInfo:termInfos)
+        {
+            everyThing.addAll(termInfo.docIdTfMap.keySet());
+
+        }
+        for(Integer docNum: everyThing)
+        {
+            sum+=this.documentPostingInformation.getDetailsOnDocs(docNum).getLength();
+        }
+        this.numOfDoc = everyThing.size();
+        this.averageDocLength = sum/this.numOfDoc;
+
+
+
+    }
+    private void sizesOfRelevantDocsNoCity()
+    {
+
+       this.numOfDoc = this.documentPostingInformation.getNumOdDocs();
+       this.averageDocLength = this.documentPostingInformation.getAverageLength();
+
+
+
+    }
 
     public String [] getMostRelevantDocNum(String queryText)
     {
 
         //The relevant data
         Query query = new Query(queryText,this.postingFilesPath,this.stem,this.semantic);
-        System.out.println(query.getQueryAsList());
+      //  System.out.println(query.getQueryAsList());
         HashSet<TermInfo> queryData =this.getRelevantData(query);
 
 
         //Updating the df
+
+        int [] info;
         for(TermInfo termInfo:queryData)
         {
-            termInfo.setDf(this.mainMap.get(termInfo.getTerm())[0]);
+            info = this.mainMap.get(termInfo.getTerm().toLowerCase());
+            if(info==null)
+                info = this.mainMap.get(termInfo.getTerm().toUpperCase());
+            termInfo.setDf(info[0]);
         }
 
 
@@ -397,23 +437,7 @@ public class Searcher {
 
         //Getting the docs info
 
-
-
-        //Getting the info about the docs + calculating the average
-        long sum =0l;
-        HashSet<DocInfo> docNumInfo = new HashSet<>();
-
-        for(int docNum:docNumHash)
-        {
-
-            DocInfo docInfo = this.documentPostingInformation.getDetailsOnDocs(docNum);
-            docNumInfo.add(docInfo);
-            sum+= docInfo.getLength();
-        }
-
-
-        double average = sum*1.0/docNumInfo.size();
-        Ranker ranker = new Ranker(queryData,average,docNumInfo.size());
+        Ranker ranker = new Ranker(queryData,this.averageDocLength,numOfDoc);
         double minValue = Double.MIN_VALUE;
         double score;
         final int NUM_OF_DOCS_TO_RETURN = 50;
@@ -429,11 +453,11 @@ public class Searcher {
 
 
 
-        for(DocInfo docInfo:docNumInfo)
+        for(int docNum:docNumHash)
         {
-            score = ranker.Rank(docInfo);
+            score = ranker.Rank(this.documentPostingInformation.getDetailsOnDocs(docNum));
             if(minValue<score) {
-                minValue = update(scores, docsToReturn, docInfo.getDocNum(), score, minValue);
+                minValue = update(scores, docsToReturn, docNum, score, minValue);
             }
 
         }
@@ -442,12 +466,13 @@ public class Searcher {
 
         sortByScore(scores,docsToReturn);
         String [] docNames = new String[NUM_OF_DOCS_TO_RETURN];
-        pr(docsToReturn);
-        pr2(scores);
+        //pr(docsToReturn);
+        //pr2(scores);
+        //boolean flag = true;
         for(int i=0;i<NUM_OF_DOCS_TO_RETURN;i++)
         {
             docNames[i] = this.documentPostingInformation.getDetailsOnDocs(docsToReturn[i]).getDocName();
-            System.out.println("Entities of doc "+docNames[i]+" are : "+this.entityRetrieval.getEntities(docsToReturn[i]));
+
         }
 
         return docNames;

@@ -27,10 +27,19 @@ public class RetrieveTermInfo implements Callable<HashSet<TermInfo>> {
      */
     public RetrieveTermInfo(String fileName, HashSet<String> terms,String postingFilePath)
     {
+
         this.postingFilePath = postingFilePath;
         this.termInfo = new HashSet<>();
         this.fileName = fileName;
         this.terms = terms;
+        HashSet<String> termsNew = new HashSet<>();
+
+        for (String term:terms)
+        {
+            termsNew.add(term.toLowerCase());
+        }
+        this.terms = termsNew;
+
     }
 
     /**
@@ -62,7 +71,7 @@ public class RetrieveTermInfo implements Callable<HashSet<TermInfo>> {
                     if(terms.size()==0)
                         break;
                     //If this is the first time encountering that term (and he is from the hash of terms)
-                    if (this.terms.contains(termLine)) {
+                    if (this.terms.contains(termLine.toLowerCase())) {
                         term = termLine;
                         this.terms.remove(term);
                         current = new TermInfo(term);
@@ -92,15 +101,20 @@ public class RetrieveTermInfo implements Callable<HashSet<TermInfo>> {
      * @param line - The line in the posting file
      * @param termInfo - The termInfo that we want to add the information to
      */
-    private void parseAndAddToMap(String line,TermInfo termInfo)
-    {
-        int index1 = line.indexOf('_');
-        int index2 = line.indexOf('*');
-        String docId = line.substring(index1+1,index2);
-        String tf = line.substring(index2+1);
-        int docIdInt = Integer.parseInt(docId);
-        int tfInt = Integer.parseInt(tf);
-        termInfo.addInfo(docIdInt,tfInt);
+    private void parseAndAddToMap(String line,TermInfo termInfo) {
+        try {
+            int index1 = line.indexOf('_');
+            int index2 = line.indexOf('*');
+            String docId = line.substring(index1 + 1, index2);
+            String tf = line.substring(index2 + 1);
+
+            int docIdInt = Integer.parseInt(docId);
+            int tfInt = Integer.parseInt(tf);
+            termInfo.addInfo(docIdInt, tfInt);
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
+
     }
 
 

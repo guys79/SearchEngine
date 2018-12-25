@@ -1202,7 +1202,6 @@ public class Parser{
                 }
                 lower = nextTerm.toLowerCase();
                 flag = false;
-                temp =currentTerm;
                 if(this.isNumberDescriber(lower))
                 {
                     currentTerm =currentTerm+" "+nextTerm;
@@ -1214,6 +1213,7 @@ public class Parser{
                     }
 
                 }
+                temp =currentTerm;
                 if(lower.equals("dollars")||lower.equals("dollar"))
                 {
                     currentTerm =currentTerm+" "+nextTerm;
@@ -1242,6 +1242,7 @@ public class Parser{
                 {
                     count--;
                     nextTerm = tokenArray[count];
+                    count++;
                     lower = nextTerm.toLowerCase();
                 }
                 currentTerm = temp;

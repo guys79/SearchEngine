@@ -13,6 +13,8 @@ import java.util.concurrent.Callable;
 public class GetDoc implements Callable<Boolean> {
     private HashMap<Integer,DocInfo> DocInfo;//The information about the documents
     private String path;//The path to the soc file
+    private int numOdDocs;
+    private double averageLength;
 
     /**
      * The constructor
@@ -21,6 +23,8 @@ public class GetDoc implements Callable<Boolean> {
     public GetDoc(String path){
         this.path = path;
         this.DocInfo = new HashMap<>();
+        this.numOdDocs = 0;
+        this.averageLength =0;
     }
 
     /**
@@ -36,6 +40,10 @@ public class GetDoc implements Callable<Boolean> {
         int maxFreq = Integer.parseInt(info[3]);
         String cityName = info[4];
         int length = Integer.parseInt(info[5]);
+
+        this.averageLength = this.averageLength*numOdDocs +length;
+        this.numOdDocs++;
+        this.averageLength = this.averageLength/numOdDocs;
 
         this.DocInfo.put(docNum,new DocInfo(docNum,docName,numberOfUniqueTerms,maxFreq,cityName,length));
 
@@ -82,6 +90,14 @@ public class GetDoc implements Callable<Boolean> {
 
 
 
+    }
+
+    public double getAverageLength() {
+        return averageLength;
+    }
+
+    public int getNumOdDocs() {
+        return numOdDocs;
     }
 
     /**

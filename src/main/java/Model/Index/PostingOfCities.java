@@ -99,13 +99,10 @@ public class PostingOfCities implements Callable<Boolean>{
 
                 // we write the doc data to the file
                 DetailsOnCitys_doc.remove(cityName);
-<<<<<<< Updated upstream:src/main/java/Model/Index/PostingOfCities.java
                 toWrite = detailsWeb + detailsDoc;
                 stringBuilder.append(toWrite+"\n");
-=======
-                toWrite = detailsWeb + detai  lsDoc;
+                toWrite = detailsWeb + detailsDoc;
                 stringBuilder.append(toWrite);
->>>>>>> Stashed changes:src/main/java/Model/PostingOfCities.java
                 // we update the dictionary of where is the data
                 placesInDoc.put(cityName, counter);
                 counter = counter + toWrite.length();

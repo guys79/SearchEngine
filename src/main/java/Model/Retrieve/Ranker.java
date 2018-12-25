@@ -29,8 +29,8 @@ public class Ranker {
 
     public double Rank(DocInfo document)
     {
-        // TODO: 12/23/2018 Add the semantics here somewhere
-        //We will use the
+        // TODO: 25/12/2018 smoothing?
+        //We will use the BM25
 
         double bm25 = this.BM25(document);
 
@@ -39,12 +39,10 @@ public class Ranker {
     
     private double BM25(DocInfo document)
     {
-        if(document.getDocName().equals("LA081289-0127"))
-            System.out.println("s");
+
         double rank = 0;
         for(TermInfo termInfo: queryTermInfo)
         {
-            // TODO: 12/23/2018  Need to update to the real value
             int df = termInfo.getDf();
             double idf = Math.log(this.numOfDocs*1.0/df)/Math.log(2);
             int tf =0;

@@ -96,9 +96,12 @@ public class Searcher {
         if (!(note >= 'a' && note <= 'z')) {
             String termOther = "1";//The files that refer to others are the files that starts with 1
             for (int i = 0; i < term.length(); i++) {
-                termOther = termOther + (int) (term.charAt(i));
+                termOther = termOther +"^"+ (int) (term.charAt(i));
             }
-            term = termOther;
+
+            System.out.println(term);
+            term = termOther+"^"+(int)('_');
+            System.out.println(term);
         }
 
 
@@ -121,24 +124,27 @@ public class Searcher {
         final int middle = (start + end) / 2;//Get the middle index
         String fullName = this.postingFileNames.get(middle);
         String name = fullName.substring(0,fullName.indexOf("_"));
+        System.out.println("full - "+fullName+" name - "+name+" weird "+name+"^"+(int)'_');
         int comp = name.compareToIgnoreCase(term);
+        boolean equal = comp==0 || (name+"^"+(int)'_').compareToIgnoreCase(term)==0 ;
         //Problem
         if (middle == start && comp > 0) {
             return;
         }
 
-        if (comp == 0) {
+        if (equal) {
             String fullFileName = this.postingFileNames.get(middle);
             String fileName = fullFileName.substring(0,fullFileName.indexOf("_"));
             int index = middle;
 
-            while (fileName.equalsIgnoreCase(term)) {
+            while (equal) {
                 fileNames.add(fullFileName);
                 index--;
                 if(index<0)
                     break;
                 fullFileName = this.postingFileNames.get(index);
                 fileName = fullFileName.substring(0,fullFileName.indexOf("_"));
+                equal = fileName.equalsIgnoreCase(term) ||(fileName+"^"+(int)'_').equalsIgnoreCase(term);
             }
             if(index>=0) {
                 fullFileName = this.postingFileNames.get(index);
@@ -149,7 +155,8 @@ public class Searcher {
             while (index<this.postingFileNames.size()) {
                 fullFileName = this.postingFileNames.get(index);
                 fileName = fullFileName.substring(0,fullFileName.indexOf("_"));
-                if(!fileName.equalsIgnoreCase(term))
+                equal = fileName.equalsIgnoreCase(term) ||(fileName+"^"+(int)'_').equalsIgnoreCase(term);
+                if(!equal)
                     break;
                 fileNames.add(fullFileName);
                 index++;
@@ -213,6 +220,7 @@ public class Searcher {
 
         //Getting the names of the files that will contain the terms
         HashMap<String,List<String>> fileNamesAndTerms = this.getTermsAndFiles(terms);
+        System.out.println(fileNamesAndTerms);
         Set<String> keys = fileNamesAndTerms.keySet();
         Future<HashSet<TermInfo>> [] futures = new Future[keys.size()];
         int i = 0;

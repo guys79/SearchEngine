@@ -28,15 +28,15 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        launch(args);
-      /*  String postingPath = "C:\\Users\\guys79\\Desktop\\posting";
+        //launch(args);
+        String postingPath = "C:\\Users\\guys7\\Desktop\\posting";
         Searcher searcher=new Searcher(postingPath,true,new String[0],false);
 
         String query = "between 9 to 10";
         String [] array = searcher.getMostRelevantDocNum(query);
 
 
-        pr(array);*/
+        pr(array);
         // TODO: 25/12/2018 Fix bug in getTermsAndFiles, it dose not work on 8 or 9. should use in search the term + _ (maybe) .. or maybe in the names of the files
 
 

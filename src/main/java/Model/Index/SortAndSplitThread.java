@@ -60,7 +60,7 @@ public class SortAndSplitThread implements Callable<List<String>>{
 
         String fileName = this.fileName;
         if(fileName.equals("other"))
-            fileName="1";
+            fileName="1^^";
         int counter = 0;
         this.namesOfFiles.add(fileName+ "_" + stem );
         for(Map.Entry<String,String>key:this.terms.entrySet())

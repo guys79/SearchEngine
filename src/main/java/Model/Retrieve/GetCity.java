@@ -4,14 +4,15 @@ package Model.Retrieve;
 import Model.Index.CityInfo;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.Callable;
 
 /**
- * this class should give us the data on a specific City(the data that we saved in the text document)
+ * this class should give us the data on a specific City(Only the data that is relevant to the retrieval algorithm)
  */
 public class GetCity implements Callable<Boolean> {
-    private String contentOfCitys;//The content of the cities
+    private HashMap<String,HashSet<Integer>> CityInfo;//The information about the cities
     private String path;//The path to the file
 
     /**
@@ -22,6 +23,34 @@ public class GetCity implements Callable<Boolean> {
         this.path = path;
     }
 
+
+    private void addToMap(String dataOnCity)
+    {
+        String [] info=dataOnCity.split("&");
+        String cityName = info[0].substring(0,dataOnCity.indexOf('@'));
+        String doc;
+        HashSet<Integer> docNums = new HashSet<>();
+        for(int i=1;i<info.length;i++)
+        {
+            doc = info[i].substring(0,info[i].indexOf(';'));
+            docNums.add(Integer.parseInt(doc));
+        }
+        this.CityInfo.put(cityName,docNums);
+       /* for(int i=1;i<info.length;i++){
+            if(!info[i].contains(";")){
+                infoToReturn.add(new CityInfo(nameOfCity,Integer.parseInt(info[i]),null));
+            }
+            else{
+                HashSet<Integer> loc= new HashSet<Integer>();
+                String[] locs= info[i].split(";");
+                int doc=Integer.parseInt(locs[0]);
+                for(int j=1;j<locs.length;j++){
+                    loc.add(Integer.parseInt(locs[j]));
+                }
+                infoToReturn.add(new CityInfo(nameOfCity,doc,loc));
+            }
+        }*/
+    }
     /**
      * This function will read the content of the cities form the file
      * @return - True if that process succeeded
@@ -34,7 +63,7 @@ public class GetCity implements Callable<Boolean> {
         try {
             s = new BufferedReader(new FileReader(file));
             while ((av = s.readLine()) != null) {
-                contentOfCitys=av;
+                addToMap(av);
             }
             s.close();
             return true;
@@ -51,8 +80,8 @@ public class GetCity implements Callable<Boolean> {
      * @param nameOfCity- the name of the city that we want to get the data on
      * @return- a list of CityInfo while each CityInfo contains data on a doc that the city appeared in
      */
-    public HashSet<CityInfo> getDetailsOnCitys(String nameOfCity){
-        HashSet<CityInfo> infoToReturn= new HashSet<CityInfo>();
+    public HashSet<Integer> getDetailsOnCitys(String nameOfCity){
+        /*HashSet<CityInfo> infoToReturn= new HashSet<>();
         int locOfCity=contentOfCitys.indexOf(nameOfCity);
         String dataOnCity= contentOfCitys.substring(locOfCity,contentOfCitys.length());
         dataOnCity= dataOnCity.substring(0,dataOnCity.indexOf("#"));
@@ -71,7 +100,8 @@ public class GetCity implements Callable<Boolean> {
                 infoToReturn.add(new CityInfo(nameOfCity,doc,loc));
             }
         }
-        return infoToReturn;
+        return infoToReturn;*/
+        return this.CityInfo.get(nameOfCity);
     }
 
     /**

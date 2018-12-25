@@ -145,8 +145,8 @@ public class ReadFile {
         // we save the name of the file.
         String name = findTheName(content,start);
         counter++;
-        dictionary_doc_name_id.put( doc_id_generator,name);
         doc_id_generator = doc_id_generator+1;
+        dictionary_doc_name_id.put( doc_id_generator,name);
         docsInFile.add(newArrey);
     }
 

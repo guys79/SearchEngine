@@ -4,14 +4,14 @@ package Model.Retrieve;
 import Model.Index.DocInfo;
 
 import java.io.*;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.concurrent.Callable;
 
 /**
  * this class should give us the data on a specific document(the data that we saved in the text document)
  */
 public class GetDoc implements Callable<Boolean> {
-    private String contentOfDocs;//The content of the documents
+    private HashMap<Integer,DocInfo> DocInfo;//The information about the documents
     private String path;//The path to the soc file
 
     /**
@@ -20,8 +20,29 @@ public class GetDoc implements Callable<Boolean> {
      */
     public GetDoc(String path){
         this.path = path;
+        this.DocInfo = new HashMap<>();
     }
 
+    /**
+     * This function will receive a line from the file and will parse it and add it to the dictionary
+     * @param line - The given line
+     */
+    private void addToMap(String line)
+    {
+        String [] info = line.split(";");
+        int docNum = Integer.parseInt(info[0]);
+        String docName = info[1];
+        int numberOfUniqueTerms = Integer.parseInt(info[2]);
+        int maxFreq = Integer.parseInt(info[3]);
+        String cityName = info[4];
+        int length = Integer.parseInt(info[5]);
+
+        this.DocInfo.put(docNum,new DocInfo(docNum,docName,numberOfUniqueTerms,maxFreq,cityName,length));
+
+
+
+
+    }
 
     /**
      * This function will read the content of the document file
@@ -35,7 +56,7 @@ public class GetDoc implements Callable<Boolean> {
         try {
             s = new BufferedReader(new FileReader(file));
             while ((av = s.readLine()) != null) {
-                contentOfDocs=av;
+                this.addToMap(av);
             }
             s.close();
             return true;
@@ -54,17 +75,12 @@ public class GetDoc implements Callable<Boolean> {
      * @param docNum- the number of the doc that we want to the data on
      * @return- the data on the doc (a DocInfo )
      */
-    public DocInfo getDetailsOnCitys(int docNum){
-        String numOfDoc = ""+docNum;
-        DocInfo docInfo = null;
-        int locOfDoc=contentOfDocs.indexOf("#"+numOfDoc);
-        String dataOnDoc= contentOfDocs.substring(locOfDoc+1,contentOfDocs.length());
-        dataOnDoc= dataOnDoc.substring(0,dataOnDoc.indexOf("#"));
-        String [] info=dataOnDoc.split(";");
-        for(int i=1;i<info.length;i++){
-            docInfo=new DocInfo(Integer.parseInt(numOfDoc),info[1],Integer.parseInt(info[2]),Integer.parseInt(info[3]),info[4],Integer.parseInt(info[5]));
-        }
-        return docInfo;
+    public DocInfo getDetailsOnDocs(int docNum){
+
+            return this.DocInfo.get(docNum);
+
+
+
 
     }
 

@@ -28,11 +28,65 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        launch(args);
-        /*String postingPath = "C:\\Users\\guys7\\Desktop\\posting";
-        Searcher searcher=new Searcher(postingPath,true,new String[0],"man open door");
-        searcher.test();
-        Query query = new Query("This guy came to israel on 10-04",postingPath,true);*/
+        //launch(args);
+        String postingPath = "C:\\Users\\guys79\\Desktop\\posting";
+        Searcher searcher=new Searcher(postingPath,true,new String[0],"The door is always open",false);
+        String [] array = searcher.getMostRelevantDocNum();
+        pr(array);
+
+
+
+
+
+    }
+
+    public static void pr(String []a)
+    {
+        for(int i=0;i<a.length;i++)
+        {
+            System.out.println(a[i]);
+        }
+    }
+    public static void pr2(int []a)
+    {
+        for(int i=0;i<a.length;i++)
+        {
+            System.out.println(a[i]);
+        }
+    }
+    public static void pr3(double []a)
+    {
+        for(int i=0;i<a.length;i++)
+        {
+            System.out.println(a[i]);
+        }
+        System.out.println();
+    }
+    public static double update(double [] scores, int [] id,int doc,double score,double minValue)
+    {
+        int index = -1;
+
+        for(int i=0;i<scores.length;i++)
+        {
+            if(scores[i] == minValue)
+            {
+                index = i;
+                break;
+            }
+        }
+
+        scores[index] = score;
+        id[index] = doc;
+
+        double min = Double.MAX_VALUE;
+
+        for(int i=0;i<scores.length;i++)
+        {
+            if(scores[i]<min)
+                min =scores[i];
+        }
+        return min;
+
     }
 
 

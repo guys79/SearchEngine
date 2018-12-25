@@ -58,7 +58,6 @@ public class LoadDictionary implements Callable<HashMap<String,int []>> {
                 addToDicionary(term);
             }
             bufferedReader.close();
-            System.out.println("size" + this.mainDictionary.size());
             return this.mainDictionary;
         }
         catch (Exception e)

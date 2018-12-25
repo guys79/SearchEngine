@@ -33,13 +33,14 @@ public class Searcher {
     private Future<HashMap<String,int []>> futureMap;
     private Future<Boolean> futureCity;
     private Future<Boolean> futureDoc;
+    private boolean semantic;
 
-    public Searcher(String postingFilesPath,boolean stem,String [] relaventCities,String query) {
+    public Searcher(String postingFilesPath,boolean stem,String [] relaventCities,String query,boolean semantic) {
         // TODO: 12/23/2018 Where get the futures??
         this.executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
         this.stem = stem;
         this.postingFilesPath =postingFilesPath;
-
+        this.semantic = semantic;
         //Getting the info from the three files (dictionary , doc, city)
         //Dictionary
         this.futureMap=executorService.submit(new LoadDictionary(this.postingFilesPath+"\\"+"dictionary"+"&"+this.stem+".txt"));
@@ -54,7 +55,8 @@ public class Searcher {
         //Initializing the data structures
         postingFileNames = new ArrayList<>();
         this.relaventCities = relaventCities;
-        this.query = new Query(query,postingFilesPath,stem);
+        this.query = new Query(query,postingFilesPath,stem,semantic);
+        System.out.println(this.query.getQueryAsList());
         File file = new File(postingFilesPath);
 
 
@@ -78,29 +80,7 @@ public class Searcher {
         this.postingFileNames.sort(String::compareToIgnoreCase);
 
     }
-    private void printTermInfo(TermInfo termInfo)
-    {
-        System.out.println();
-        HashMap<Integer,Integer> map = termInfo.getDocIdTfMap();
-        for(Map.Entry<Integer,Integer> entry :map.entrySet())
-        {
-            System.out.println("The term - "+termInfo.getTerm()+" The Size " + map.size()+" The docId - "+ entry.getKey() +" The tf - "+entry.getValue());
-        }
-        System.out.println();
-        System.out.println();
-    }
-    public void test()
-    {
 
-        // TODO: 12/23/2018  Check getRelevantData
-        HashSet<TermInfo> termInfos = this.getRelevantData();
-        for (TermInfo termInfo:termInfos)
-        {
-            printTermInfo(termInfo);
-        }
-        System.out.println("done");
-
-    }
     
     
     /**
@@ -234,6 +214,7 @@ public class Searcher {
 
         //Getting the names of the files that will contain the terms
         HashMap<String,List<String>> fileNamesAndTerms = this.getTermsAndFiles(terms);
+
         Set<String> keys = fileNamesAndTerms.keySet();
         Future<HashSet<TermInfo>> [] futures = new Future[keys.size()];
 
@@ -339,12 +320,7 @@ public class Searcher {
             HashSet<Integer> docsInTitle = new HashSet<>();
             for(int i=0;i<this.relaventCities.length;i++)
             {
-                HashSet<CityInfo> cityInfoAboutDocument = this.cityPostingInformation.getDetailsOnCitys(this.relaventCities[i]);
-                for(CityInfo cityInfo:cityInfoAboutDocument)
-                {
-                    docsInTitle.add(cityInfo.getDoc());
-                }
-
+                docsInTitle.addAll(this.cityPostingInformation.getDetailsOnCitys(this.relaventCities[i]));
             }
 
             //The filter
@@ -375,7 +351,7 @@ public class Searcher {
     }
 
 
-    public int [] getMostRelevantDocNum()
+    public String [] getMostRelevantDocNum()
     {
         //The relevant data
         HashSet<TermInfo> queryData =this.getRelevantData();
@@ -405,23 +381,28 @@ public class Searcher {
         //Getting the docs info
         try {
             this.futureDoc.get();
+            this.executorService.shutdown();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
+
         //Getting the info about the docs + calculating the average
         long sum =0l;
         HashSet<DocInfo> docNumInfo = new HashSet<>();
+
         for(int docNum:docNumHash)
         {
-            DocInfo docInfo = this.documentPostingInformation.getDetailsOnCitys(docNum);
+
+            DocInfo docInfo = this.documentPostingInformation.getDetailsOnDocs(docNum);
             docNumInfo.add(docInfo);
             sum+= docInfo.getLength();
         }
 
-        double average = sum*1/0/docNumInfo.size();
+
+        double average = sum*1.0/docNumInfo.size();
 
         Ranker ranker = new Ranker(queryData,average,docNumInfo.size());
         double minValue = Double.MIN_VALUE;
@@ -437,17 +418,29 @@ public class Searcher {
         }
 
 
+
+
         for(DocInfo docInfo:docNumInfo)
         {
             score = ranker.Rank(docInfo);
-            if(minValue<score)
-                minValue = update(scores,docsToReturn,docInfo.getDocNum(),score,minValue);
+            if(minValue<score) {
+                minValue = update(scores, docsToReturn, docInfo.getDocNum(), score, minValue);
+            }
+
         }
 
 
 
+        sortByScore(scores,docsToReturn);
+        String [] docNames = new String[NUM_OF_DOCS_TO_RETURN];
+        pr(docsToReturn);
+        pr2(scores);
+        for(int i=0;i<NUM_OF_DOCS_TO_RETURN;i++)
+        {
+            docNames[i] = this.documentPostingInformation.getDetailsOnDocs(docsToReturn[i]).getDocName();
+        }
 
-        return docsToReturn;
+        return docNames;
     }
 
     private double update(double [] scores, int [] id,int doc,double score,double minValue)
@@ -466,7 +459,7 @@ public class Searcher {
         scores[index] = score;
         id[index] = doc;
 
-        double min = Double.MIN_VALUE;
+        double min = Double.MAX_VALUE;
 
         for(int i=0;i<scores.length;i++)
         {
@@ -477,6 +470,51 @@ public class Searcher {
 
     }
 
+    private void sortByScore(double [] scores, int [] id) {
+
+        double[] scoresCopy = new double[scores.length];
+        int[] idCopy = new int[id.length];
+        for (int i = 0; i < scores.length; i++) {
+            scoresCopy[i] = scores[i];
+            idCopy[i] = id[i];
+        }
+
+        double maxVal=Double.MIN_VALUE;
+        int max=-1;
+        int indexMax = -1;
+
+        for (int i = 0; i < scores.length; i++) {
+            for (int j = 0; j < scores.length; j++) {
+                if(maxVal<scoresCopy[j])
+                {
+                    maxVal = scoresCopy[j];
+                    max = idCopy[j];
+                    indexMax = j;
+                }
+            }
+            scores[i] = maxVal;
+            id[i] = max;
+
+            scoresCopy[indexMax] = Double.MIN_VALUE;
+            maxVal=Double.MIN_VALUE;
+            max =-1;
+        }
+
+    }
+    private void pr(int []a)
+    {
+        for(int i=0;i<a.length;i++)
+        {
+            System.out.println(a[i]);
+        }
+    }
+    private void pr2(double []a)
+    {
+        for(int i=0;i<a.length;i++)
+        {
+            System.out.println(a[i]);
+        }
+    }
 
 }
 

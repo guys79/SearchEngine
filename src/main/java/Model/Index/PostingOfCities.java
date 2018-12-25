@@ -72,11 +72,11 @@ public class PostingOfCities implements Callable<Boolean>{
             for (int i = 0; i < size; i++) {
                 detailsDoc="";
                 cityName = nameOfCitys.get(i);
-                detailsWeb = "#" + cityName;
+                detailsWeb = cityName+ "@";
                 //System.out.printf(cityName);
                 //data from the web
                 if(this.DetailsOnCitys_web.containsKey(cityName)) {
-                    detailsWeb = detailsWeb + ";" + DetailsOnCitys_web.get(cityName)[0] + ";" + DetailsOnCitys_web.get(cityName)[1] + ";" + DetailsOnCitys_web.get(cityName)[2];
+                    detailsWeb = detailsWeb  + DetailsOnCitys_web.get(cityName)[0] + "@" + DetailsOnCitys_web.get(cityName)[1] + "@" + DetailsOnCitys_web.get(cityName)[2];
                     DetailsOnCitys_web.remove(cityName);
                 }
 
@@ -102,7 +102,7 @@ public class PostingOfCities implements Callable<Boolean>{
                 // we write the doc data to the file
                 DetailsOnCitys_doc.remove(cityName);
                 toWrite = detailsWeb + detailsDoc;
-                stringBuilder.append(toWrite);
+                stringBuilder.append(toWrite+"\n");
                 // we update the dictionary of where is the data
                 placesInDoc.put(cityName, counter);
                 counter = counter + toWrite.length();

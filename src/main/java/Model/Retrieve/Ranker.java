@@ -39,13 +39,20 @@ public class Ranker {
     
     private double BM25(DocInfo document)
     {
-        int rank = 0;
+        if(document.getDocName().equals("LA081289-0028"))
+            System.out.println("s");
+        double rank = 0;
         for(TermInfo termInfo: queryTermInfo)
         {
             // TODO: 12/23/2018  Need to update to the real value
             int df = termInfo.getDf();
             double idf = Math.log(this.numOfDocs*1.0/df)/Math.log(2);
-            int tf = termInfo.docIdTfMap.get(document.getDocNum());
+            int tf =0;
+            Object temp = termInfo.docIdTfMap.get(document.getDocNum());
+            if(temp!=null)
+            {
+                tf= (int)temp;
+            }
             int docLength = document.getLength();
 
             //The BM25 formula

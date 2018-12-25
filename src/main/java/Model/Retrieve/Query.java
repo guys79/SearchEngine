@@ -21,15 +21,18 @@ public class Query {
      * @param postingPath - The file path of the posting file
      * @param stem - True if we want to consider the stemmed files
      */
-    public Query(String query,String postingPath,boolean stem) {
+    public Query(String query,String postingPath,boolean stem,boolean semantic) {
 
+
+        //init the map
+        this.termsAndTf = new HashMap<>();
 
         Set<String> terms;
         //Parse the query
         Parser parserStemmed = new Parser(postingPath, "", stem);
         DocumentReturnValue parsedQuery = parserStemmed.motherOfAllFunctions(query);
         int index =0;
-        if(stem)
+        if(semantic && stem)
         {
             //Parse the query
             Parser parserNotStemmed = new Parser(postingPath, "", false);
@@ -38,11 +41,11 @@ public class Query {
             terms = parsedQueryNotStemmed.getDictionaryOfWords().keySet();
 
             //For each semantic word!!!
-            for (String key : terms) {
+            /*for (String key : terms) {
                 this.terms[index]=key;
                 index++;
                 this.termsAndTf.put(key, parsedQuery.getDictionaryOfUniqueTerms().get(key));
-            }
+            }*/
 
         }
         else
@@ -56,8 +59,6 @@ public class Query {
 
 
 
-        //init the map
-        this.termsAndTf = new HashMap<>();
 
         //Add the terms to the map and to the array
         terms = parsedQuery.getDictionaryOfUniqueTerms().keySet();
@@ -66,6 +67,7 @@ public class Query {
             index++;
             this.termsAndTf.put(key, parsedQuery.getDictionaryOfUniqueTerms().get(key));
         }
+
         terms = parsedQuery.getDictionaryOfWords().keySet();
         for (String key : terms) {
             this.terms[index]=key;
@@ -75,7 +77,6 @@ public class Query {
 
 
 
-        //System.out.println(this.termsAndTf);
 
     }
 

@@ -25,7 +25,6 @@ public class Searcher {
     private ExecutorService executorService;//The threadpool
     private String postingFilesPath;//The path to the posting file
     private String [] relaventCities;//The array of relevant cities
-    private Query query;//The query!
     private HashMap<String,int[]> mainMap;//The main map. The key is the term, and the value is an array in the size of 2
                                           //The first cell in the array is the df, and the second is cf
     private GetCity cityPostingInformation;//The class that we will use to get data on the cities
@@ -35,7 +34,7 @@ public class Searcher {
     private Future<Boolean> futureDoc;
     private boolean semantic;
 
-    public Searcher(String postingFilesPath,boolean stem,String [] relaventCities,String query,boolean semantic) {
+    public Searcher(String postingFilesPath,boolean stem,String [] relaventCities,boolean semantic) {
         // TODO: 12/23/2018 Where get the futures??
         this.executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
         this.stem = stem;
@@ -55,8 +54,6 @@ public class Searcher {
         //Initializing the data structures
         postingFileNames = new ArrayList<>();
         this.relaventCities = relaventCities;
-        this.query = new Query(query,postingFilesPath,stem,semantic);
-        System.out.println(this.query.getQueryAsList());
         File file = new File(postingFilesPath);
 
 
@@ -268,10 +265,10 @@ public class Searcher {
 
     }
 
-    private HashSet<TermInfo> getRelevantData()
+    private HashSet<TermInfo> getRelevantData(Query query)
     {
         //Getting the terms of the query as a list
-        List<String> queryTerms = this.query.getQueryAsList();
+        List<String> queryTerms = query.getQueryAsList();
 
         //Check the terms data
         HashSet<TermInfo> termInfos = this.getTheInformationAboutTheTerms(queryTerms);
@@ -348,10 +345,12 @@ public class Searcher {
     }
 
 
-    public String [] getMostRelevantDocNum()
+    public String [] getMostRelevantDocNum(String queryText)
     {
+
         //The relevant data
-        HashSet<TermInfo> queryData =this.getRelevantData();
+        Query query = new Query(queryText,this.postingFilesPath,this.stem,this.semantic);
+        HashSet<TermInfo> queryData =this.getRelevantData(query);
         try {
             this.mainMap = this.futureMap.get();
         } catch (InterruptedException e) {

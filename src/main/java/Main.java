@@ -30,8 +30,9 @@ public class Main extends Application {
     public static void main(String[] args) {
         //launch(args);
         String postingPath = "C:\\Users\\guys79\\Desktop\\posting";
-        Searcher searcher=new Searcher(postingPath,true,new String[0],"this morning was nice",false);
-        String [] array = searcher.getMostRelevantDocNum();
+        String query = "this morning was nice";
+        Searcher searcher=new Searcher(postingPath,true,new String[0],false);
+        String [] array = searcher.getMostRelevantDocNum(query);
         pr(array);
         // TODO: 25/12/2018 Fix bug in getTermsAndFiles, it dose not work on 8 or 9. should use in search the term + _ (maybe)
 

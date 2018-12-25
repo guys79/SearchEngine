@@ -34,7 +34,7 @@ public class Main extends Application {
         Searcher searcher=new Searcher(postingPath,true,new String[0],false);
         String [] array = searcher.getMostRelevantDocNum(query);
         pr(array);
-        // TODO: 25/12/2018 Fix bug in getTermsAndFiles, it dose not work on 8 or 9. should use in search the term + _ (maybe)
+        // TODO: 25/12/2018 Fix bug in getTermsAndFiles, it dose not work on 8 or 9. should use in search the term + _ (maybe) .. or maybe in the names of the files
 
 
 

@@ -73,12 +73,19 @@ public class SortAndSplitThread implements Callable<List<String>>{
                 if(this.fileName.equals("other"))
                 {
                     fileName = "1";//The files that refer to others are the files that starts with 1
+                    boolean flag= true;
                     for(int i=0;i<key.getKey().length();i++)
                     {
-                        if(key.getKey().charAt(i)=='_')
-                            fileName = fileName+'_';
-                        fileName = fileName + (int)(key.getKey().charAt(i));
+                        if(key.getKey().charAt(i)=='_') {
+                            fileName = fileName + '_';
+                            flag = !flag;
+                        }
+                        if(flag)
+                            fileName = fileName +"^"+ (int)(key.getKey().charAt(i));
+                        else
+                            fileName = fileName +(int)(key.getKey().charAt(i));
                     }
+
                 }
                 else
                 {

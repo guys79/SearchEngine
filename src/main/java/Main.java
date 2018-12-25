@@ -28,12 +28,15 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        //launch(args);
-        String postingPath = "C:\\Users\\guys79\\Desktop\\posting";
-        String query = "this morning was nice";
+        launch(args);
+      /*  String postingPath = "C:\\Users\\guys79\\Desktop\\posting";
         Searcher searcher=new Searcher(postingPath,true,new String[0],false);
+
+        String query = "between 9 to 10";
         String [] array = searcher.getMostRelevantDocNum(query);
-        pr(array);
+
+
+        pr(array);*/
         // TODO: 25/12/2018 Fix bug in getTermsAndFiles, it dose not work on 8 or 9. should use in search the term + _ (maybe) .. or maybe in the names of the files
 
 
@@ -63,34 +66,5 @@ public class Main extends Application {
         }
         System.out.println();
     }
-    public static double update(double [] scores, int [] id,int doc,double score,double minValue)
-    {
-        int index = -1;
-
-        for(int i=0;i<scores.length;i++)
-        {
-            if(scores[i] == minValue)
-            {
-                index = i;
-                break;
-            }
-        }
-
-        scores[index] = score;
-        id[index] = doc;
-
-        double min = Double.MAX_VALUE;
-
-        for(int i=0;i<scores.length;i++)
-        {
-            if(scores[i]<min)
-                min =scores[i];
-        }
-        return min;
-
-    }
-
-
-
 }
 

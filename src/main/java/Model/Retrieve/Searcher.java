@@ -87,6 +87,8 @@ public class Searcher {
      * @return - The list of files that contains the term
      */
     public List<String> getFileName(String term) {
+        if(term.equals("9"))
+            System.out.println();
         ArrayList<String> fileNames = new ArrayList<>();
         char note = (("" + term.charAt(0)).toLowerCase()).charAt(0);
 
@@ -350,6 +352,7 @@ public class Searcher {
 
         //The relevant data
         Query query = new Query(queryText,this.postingFilesPath,this.stem,this.semantic);
+        System.out.println(query.getQueryAsList());
         HashSet<TermInfo> queryData =this.getRelevantData(query);
         try {
             this.mainMap = this.futureMap.get();

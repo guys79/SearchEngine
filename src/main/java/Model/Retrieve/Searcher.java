@@ -83,7 +83,7 @@ public class Searcher {
         this.postingFileNames.sort(String::compareToIgnoreCase);
 
         try {
-            System.out.println("getting city");
+            System.out.println("getting city");//
             futureCity.get();
             System.out.println("getting Docs");
             futureDoc.get();

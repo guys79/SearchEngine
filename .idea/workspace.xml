@@ -186,7 +186,7 @@
       <find>round</find>
       <find>summ</find>
       <find>city</find>
-      <find>new quer</find>
+      <find />
       <find>LA081289-0028</find>
       <find>docnum</find>
       <find>getTheInformationAboutTheTerms</find>
@@ -289,7 +289,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />

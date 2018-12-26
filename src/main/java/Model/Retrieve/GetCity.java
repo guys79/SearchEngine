@@ -43,7 +43,7 @@ public class GetCity implements Callable<Boolean> {
             }
             docNums.add(Integer.parseInt(doc));
         }
-        this.cityInfo.put(cityName,docNums);
+        this.cityInfo.put(cityName.toLowerCase(),docNums);
 
     }
     /**
@@ -96,7 +96,7 @@ public class GetCity implements Callable<Boolean> {
             }
         }
         return infoToReturn;*/
-        return this.cityInfo.get(nameOfCity);
+        return this.cityInfo.get(nameOfCity.toLowerCase());
     }
 
     /**

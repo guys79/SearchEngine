@@ -241,6 +241,7 @@ public class Searcher {
     private HashSet<TermInfo> getTheInformationAboutTheTerms(List<String>terms)
     {
 
+
         //Getting the names of the files that will contain the terms
         HashMap<String,List<String>> fileNamesAndTerms = this.getTermsAndFiles(terms);
        // System.out.println(fileNamesAndTerms);
@@ -304,6 +305,7 @@ public class Searcher {
     {
         //Getting the terms of the query as a list
         List<String> queryTerms = query.getQueryAsList();
+        System.out.println(queryTerms);
         //System.out.println(queryTerms);
         //Check the terms data
         HashSet<TermInfo> termInfos = this.getTheInformationAboutTheTerms(queryTerms);
@@ -319,6 +321,7 @@ public class Searcher {
                 for (int i = 0; i < this.relaventCities.length; i++) {
 
                     city = this.relaventCities[i].toLowerCase();
+                    stemmer.setCurrent(city);
                     if(stemmer.stem())
                         city = stemmer.getCurrent();
                     citiesToCheck.add(city);
@@ -487,7 +490,10 @@ public class Searcher {
         //boolean flag = true;
         for(int i=0;i<NUM_OF_DOCS_TO_RETURN;i++)
         {
-            docNames[i] = this.documentPostingInformation.getDetailsOnDocs(docsToReturn[i]).getDocName();
+            if(docsToReturn[i]==-1)
+                docNames[i] = "";
+            else
+                docNames[i] = this.documentPostingInformation.getDetailsOnDocs(docsToReturn[i]).getDocName();
 
         }
 
@@ -531,7 +537,7 @@ public class Searcher {
 
         double maxVal=Double.MIN_VALUE;
         int max=-1;
-        int indexMax = -1;
+        int indexMax = 0;
 
         for (int i = 0; i < scores.length; i++) {
             for (int j = 0; j < scores.length; j++) {

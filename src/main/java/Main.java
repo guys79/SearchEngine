@@ -45,16 +45,22 @@ public class Main extends Application {
         String postingPath = "C:\\Users\\guys79\\Desktop\\postingNew";
         boolean semantic = true;
         boolean stem =true;
-        Searcher searcher=new Searcher(postingPath,stem,new String[0],semantic);
+        String [] cities =new String[2];
+//        cities[0]="paris";
+        cities[0]="dakar";
+        cities[1]="HEFEI";
+
+        Searcher searcher=new Searcher(postingPath,stem,cities,semantic);
         String queryPath ="C:\\Users\\guys79\\Desktop\\queries.txt";
         GetQuery getQuery = new GetQuery(queryPath);
         //String query = getQuery.getNextQuery();
-        String query = "British Chunnel impact";
+        String query = "guy Chunnel impact";
         String [] array;
        while(query!=null) {
 
             array = searcher.getMostRelevantDocNum(query);
             System.out.println("most relevant to \"" + query + "\" is " + array[0]);
+            pr(array);
             //query = getQuery.getNextQuery();
            query =null;
         }

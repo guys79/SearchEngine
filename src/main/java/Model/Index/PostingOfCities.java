@@ -102,7 +102,6 @@ public class PostingOfCities implements Callable<Boolean>{
                 toWrite = detailsWeb + detailsDoc;
                 stringBuilder.append(toWrite+"\n");
                 toWrite = detailsWeb + detailsDoc;
-                stringBuilder.append(toWrite);
                 // we update the dictionary of where is the data
                 placesInDoc.put(cityName, counter);
                 counter = counter + toWrite.length();

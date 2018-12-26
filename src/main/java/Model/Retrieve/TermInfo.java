@@ -8,7 +8,8 @@ import java.util.HashMap;
 public class TermInfo {
     private String term;//The term
     public HashMap<Integer,Integer> docIdTfMap;//This map is the map of docId as the key and the tf as value
-    private int df;//Teh document frequency
+    private int df;//The document frequency
+    private double weight;//The weight of the term
 
     /**
      * The constructor
@@ -22,6 +23,7 @@ public class TermInfo {
         this.docIdTfMap = new HashMap<>();
         this.docIdTfMap.put(docId,tf);
         this.df=0;
+        this.weight = 1;
     }
 
     /**
@@ -33,6 +35,7 @@ public class TermInfo {
         this.term = term;
         this.docIdTfMap = new HashMap<>();
         this.df=0;
+        this.weight = 1;
     }
 
     /**
@@ -84,5 +87,21 @@ public class TermInfo {
      */
     public void setDf(int df) {
         this.df = df;
+    }
+
+    /**
+     * This function will set the weight of the term
+     * @param weight - The weight of the term
+     */
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    /**
+     * This function will get the weight of the term
+     * @return - The weight of the term
+     */
+    public double getWeight() {
+        return weight;
     }
 }

@@ -9,8 +9,8 @@ import java.util.*;
  * This class represents a single simple query
  */
 public class Query {
-    private HashMap <String,Integer> termsAndTf;//A map of term as value and tf as key
-    private String [] terms;//The terms in an array of strings
+    protected HashMap <String,Integer> termsAndTf;//A map of term as value and tf as key
+    protected String [] terms;//The terms in an array of strings
 
 
 
@@ -21,7 +21,7 @@ public class Query {
      * @param postingPath - The file path of the posting file
      * @param stem - True if we want to consider the stemmed files
      */
-    public Query(String query,String postingPath,boolean stem,boolean semantic) {
+    public Query(String query,String postingPath,boolean stem) {
 
 
         //init the map
@@ -32,33 +32,9 @@ public class Query {
         Parser parserStemmed = new Parser(postingPath, "", stem);
         DocumentReturnValue parsedQuery = parserStemmed.motherOfAllFunctions(query);
         int index =0;
-        if(semantic && stem)
-        {
-            //Parse the query
-            Parser parserNotStemmed = new Parser(postingPath, "", false);
-            DocumentReturnValue parsedQueryNotStemmed = parserNotStemmed.motherOfAllFunctions(query);
-            this.terms = new String[parsedQuery.getDictionaryOfWords().size()+parsedQuery.getDictionaryOfUniqueTerms().size()+parsedQueryNotStemmed.getDictionaryOfWords().size()];
-            terms = parsedQueryNotStemmed.getDictionaryOfWords().keySet();
 
-            //For each semantic word!!!
-            /*for (String key : terms) {
-                this.terms[index]=key;
-                index++;
-                this.termsAndTf.put(key, parsedQuery.getDictionaryOfUniqueTerms().get(key));
-            }*/
-
-        }
-        else
-        {
-            //Init the terms array
-            this.terms = new String[parsedQuery.getDictionaryOfWords().size()+parsedQuery.getDictionaryOfUniqueTerms().size()];
-
-        }
-
-
-
-
-
+        //Init the terms array
+        this.terms = new String[parsedQuery.getDictionaryOfWords().size()+parsedQuery.getDictionaryOfUniqueTerms().size()];
 
         //Add the terms to the map and to the array
         terms = parsedQuery.getDictionaryOfUniqueTerms().keySet();
@@ -126,4 +102,5 @@ public class Query {
         }
         return newList;
     }
+
 }

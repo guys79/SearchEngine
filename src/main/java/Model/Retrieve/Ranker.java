@@ -52,9 +52,10 @@ public class Ranker {
                 tf= (int)temp;
             }
             int docLength = document.getLength();
+            double weight = termInfo.getWeight();
 
             //The BM25 formula
-            rank+= idf*((tf*(this.k+1))/(tf+this.k*(1-this.beta+beta*(docLength/this.averageDocLength))));
+            rank+= idf*((tf*(this.k+1))/(tf+this.k*(1-this.beta+beta*(docLength/this.averageDocLength)))) * weight;
         }
         return rank;
     }

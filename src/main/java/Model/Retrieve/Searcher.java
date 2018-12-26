@@ -304,7 +304,7 @@ public class Searcher {
     {
         //Getting the terms of the query as a list
         List<String> queryTerms = query.getQueryAsList();
-
+        //System.out.println(queryTerms);
         //Check the terms data
         HashSet<TermInfo> termInfos = this.getTheInformationAboutTheTerms(queryTerms);
         //If there are cities as filter
@@ -409,8 +409,14 @@ public class Searcher {
     public String [] getMostRelevantDocNum(String queryText)
     {
 
+        Query query;
         //The relevant data
-        Query query = new Query(queryText,this.postingFilesPath,this.stem,this.semantic);
+        if(!this.semantic)
+            query = new Query(queryText,this.postingFilesPath,this.stem);
+        else
+            query =new SemanticQuery(queryText,postingFilesPath,stem);
+
+
       //  System.out.println(query.getQueryAsList());
         HashSet<TermInfo> queryData =this.getRelevantData(query);
 
@@ -424,6 +430,16 @@ public class Searcher {
             if(info==null)
                 info = this.mainMap.get(termInfo.getTerm().toUpperCase());
             termInfo.setDf(info[0]);
+        }
+
+        if(this.semantic)
+        {
+            SemanticQuery semanticQuery = (SemanticQuery) query;
+            for(TermInfo termInfo:queryData)
+            {
+                termInfo.setWeight(semanticQuery.getWeight(termInfo.getTerm()));
+            }
+
         }
 
 

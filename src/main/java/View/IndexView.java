@@ -1,7 +1,7 @@
 package View;
 
 
-import Controller.Controller;
+import Controller.IndexController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
  * This class is the class that is responsible on the view of the GUI
  * This class has access to the fxml file and declares as the controller in the fxml file
  */
-public class  View implements Initializable {
+public class IndexView implements Initializable {
     public Button postingFilePath;//The button that will browse and get the path of the Posting file
     public Button corpusFilePath;//The button that will browse and get the path of the corpus file
     public Button startBtn;//This button is responsible for the start of the indexing
@@ -34,7 +34,7 @@ public class  View implements Initializable {
     public TableColumn cfTableColumn;//The column of the cf
     private String corpusPath;//The path to the corpus
     private String postingPath;//The path to the posting
-    private Controller controller;//The controller
+    private IndexController controller;//The controller
 
 
     /**
@@ -91,7 +91,7 @@ public class  View implements Initializable {
         this.startBtn.setDisable(true);
         this.corpusPath = "";
         this.postingPath ="";
-        this.controller=new Controller();
+        this.controller=new IndexController();
         controller.setView(this);
         termTableColumn.setCellValueFactory(new PropertyValueFactory<TableContent, String>("term"));
         cfTableColumn.setCellValueFactory(new PropertyValueFactory<TableContent,Integer>("cf"));

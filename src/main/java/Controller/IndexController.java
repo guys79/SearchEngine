@@ -1,6 +1,6 @@
 package Controller;
 import Model.Index.Indexer;
-import View.View;
+import View.IndexView;
 import java.io.*;
 import java.util.HashMap;
 
@@ -9,15 +9,15 @@ import java.util.HashMap;
  * This class is the controller of the GUi (part of the MVC design pattern)
  *
  */
-public class Controller {
+public class IndexController {
 
-    private View view;//The view
+    private IndexView view;//The view
     private Indexer indexer;//The model
 
     /**
      * The constructor of the class
      */
-    public Controller() {
+    public IndexController() {
         indexer = null;
     }
 
@@ -33,11 +33,11 @@ public class Controller {
     }
 
     /**
-     * This function will set the view of the instance of the Controller class
+     * This function will set the view of the instance of the IndexController class
      *
      * @param view - The given view
      */
-    public void setView(View view) {
+    public void setView(IndexView view) {
         this.view = view;
     }
 
@@ -73,7 +73,7 @@ public class Controller {
     }
 
     /**
-     * This function will get the collection of languages from the model and will send the collection to the View so it will display the languages
+     * This function will get the collection of languages from the model and will send the collection to the IndexView so it will display the languages
      */
     public void languageDisplay() {
         String languageFilePath = this.indexer.getLanguageFilePath();

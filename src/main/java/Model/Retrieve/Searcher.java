@@ -84,6 +84,7 @@ public class Searcher {
         }
         //Sorting the names so that we will be able to preform binary search
         this.postingFileNames.sort(String::compareToIgnoreCase);
+        System.out.println(this.postingFileNames);
 
         try {
             System.out.println("getting city");

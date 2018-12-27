@@ -1,4 +1,4 @@
-package Model;
+package Model.Index;
 
 import java.util.concurrent.Callable;
 

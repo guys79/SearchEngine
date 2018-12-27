@@ -1,7 +1,11 @@
-package Model;
+package Model.Index;
 
+import Model.Index.CityInfo;
 import sun.awt.Mutex;
+
+import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,7 +28,7 @@ public class ParserThread implements Callable<ParserThreadReturnValue>
     private Mutex mutex;//A mutex
     private DocIndexerThread docIndexerThread;//The thread that parses a document
     private String city;//the name of the city
-    private CityInfo [] cityInfo;//The list of informations on the cities
+    private CityInfo[] cityInfo;//The list of informations on the cities
 
     /**
      * The constructor of the class
@@ -36,8 +40,8 @@ public class ParserThread implements Callable<ParserThreadReturnValue>
      * @param stringBuilders - The string builders for all the files
      * @param mutex - A mutual mutex
      * @param city - The city name, if exists
-     * @param docIndexerThread - The doc indexer as a thred
-     * @param cityInfo - The infromation about the cities
+     * @param docIndexerThread - The doc indexer as a thread
+     * @param cityInfo - The information about the cities
      */
     public ParserThread(int docId, Indexer indexer, String text, Parser parser, boolean uploadToFile, StringBuilder [] stringBuilders, Mutex mutex,String city,DocIndexerThread docIndexerThread,CityInfo[] cityInfo) {
         this.docIndexerThread = docIndexerThread;
@@ -70,6 +74,8 @@ public class ParserThread implements Callable<ParserThreadReturnValue>
             //Parse the doc
             DocumentReturnValue documentReturnValue = this.parser.motherOfAllFunctions(this.text);
 
+
+
             Set<String> keys = documentReturnValue.getDictionaryOfUniqueTerms().keySet();
             int tf;
             int sizeOfDoc = 0;
@@ -89,20 +95,33 @@ public class ParserThread implements Callable<ParserThreadReturnValue>
 
             }
             documentReturnValue.setDictionaryOfUniqueTerms(null);
-
+            TreeMap<Integer,String>tfToEntity = new TreeMap<>();
             keys = documentReturnValue.getDictionaryOfWords().keySet();
             for (String key : keys) {
                 if (key.length() > 0) {
                     sizeOfDoc++;
-                    firstNote = ("" + key.charAt(0)).toLowerCase().charAt(0);
+                    firstNote = key.charAt(0);
                     tf = documentReturnValue.getDictionaryOfWords().get(key);
                     this.indexer.addDictionaries(key,tf);
                     if (firstNote >= 'a' && firstNote <= 'z')
                         this.indexerThreads[firstNote - 'a'].addtoString(docId, tf, key);
+                    else if ((firstNote >= 'A' && firstNote <= 'Z'))
+                    {
+                        this.indexerThreads[firstNote -'A'].addtoString(docId, tf, key);
+                        tfToEntity.put(tf,key);
+                    }
                     else
                         this.indexerThreads[this.indexerThreads.length - 1].addtoString(docId, tf, key);
                 }
             }
+            String [] entities = new String[tfToEntity.size()];
+            int count=0;
+            for(Integer tfEntity:tfToEntity.keySet())
+            {
+                entities[count]=tfToEntity.get(tfEntity);
+                count++;
+            }
+            this.indexer.addEntities(docId,entities);
             documentReturnValue.setDictionaryOfWords(null);
 
             //Update the doc data

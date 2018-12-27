@@ -1,4 +1,4 @@
-package Model;
+package Model.Index;
 
 import org.tartarus.snowball.SnowballStemmer;
 import org.tartarus.snowball.ext.porterStemmer;
@@ -1019,7 +1019,7 @@ public class Parser{
     /**
      * This function will teake a text and will pasre every token in the text.
      * @param text - The given text
-     * @return - Model.DocumentReturnValue object containing the parsed text and it's characteristics
+     * @return - Model.Index.DocumentReturnValue object containing the parsed text and it's characteristics
      */
     public DocumentReturnValue motherOfAllFunctions(String text)
     {
@@ -1096,7 +1096,7 @@ public class Parser{
             if(this.stopWordsHolder.isStopWord(currentTerm))
                 continue;
             counter++;
-            if(cityName.toLowerCase().equals(currentTerm.toLowerCase()))
+            if(cityName.length()>0 && cityName.toLowerCase().equals(currentTerm.toLowerCase()))
                 this.cityLocations.add(counter);
             if(this.isIntegerThatEndsWithTh(currentTerm))
                 currentTerm = currentTerm.substring(0,length-2);
@@ -1202,7 +1202,6 @@ public class Parser{
                 }
                 lower = nextTerm.toLowerCase();
                 flag = false;
-                temp =currentTerm;
                 if(this.isNumberDescriber(lower))
                 {
                     currentTerm =currentTerm+" "+nextTerm;
@@ -1214,6 +1213,7 @@ public class Parser{
                     }
 
                 }
+                temp =currentTerm;
                 if(lower.equals("dollars")||lower.equals("dollar"))
                 {
                     currentTerm =currentTerm+" "+nextTerm;
@@ -1242,6 +1242,7 @@ public class Parser{
                 {
                     count--;
                     nextTerm = tokenArray[count];
+                    count++;
                     lower = nextTerm.toLowerCase();
                 }
                 currentTerm = temp;

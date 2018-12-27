@@ -1,7 +1,6 @@
-package Model;
+package Model.Index;
 
 import java.io.*;
-import java.rmi.UnexpectedException;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -61,7 +60,7 @@ public class SortAndSplitThread implements Callable<List<String>>{
 
         String fileName = this.fileName;
         if(fileName.equals("other"))
-            fileName="1";
+            fileName="1^^";
         int counter = 0;
         this.namesOfFiles.add(fileName+ "_" + stem );
         for(Map.Entry<String,String>key:this.terms.entrySet())
@@ -74,10 +73,19 @@ public class SortAndSplitThread implements Callable<List<String>>{
                 if(this.fileName.equals("other"))
                 {
                     fileName = "1";//The files that refer to others are the files that starts with 1
+                    boolean flag= true;
                     for(int i=0;i<key.getKey().length();i++)
                     {
-                        fileName = fileName + (int)(key.getKey().charAt(i));
+                        if(key.getKey().charAt(i)=='_') {
+                            fileName = fileName + '_';
+                            flag = !flag;
+                        }
+                        if(flag)
+                            fileName = fileName +"^"+ (int)(key.getKey().charAt(i));
+                        else
+                            fileName = fileName +(int)(key.getKey().charAt(i));
                     }
+
                 }
                 else
                 {
@@ -108,12 +116,12 @@ public class SortAndSplitThread implements Callable<List<String>>{
         String term;
         int indexOfStar;
 
-            indexOfStar = terms.indexOf('*');
-            if(indexOfStar == -1) {
-                return;
-            }
-            term = terms.substring(0, indexOfStar);
-            this.terms.put(term,terms.substring(indexOfStar));
+        indexOfStar = terms.indexOf('*');
+        if(indexOfStar == -1) {
+            return;
+        }
+        term = terms.substring(0, indexOfStar);
+        this.terms.put(term,terms.substring(indexOfStar));
 
     }
 

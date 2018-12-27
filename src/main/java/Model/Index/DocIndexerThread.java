@@ -1,4 +1,4 @@
-package Model;
+package Model.Index;
 
 /**
  * This class will index the document as runnable
@@ -20,7 +20,7 @@ public class DocIndexerThread implements Runnable {
      */
     public void run() {
         try {
-            this.docIndexer.writeToThefile();//Summoning the function that uploads
+            this.docIndexer.writeToTheFile();//Summoning the function that uploads
         }
         catch (Exception e)
         {

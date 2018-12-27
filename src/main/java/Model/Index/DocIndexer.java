@@ -1,4 +1,4 @@
-package Model;
+package Model.Index;
 
 import sun.awt.Mutex;
 import java.io.*;
@@ -23,7 +23,7 @@ public class DocIndexer{
      */
     public DocIndexer(String location,ReadFile readFile,boolean stem){
         this.mutex = new Mutex();
-        tempData= new HashMap<Integer,String>();
+        tempData= new HashMap<>();
         this.readFile = readFile;
         String name = "allDocs"+"&"+stem;
         try {
@@ -47,9 +47,9 @@ public class DocIndexer{
     }
 
     /**
-     * this function shuld write the data to the file
+     * this function should write the data to the file
      */
-    public void writeToThefile(){
+    public void writeToTheFile(){
         this.mutex.lock();
         File file = new File(postingPath);
         try(FileWriter fw = new FileWriter(file,true);
@@ -59,7 +59,6 @@ public class DocIndexer{
 
             String str;
             Set<Integer> keys = tempData.keySet();
-            out.print("#");
             for(Integer key : keys)
             {
                 str= tempData.get(key);
@@ -88,7 +87,7 @@ public class DocIndexer{
     public void addToDic(int docNum, int numOfuniqeTerms, int maxValues,int length) {
         this.mutex.lock();
         if(docNum!=-1) {
-            String str = docNum+readFile.getNamesOfDocs(docNum) + ";" + numOfuniqeTerms + ";" + maxValues + ";" + readFile.getNameOfCity(docNum)+";"+";"+length+"#";
+            String str = docNum+";"+readFile.getNamesOfDocs(docNum) + ";" + numOfuniqeTerms + ";" + maxValues + ";" + readFile.getNameOfCity(docNum)+";"+length+"\n";
             tempData.put(docNum,str);
         }
         this.mutex.unlock();

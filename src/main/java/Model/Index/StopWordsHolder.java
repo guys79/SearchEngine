@@ -1,4 +1,4 @@
-package Model;
+package Model.Index;
 
 import java.io.File;
 import java.io.FileNotFoundException;

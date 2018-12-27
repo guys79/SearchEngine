@@ -1,4 +1,4 @@
-package Model;
+package Model.Index;
 
 import sun.awt.Mutex;
 
@@ -72,11 +72,11 @@ public class PostingOfCities implements Callable<Boolean>{
             for (int i = 0; i < size; i++) {
                 detailsDoc="";
                 cityName = nameOfCitys.get(i);
-                detailsWeb = "#" + cityName;
+                detailsWeb = cityName+ "@";
                 //System.out.printf(cityName);
                 //data from the web
                 if(this.DetailsOnCitys_web.containsKey(cityName)) {
-                    detailsWeb = detailsWeb + ";" + DetailsOnCitys_web.get(cityName)[0] + ";" + DetailsOnCitys_web.get(cityName)[1] + ";" + DetailsOnCitys_web.get(cityName)[2];
+                    detailsWeb = detailsWeb  + DetailsOnCitys_web.get(cityName)[0] + "@" + DetailsOnCitys_web.get(cityName)[1] + "@" + DetailsOnCitys_web.get(cityName)[2];
                     DetailsOnCitys_web.remove(cityName);
                 }
 
@@ -97,12 +97,11 @@ public class PostingOfCities implements Callable<Boolean>{
                     }
                 }
 
-
-
                 // we write the doc data to the file
                 DetailsOnCitys_doc.remove(cityName);
                 toWrite = detailsWeb + detailsDoc;
-                stringBuilder.append(toWrite);
+                stringBuilder.append(toWrite+"\n");
+                toWrite = detailsWeb + detailsDoc;
                 // we update the dictionary of where is the data
                 placesInDoc.put(cityName, counter);
                 counter = counter + toWrite.length();
@@ -170,7 +169,6 @@ public class PostingOfCities implements Callable<Boolean>{
      */
     public String addCity(String city, int doc,HashSet sity){
         this.mutex.lock();
-
         //we get the list of arrays that we need to append the arrey to
         HashMap<Integer,HashSet<Integer>> cityDoc;
         if (!DetailsOnCitys_doc.containsKey(city)) {
@@ -178,6 +176,8 @@ public class PostingOfCities implements Callable<Boolean>{
             nameOfCitys.add(city);
             cityDoc = new HashMap<>();
             DetailsOnCitys_doc.put(city, cityDoc);
+
+
         } else {
             cityDoc = DetailsOnCitys_doc.get(city);
         }
@@ -215,7 +215,7 @@ public class PostingOfCities implements Callable<Boolean>{
             try {
                 str = br.readLine();
 
-            while (str != null) {
+                while (str != null) {
                     arr.add(str);
                     str = br.readLine();
                 }
@@ -247,12 +247,6 @@ public class PostingOfCities implements Callable<Boolean>{
         return city;
     }
 
-    /**
-     * @return- a dictionary that its key is the name of the city and the value is where in the file its located
-     */
-    public HashMap<String, Integer> getPlacesInDoc (){
-        return placesInDoc;
-    }
 
     @Override
     public Boolean call() throws Exception {

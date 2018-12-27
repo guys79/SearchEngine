@@ -1,4 +1,4 @@
-package Model;
+package Model.Index;
 import sun.awt.Mutex;
 import java.io.*;
 import java.util.*;
@@ -21,14 +21,17 @@ public class Indexer {
     private PostingOfCities postingOfCities;//The city indexer
     private List<String> fileNames;//The list of new file names. This list will contain the names of the final posting files
     private LanguageIndexer languageIndexer;//The languageIndexer .This class will index the languages
-    private AddDictionaryToFile addDictionaryToFile;//This class will add the dictionay into a file
+    private AddDictionaryToFile addDictionaryToFile;//This class will add the dictionary into a file
     private List<String> namesOfNonTermPostingFiles;
+    private HashMap<Integer,String []> entities;
+    private Mutex entityMutex;
 
 
     /**
      * This is the constructor of the class
      *
      * @param corpusPath    - The path to the corpus. that is where all the data is.
+     * @param stopWordsPath - The path to the stop words file.
      * @param stopWordsPath - The path to the stop words file.
      * @param postFilepath  - The path to the location of the posting files to be
      * @param stem          - True - if we will stem the terms, False - otherwise
@@ -37,6 +40,8 @@ public class Indexer {
         //Initializing all the variables
         this.fileNames = new ArrayList<>();
         this.docNum = 0;
+        this.entityMutex = new Mutex();
+        this.entities = new HashMap<>();
         this.stopWordsPath = stopWordsPath;
         this.readFile = new ReadFile(corpusPath);
         this.mainDictionary = new HashMap<>();
@@ -49,17 +54,46 @@ public class Indexer {
         this.languageIndexer = new LanguageIndexer(postFilePath,stem);
         this.namesOfNonTermPostingFiles = new ArrayList<>();
 
+
+        //Copying the stop_words to the posting
+        File stopWordsFile = new File(this.stopWordsPath+"\\stop_words.txt");
+        File newStpWordsLocation = new File(this.postFilePath+"\\stop_words.txt");
+        copyStopWords(stopWordsFile,newStpWordsLocation);
         //Creating the first temporary posting files
         initTempPosting();
 
         //Initialize the names of the non term posting file list
-        this.namesOfNonTermPostingFiles.add("dictionary"+"_"+stem);
-        this.namesOfNonTermPostingFiles.add("citys"+"_"+stem);
-        this.namesOfNonTermPostingFiles.add("languages"+"_"+stem);
-        this.namesOfNonTermPostingFiles.add("documents"+"_"+stem);
+        this.namesOfNonTermPostingFiles.add("dictionary"+"&"+stem);
+        this.namesOfNonTermPostingFiles.add("citys"+"&"+stem);
+        this.namesOfNonTermPostingFiles.add("languages"+"&"+stem);
+        this.namesOfNonTermPostingFiles.add("allDocs"+"&"+stem);
+        this.namesOfNonTermPostingFiles.add("entities"+"&"+stem);
 
     }
 
+    public void copyStopWords(File source,File dest)
+    {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        try
+        {
+            inputStream = new FileInputStream(source);
+            outputStream = new FileOutputStream(dest);
+            byte[] buffer = new byte[1024];
+            int length;
+            while((length = inputStream.read(buffer))>0)
+            {
+                outputStream.write(buffer,0,length);
+            }
+            inputStream.close();
+            outputStream.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * This function will delete the posting files and will reset the main dictionary
@@ -225,10 +259,24 @@ public class Indexer {
         this.executorService.submit(this.postingOfCities);
         //Indexing the languages
         this.executorService.submit(this.languageIndexer);
+
+
+        EntityIndexer entityIndexer = new EntityIndexer(this.postFilePath+"\\entities&"+stem+".txt",this.entities,mainDictionary);
+        Future<Boolean> futureEntity = this.executorService.submit(entityIndexer);
+        try {
+            futureEntity.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
         //Indexing the main dictionary
         this.addDictionaryToFile = new AddDictionaryToFile(this.postFilePath,this.mainDictionary,stem);
         this.executorService.submit(this.addDictionaryToFile);
+
         //Organizing the indexed file into the wanted state
+        //sort and split
         sortAndSplit();
     }
 
@@ -519,6 +567,15 @@ public class Indexer {
                 return strings[i].toUpperCase();
         }
         return "";
+    }
+
+    public void addEntities(int docNum,String [] entities)
+    {
+        this.entityMutex.lock();
+
+        this.entities.put(docNum,entities);
+
+        this.entityMutex.unlock();
     }
 
 

@@ -1,5 +1,4 @@
-package Model;
-
+package Model.Retrieve;
 import sun.awt.Mutex;
 
 import java.io.*;
@@ -11,7 +10,7 @@ import java.util.Scanner;
  * This class is responsible to read the data from the corpus
  * In addition, this class will contain some data on the document
  */
-public class ReadFile {
+public class OnlyReadFile {
     private HashMap<Integer,String> citys;//A dictionary that the key is the number of the doc and his value is the name of the city
     private HashMap<Integer, Integer> max_values_dict;
     private int indexInDirectory;  // The index of the namesInDirectory list
@@ -22,13 +21,13 @@ public class ReadFile {
     private HashMap<Integer,String> dictionary_doc_name_id;  // A dictionary, The key is the name of the doc, and the value is the dicId
     private Mutex mutexDoc; //this mutex will protect dictionary of id's and numbers (dictionary_doc_name_id)
     private Mutex mutexCity; //this mutex will protect dictionary of the numbers and cities (citys)
-    int counter=0;
+
     /**
      * this is the constructor.
      * it should initialaize the parameters and create a file that will save our data
      * @param path- the path of the corpus
      */
-    public ReadFile(String path) {
+    public OnlyReadFile(String path) {
         //initilaize everything
         citys= new HashMap<Integer,String>();
         indexInDirectory = 0;
@@ -57,42 +56,6 @@ public class ReadFile {
 
     }
 
-    /**
-     *  we find the city if there is one and save it
-     * @param start- the number of the line of the doc where the doc starts
-     * @param end- the number of the line of the doc where the doc ends
-     * @param content- the lines of the file
-     */
-    private void addCity(int start, int end, ArrayList<String> content){
-        String newArrey="";
-        // we check if there is a city
-        boolean found1 = true;
-        int i=start;
-        for (i=start;i<end+1;i++) {
-            if (content.get(i).contains("<F P=104>")) {
-                found1=false;
-                break;
-            }
-        }
-        String startSTR = "<F P=104>";
-        String endSTR = "</F>";
-        //if there is a city we save it it
-        String [] strings;
-        if(!found1&&content.get(i).contains("</F>")&&content.get(i).indexOf(endSTR) - 1>content.get(i).indexOf(startSTR) + startSTR.length() + 1) {
-            String myString = content.get(i);
-            String nameOfFile = myString.substring(myString.indexOf(startSTR) + startSTR.length(), myString.indexOf(endSTR));
-            strings = nameOfFile.split(" ");
-            int index = -1;
-            for (int j=0;j<strings.length&&index==-1;j++)
-            {
-                if(!strings[j].equals(" ")&&strings[j].length()>1)
-                    index = j;
-            }
-            nameOfFile = strings[index].toUpperCase();
-
-            citys.put(doc_id_generator, nameOfFile);
-        }
-    }
 
     /**
      * we find the name of the doc and save it
@@ -127,9 +90,6 @@ public class ReadFile {
             right=myString.substring(myString.indexOf(end)-1-deltaRight,myString.indexOf(end)-deltaRight);
         }
         String nameOfFile=myString.substring(myString.indexOf(start)+start.length()+deltaLeft,myString.indexOf(end)-deltaRight);
-        if("LA021690-0001".equals(nameOfFile)){
-            System.out.println(("fuck"));
-        }
         return  nameOfFile;
     }
 
@@ -140,14 +100,12 @@ public class ReadFile {
      * @param content- the lines of the file
      */
     private void storeFiles(int start, int end, ArrayList<String> content){
-        addCity(start, end, content);
         String newArrey="";
         for (int i=start;i<end+1;i++) {
             newArrey= newArrey+"\n"+content.get(i);
         }
         // we save the name of the file.
         String name = findTheName(content,start);
-        counter++;
         dictionary_doc_name_id.put( doc_id_generator,name);
         doc_id_generator = doc_id_generator+1;
         docsInFile.add(newArrey);
@@ -157,7 +115,7 @@ public class ReadFile {
      * this function will give you the next file until there are no more files
      * @return- the next file in the corpus
      */
-    public ArrayList<String> getFile() {
+    private ArrayList<String> getFile() {
         if (indexInDirectory == namesInDirectory.size()) {
             return null;
         }
@@ -198,35 +156,32 @@ public class ReadFile {
     }
 
     /**
-     * @param id- the id of the doc
-     * @return- the name of the doc
+     * This function will return the content of the given document list in their original form (from the corpus)
+     * @param namesOfDocs- the names of the docs we want to get
+     * @return- a list of docs we want to get
      */
-    public String getNamesOfDocs( int id) {
-        String value = "";
-        this.mutexDoc.lock();
-        if(dictionary_doc_name_id.containsKey(id)){
-            value =  dictionary_doc_name_id.remove(id);
-            this.mutexDoc.unlock();
-            return value;
+    public ArrayList<String> getTheFiles(ArrayList<String> namesOfDocs){
+        ArrayList<String> toReturn= new ArrayList<String>();
+        ArrayList<String> arr;
+        arr= getFile();
+        int i;
+        int j;
+        ArrayList<String> temp;
+        temp=new ArrayList<String>();
+        while(arr!=null&&namesOfDocs.size()>toReturn.size()){
+            i=0;
+            j=0;
+            for(i=0;i<arr.size();i++){
+                temp.add(arr.get(i));
+                for(j=0;j<namesOfDocs.size();j++){
+                    if(findTheName(temp,0).equals(namesOfDocs.get(j))){
+                        toReturn.add(arr.get(i));
+                    }
+                }
+                temp.remove(0);
+            }
+            arr= getFile();
         }
-        this.mutexDoc.unlock();
-        return "";
-    }
-
-    /**
-     * @param id- the id of the doc
-     * @return- the name of the city in the doc
-     */
-    public String getNameOfCity(int id){
-        String value;
-        this.mutexCity.lock();
-        if (citys.containsKey(id)){
-            value = citys.remove(id);
-            this.mutexCity.unlock();
-            return value;
-        }
-        this.mutexCity.unlock();
-        return "";
-
+        return toReturn;
     }
 }

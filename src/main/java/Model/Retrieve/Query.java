@@ -23,7 +23,7 @@ public class Query {
      */
     public Query(String query,String postingPath,boolean stem) {
 
-
+        //
         //init the map
         this.termsAndTf = new HashMap<>();
 

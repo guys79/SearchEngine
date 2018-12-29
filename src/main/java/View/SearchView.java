@@ -26,18 +26,17 @@ public class SearchView implements Initializable{
     public Button Brows;
     @FXML
     public Button RUN;
-    @FXML
-    public String postingPath;
-    @FXML
-    public String querisPath;
+
     @FXML
     public TextField oneQuery;
-    @FXML
-    public SearchController controller;
-    @FXML
-    public Dictionary<String,String[]> releventDoctoQuery;
+
     @FXML
     public ListView qeuriesToChoose;
+
+    public SearchController controller;
+    public HashMap<String,String[]> releventDoctoQuery;
+    public String postingPath;
+    public String querisPath;
 
 
 
@@ -46,12 +45,18 @@ public class SearchView implements Initializable{
     {
         this.RUN.setDisable(true);
         this.Brows.setDisable(true);
+        this.releventDoctoQuery = new HashMap<>();
         postingPath= "";
         querisPath= "";
         this.controller=new SearchController();
         controller.setView(this);
+        checkInitStemming();
     }
 
+    private void checkInitStemming()
+    {
+        this.stemCheckBox.setSelected(true);
+    }
     public void setOneQuery(){
         checkRun();
     }
@@ -181,8 +186,8 @@ public class SearchView implements Initializable{
         System.out.println("jggighigojhghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
         ObservableList<String> list = FXCollections.observableArrayList();
         qeuriesToChoose.setItems(list);
-        for (Enumeration e = releventDoctoQuery.keys(); e.hasMoreElements();) {
-            list.add((String) e.nextElement());
+        for (String query :this.releventDoctoQuery.keySet()) {
+            list.add(query);
         }
         qeuriesToChoose.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }

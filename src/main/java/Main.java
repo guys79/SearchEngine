@@ -20,6 +20,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(ClassLoader.getSystemResource("search_view.fxml"));
+        //Parent root = FXMLLoader.load(ClassLoader.getSystemResource("view.fxml"));
         primaryStage.setScene(new Scene(root, 900, 400));
         primaryStage.setResizable(false);
         primaryStage.setTitle("Search Engine Project");

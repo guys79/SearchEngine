@@ -20,12 +20,13 @@ public class SearchController {
         this.view= searchView;
     }
 
-    /**
-     * This function will start the indexing
-     */
+
     public void brows() {
         boolean isStem= view.getSemantic();
         String[] citys = view.getReleventCitys();
+        System.out.println("city start");
+        print(citys);
+        System.out.println("city end");
         String postingPath = view.getPostingPath();
         boolean isChecked = view.getStem();
         searcher = new Searcher(postingPath, isChecked, citys, isStem);
@@ -47,9 +48,20 @@ public class SearchController {
         String query= view.oneQuery.getText();
         boolean isStem= view.getSemantic();
         String[] citys = view.getReleventCitys();
+        System.out.println("city start");
+        print(citys);
+        System.out.println("city end");
         String postingPath = view.getPostingPath();
         boolean isChecked = view.getStem();
         searcher = new Searcher(postingPath, isChecked, citys, isStem);
+        System.out.println(searcher+" searcher");
         view.releventDoctoQuery.put(query,searcher.getMostRelevantDocNum(query));
+    }
+    private void print(String [] array)
+    {
+        for(int i=0;i<array.length;i++)
+        {
+            System.out.println(array[i]);
+        }
     }
 }

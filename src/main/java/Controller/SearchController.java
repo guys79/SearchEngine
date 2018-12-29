@@ -32,10 +32,10 @@ public class SearchController {
         String queryPath= view.querisPath;
         GetQuery q= new GetQuery(queryPath);
         String s= q.getNextQuery();
-        while(s!=null){
+        /*while(s!=null){
             view.releventDoctoQuery.put(s,searcher.getMostRelevantDocNum(s));
             s=q.getNextQuery();
-        }
+        }*/
     }
 
     public List<String> getNamesOfCitys(){
@@ -47,14 +47,13 @@ public class SearchController {
         String query= view.oneQuery.getText();
         boolean isStem= view.getSemantic();
         String[] citys = view.getReleventCitys();
-        System.out.println("city start");
-        print(citys);
-        System.out.println("city end");
         String postingPath = view.getPostingPath();
         boolean isChecked = view.getStem();
         searcher = new Searcher(postingPath, isChecked, citys, isStem);
         System.out.println(searcher+" searcher");
-        view.releventDoctoQuery.put(query,searcher.getMostRelevantDocNum(query));
+        String [] docs = searcher.getMostRelevantDocNum(query);
+        System.out.println(docs[0]);
+        view.releventDoctoQuery.put(query,docs);
     }
     private void print(String [] array)
     {
@@ -97,7 +96,6 @@ public class SearchController {
 
         File [] children = postingFile.listFiles();
         String substringToSearchFor = "_"+stem+".txt";
-        System.out.println(substringToSearchFor);
         String name;
         String subName;
         for(int i=0;i<children.length;i++){

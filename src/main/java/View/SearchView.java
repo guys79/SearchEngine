@@ -133,6 +133,7 @@ public class SearchView implements Initializable{
         ObservableList<String> list = FXCollections.observableArrayList();
         citys.setItems(list);
         List<String> namesOfCitys = controller.getNamesOfCitys();
+        namesOfCitys.sort(String::compareToIgnoreCase);
         System.out.println("this is" + namesOfCitys);
         for (int i = 0; i < namesOfCitys.size(); i++) {
             list.add(namesOfCitys.get(i));
@@ -166,7 +167,7 @@ public class SearchView implements Initializable{
     }
 
     private void checkRun(){
-        RUN.setDisable(!(!this.postingPath.equals("")&&this.oneQuery.getText().equals("") && didLoadCities));
+        RUN.setDisable(!(!this.postingPath.equals("")&& didLoadCities));
     }
 
     /**

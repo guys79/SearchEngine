@@ -7,6 +7,7 @@ import Model.Index.LoadDictionary;
 import org.tartarus.snowball.SnowballStemmer;
 import org.tartarus.snowball.ext.porterStemmer;
 
+import javax.swing.text.html.ListView;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -33,8 +34,14 @@ public class Searcher {
     private boolean semantic;
     private int numOfDoc;
     private double averageDocLength;
+    private List<String> namesOfCitys;
+
+    public Searcher(String postingFilesPath){
+        this.postingFilesPath =postingFilesPath;
+    }
 
     public Searcher(String postingFilesPath,boolean stem,String [] relaventCities,boolean semantic) {
+        System.out.println(postingFilesPath);
         // TODO: 12/23/2018 Where get the futures??
         this.executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
         this.stem = stem;
@@ -571,6 +578,17 @@ public class Searcher {
         {
             System.out.println(a[i]);
         }
+    }
+
+    public List<String> getNamesOfCitys(){
+        GetCity getCity = new GetCity(this.postingFilesPath+"\\"+"citys"+"&"+true+".txt");
+        GetCity getCity1 = new GetCity(this.postingFilesPath+"\\"+"citys"+"&"+false+".txt");
+        List<String> myTrue= getCity.getNamesOfCitys();
+        //List<String> myFalse= getCity1.getNamesOfCitys();
+      //  if(myFalse!=null){
+       //     return myFalse;
+      //  }
+        return  myTrue;
     }
 
 }

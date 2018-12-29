@@ -1,11 +1,11 @@
 package Model.Retrieve;
 
 
-import Model.Index.CityInfo;
-
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
@@ -46,6 +46,31 @@ public class GetCity implements Callable<Boolean> {
         this.cityInfo.put(cityName.toLowerCase(),docNums);
 
     }
+
+    /**
+     * This function will read the content of the cities form the file
+     * @return - True if that process succeeded
+     */
+    public List<String> getNamesOfCitys(){
+        List<String> namesOfCitys= new ArrayList<String>();
+        File file = new File(path);
+        final BufferedReader s;
+        String av;
+        try {
+            s = new BufferedReader(new FileReader(file));
+            while ((av = s.readLine()) != null) {
+                namesOfCitys.add(av.substring(0,av.indexOf('@')));
+            }
+            s.close();
+            return namesOfCitys;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * This function will read the content of the cities form the file
      * @return - True if that process succeeded

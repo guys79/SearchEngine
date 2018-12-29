@@ -4,29 +4,23 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane id="querisFilePath" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.secondView">
+<Pane id="querisFilePath" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.SearchView">
     <children>
-        <Button id="postingFilePath" layoutX="65.0" layoutY="74.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="posting" />
-        <Button id="querisFilePath" layoutX="65.0" layoutY="163.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="queris" />
-        <CheckBox id="stemCheckBox" layoutX="65.0" layoutY="214.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="use stemming?" />
-        <CheckBox id="semanticCheckBox" layoutX="65.0" layoutY="250.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="use semantics?" />
-        <Label id="postingTXT" layoutX="48.0" layoutY="36.0" prefHeight="17.0" prefWidth="149.0" text="please enter posting:" />
-        <Label id="querisTXT" layoutX="48.0" layoutY="120.0" prefHeight="17.0" prefWidth="149.0" text="please enter queris: " />
-        <ListView id="citys" layoutX="187.0" layoutY="37.0" prefHeight="200.0" prefWidth="200.0" />
-        <Button id="Brows" layoutX="68.0" layoutY="340.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Brows" />
+        <Button fx:id="postingFilePath" layoutX="65.0" layoutY="74.0" mnemonicParsing="false" onAction="#choosePostingPath" prefHeight="25.0" prefWidth="94.0" text="posting" />
+        <Button fx:id="querisFilePath" layoutX="65.0" layoutY="163.0" mnemonicParsing="false" onAction="#chooseQueryPath" prefHeight="25.0" prefWidth="94.0" text="queris" />
+        <CheckBox fx:id="stemCheckBox" layoutX="65.0" layoutY="214.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="use stemming?" />
+        <CheckBox fx:id="semanticCheckBox" layoutX="65.0" layoutY="250.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="use semantics?" />
+        <Label fx:id="postingTXT" layoutX="48.0" layoutY="36.0" prefHeight="17.0" prefWidth="149.0" text="please enter posting:" />
+        <Label fx:id="querisTXT" layoutX="48.0" layoutY="120.0" prefHeight="17.0" prefWidth="149.0" text="please enter queris: " />
+        <ListView fx:id="citys" layoutX="187.0" layoutY="37.0" prefHeight="200.0" prefWidth="200.0" />
+        <Button fx:id="Brows" layoutX="68.0" layoutY="340.0" mnemonicParsing="false" onAction="#Brows" prefHeight="25.0" prefWidth="66.0" text="Brows" />
         <Label layoutX="186.0" layoutY="254.0" prefHeight="17.0" prefWidth="127.0" text="enter query" />
-        <TextField id="oneQuery" layoutX="186.0" layoutY="297.0" />
-        <Button id="RUN" layoutX="188.0" layoutY="340.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="RUN" />
-      <TableView layoutX="409.0" layoutY="0" prefHeight="401.0" prefWidth="413.0">
-        <columns>
-          <TableColumn prefWidth="206.5" text="C1" />
-          <TableColumn prefWidth="206.5" text="C2" />
-        </columns>
-      </TableView>
+        <TextField fx:id="oneQuery" onKeyReleased="#setOneQuery" layoutX="186.0" layoutY="297.0" />
+        <Button fx:id="RUN" layoutX="188.0" layoutY="340.0" mnemonicParsing="false" onAction="#Run" prefHeight="25.0" prefWidth="79.0" text="RUN" />
+      <ListView fx:id="qeuriesToChoose" layoutX="410.0" layoutY="61.0" prefHeight="307.0" prefWidth="378.0" />
+      <Label fx:id="bla" layoutX="588.0" layoutY="28.0" prefHeight="33.0" prefWidth="79.0" text="queries" />
     </children>
 </Pane>

@@ -1,4 +1,4 @@
-package Model;
+package Model.Retrieve;
 
 public class DocInfo {
     private int docNum;

@@ -103,9 +103,8 @@ public class SearchController {
             if(name.length()<substringToSearchFor.length())
                 continue;
             subName = name.substring(name.length()-substringToSearchFor.length());
-            if(subName.equals(substringToSearchFor));
+            if(subName.equals(substringToSearchFor))
             {
-       //         System.out.println("name is "+name +" the substring is " +name.substring(name.length()-substringToSearchFor.length()));
                 return true;
             }
         }

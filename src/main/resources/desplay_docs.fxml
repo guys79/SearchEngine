@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="693.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label id="Docs1" layoutX="34.0" layoutY="71.0" prefHeight="17.0" prefWidth="625.0" text="Label" />
+      <Label id="Docs2" layoutX="34.0" layoutY="112.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
+      <Label id="Docs3" layoutX="34.0" layoutY="148.0" prefHeight="17.0" prefWidth="637.0" text="Label" />
+      <Label id="Docs7" layoutX="34.0" layoutY="298.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
+      <Label id="Docs6" layoutX="34.0" layoutY="256.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
+      <Label id="Docs5" layoutX="34.0" layoutY="220.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
+      <Label id="Docs4" layoutX="34.0" layoutY="185.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
+      <Label id="Docs10" layoutX="34.0" layoutY="404.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
+      <Label id="Docs8" layoutX="34.0" layoutY="335.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
+      <Label id="Docs9" layoutX="34.0" layoutY="367.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
+      <Label layoutX="251.0" layoutY="26.0" prefHeight="17.0" prefWidth="191.0" text="the relavent docs to the query are:" />
+   </children>
+</Pane>

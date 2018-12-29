@@ -253,9 +253,12 @@ public class SearchView implements Initializable{
     }
 
     private void displayQueries() {
+        System.out.println(releventDoctoQuery.size());
+        System.out.println("vjhkjhvliygliuyg");
         ObservableList<String> list = FXCollections.observableArrayList();
         qeuriesToChoose.setItems(list);
         for (String query :this.releventDoctoQuery.keySet()) {
+            System.out.println("hello"+query);
             list.add(query);
         }
         qeuriesToChoose.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);

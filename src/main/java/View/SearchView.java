@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+
 import java.net.URL;
 import java.util.*;
 import java.util.ResourceBundle;
@@ -26,17 +28,19 @@ public class SearchView implements Initializable{
     public Button Brows;
     @FXML
     public Button RUN;
-
+    @FXML
+    public Button loadCities_btn;
     @FXML
     public TextField oneQuery;
-
     @FXML
     public ListView qeuriesToChoose;
+
 
     public SearchController controller;
     public HashMap<String,String[]> releventDoctoQuery;
     public String postingPath;
     public String querisPath;
+    public boolean didLoadCities;
 
 
 
@@ -45,14 +49,20 @@ public class SearchView implements Initializable{
     {
         this.RUN.setDisable(true);
         this.Brows.setDisable(true);
+        this.stemCheckBox.setDisable(true);
         this.releventDoctoQuery = new HashMap<>();
+        disableLoadCities();
         postingPath= "";
         querisPath= "";
         this.controller=new SearchController();
         controller.setView(this);
         checkInitStemming();
     }
-
+    private void disableLoadCities()
+    {
+        this.loadCities_btn.setDisable(true);
+        this.didLoadCities = false;
+    }
     private void checkInitStemming()
     {
         this.stemCheckBox.setSelected(true);
@@ -67,35 +77,77 @@ public class SearchView implements Initializable{
     public void choosePostingPath()
     {
         String path;
-        path =getAbstractPath("posting path");
+        path =getDirectoryAbstractPath("posting path");
         if(path!=null)
         {
-            this.postingFilePath.setStyle("-fx-background-color: #3CB371;");
-            this.postingPath=path;
-            ObservableList<String> list = FXCollections.observableArrayList();
-            citys.setItems(list);
-            List<String> namesOfCitys=controller.getNamesOfCitys();
-            System.out.println("this is"+namesOfCitys);
-            for(int i=0; i<namesOfCitys.size();i++){
-                list.add(namesOfCitys.get(i));
-            }
-            citys.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-            checkStart();
-            checkRun();
+                this.postingPath = path;
+
+             boolean validTrue = this.controller.checkForMustHavePostingFiles(true) && this.controller.checkForPostingFiles(true);
+             boolean validFalse = this.controller.checkForPostingFiles(false) && this.controller.checkForMustHavePostingFiles(false) ;
+        /*    System.out.println("validTrue");
+            System.out.println("Must have - "+ this.controller.checkForMustHavePostingFiles(true));
+            System.out.println("Posting - "+ this.controller.checkForPostingFiles(true));
+            System.out.println("validFalse");
+            System.out.println("Must have - "+ this.controller.checkForMustHavePostingFiles(false));
+            System.out.println("Posting - "+ this.controller.checkForPostingFiles(false));*/
+             if(validFalse || validTrue)
+             {
+                 this.loadCities_btn.setDisable(false);
+                 this.postingFilePath.setStyle("-fx-background-color: #3CB371;");
+                 if(validFalse && validTrue)
+                 {
+                     this.stemCheckBox.setDisable(false);
+                 }
+                 else if(validFalse)
+                 {
+                     this.stemCheckBox.setDisable(true);
+                     this.stemCheckBox.setSelected(false);
+                 }
+                 else
+                 {
+                     this.stemCheckBox.setDisable(true);
+                     this.stemCheckBox.setSelected(true);
+                 }
+                 checkStart();
+                 checkRun();
+             }
+             else
+             {
+                 this.disableLoadCities();
+                 this.postingFilePath.setStyle("-fx-background-color: #B22222;");
+             }
+
         }
         else
         {
+            this.disableLoadCities();
             this.postingFilePath.setStyle("-fx-background-color: #B22222;");
         }
 
     }
 
+
+    public void loadCitiesButtonPress() {
+
+
+        ObservableList<String> list = FXCollections.observableArrayList();
+        citys.setItems(list);
+        List<String> namesOfCitys = controller.getNamesOfCitys();
+        System.out.println("this is" + namesOfCitys);
+        for (int i = 0; i < namesOfCitys.size(); i++) {
+            list.add(namesOfCitys.get(i));
+        }
+        citys.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        this.didLoadCities = true;
+        checkStart();
+        checkRun();
+    }
     /**
      * This function will choose a path to the corpus file
      */
     public void chooseQueryPath() {
         String path;
-        path = getAbstractPath("queries path");
+        path = getAbstractFilePath("queries path");
         if (path != null) {
             this.querisFilePath.setStyle("-fx-background-color: #3CB371;");
             this.querisPath = path;
@@ -110,11 +162,11 @@ public class SearchView implements Initializable{
          */
     public void checkStart()
     {
-        Brows.setDisable(!(!this.querisPath.equals("") && !this.postingPath.equals("")));
+        Brows.setDisable(!(!this.querisPath.equals("") && !this.postingPath.equals("") && didLoadCities));
     }
 
     private void checkRun(){
-        RUN.setDisable(!this.postingPath.equals("")&&this.oneQuery.getText().equals(""));
+        RUN.setDisable(!(!this.postingPath.equals("")&&this.oneQuery.getText().equals("") && didLoadCities));
     }
 
     /**
@@ -122,7 +174,7 @@ public class SearchView implements Initializable{
      * @param headline - The given headline
      * @return - The chosen path
      */
-    public String getAbstractPath(String headline)
+    public String getDirectoryAbstractPath(String headline)
     {
         DirectoryChooser directoryChooser=new DirectoryChooser();
         directoryChooser.setTitle(headline);
@@ -135,7 +187,24 @@ public class SearchView implements Initializable{
             return null;
         }
     }
-
+    /**
+     * This function will start a file chooser with a given title
+     * @param headline - The given headline
+     * @return - The chosen path
+     */
+    public String getAbstractFilePath(String headline)
+    {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(headline);
+        try {
+            return fileChooser.showOpenDialog(null).getAbsolutePath();
+        }
+        catch (Exception e)
+        {
+            //e.printStackTrace();
+            return null;
+        }
+    }
     /**
      * This function will return if the checkBox is selected.
      * @return - True if the checkBox is selected, False otherwise
@@ -169,7 +238,7 @@ public class SearchView implements Initializable{
         return postingPath;
     }
 
-    public String getQuerisPath() {
+    public String getQueriesPath() {
         return querisPath;
     }
 
@@ -183,7 +252,6 @@ public class SearchView implements Initializable{
     }
 
     private void displayQueries() {
-        System.out.println("jggighigojhghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
         ObservableList<String> list = FXCollections.observableArrayList();
         qeuriesToChoose.setItems(list);
         for (String query :this.releventDoctoQuery.keySet()) {
@@ -192,8 +260,8 @@ public class SearchView implements Initializable{
         qeuriesToChoose.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
 
-    public void Run(){
-        controller.Run();
+    public void run(){
+        controller.run();
         displayQueries();
     }
 

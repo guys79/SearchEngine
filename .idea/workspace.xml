@@ -3,17 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="7e65b734-29c6-462a-ba06-24a4a65dabc4" name="Default" comment="finally!!!!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/SearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/SearchController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Index/PostingOfCities.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Index/PostingOfCities.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/QueryDisplayerView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/QueryDisplayerView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/SavedViewData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/SavedViewData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View/SearchView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/View/SearchView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/search_view.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/view.fxml" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -65,64 +61,55 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/View/SavedViewData.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="17" column="12" lean-forward="true" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1444#1445#0" expanded="true" />
-                <element signature="e#1479#1480#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file leaf-file-name="SearchView.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/View/SearchView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="288" lean-forward="true" selection-start-line="288" selection-end-line="288" />
+            <state relative-caret-position="2575">
+              <caret line="341" selection-start-line="341" selection-end-line="341" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Controller/SearchController.java">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="147" column="23" selection-start-line="147" selection-start-column="23" selection-end-line="147" selection-end-column="23" />
+            <state relative-caret-position="247">
+              <caret line="17" column="35" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1458#1459#0" expanded="true" />
-                <element signature="e#1489#1490#0" expanded="true" />
-                <element signature="e#1539#1540#0" expanded="true" />
-                <element signature="e#1579#1580#0" expanded="true" />
+                <element signature="e#863#864#0" expanded="true" />
+                <element signature="e#891#892#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file leaf-file-name="Searcher.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
-              <caret line="254" column="30" selection-start-line="254" selection-start-column="30" selection-end-line="254" selection-end-column="30" />
+            <state relative-caret-position="446">
+              <caret line="259" column="21" selection-start-line="259" selection-start-column="21" selection-end-line="259" selection-end-column="21" />
               <folding>
-                <element signature="e#1907#1908#0" expanded="true" />
-                <element signature="e#1944#1945#0" expanded="true" />
-                <element signature="e#21050#21051#0" expanded="true" />
-                <element signature="e#21082#21083#0" expanded="true" />
-                <element signature="e#21284#21285#0" expanded="true" />
-                <element signature="e#21320#21321#0" expanded="true" />
-                <element signature="e#21476#21477#0" expanded="true" />
-                <element signature="e#21520#21521#0" expanded="true" />
-                <element signature="e#21574#21575#0" expanded="true" />
-                <element signature="e#21636#21637#0" expanded="true" />
-                <element signature="e#21682#21683#0" expanded="true" />
-                <element signature="e#21773#21774#0" expanded="true" />
+                <element signature="e#21152#21153#0" expanded="true" />
+                <element signature="e#21184#21185#0" expanded="true" />
+                <element signature="e#21386#21387#0" expanded="true" />
+                <element signature="e#21422#21423#0" expanded="true" />
+                <element signature="e#21578#21579#0" expanded="true" />
+                <element signature="e#21622#21623#0" expanded="true" />
+                <element signature="e#21676#21677#0" expanded="true" />
+                <element signature="e#21738#21739#0" expanded="true" />
+                <element signature="e#21784#21785#0" expanded="true" />
+                <element signature="e#21875#21876#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SplitToFileThread.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/SplitToFileThread.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="383">
+              <caret line="35" column="23" lean-forward="true" selection-start-line="35" selection-start-column="23" selection-end-line="35" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -139,9 +126,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>.setStyle</find>
-      <find>syste</find>
-      <find>brow</find>
       <find>ini</find>
       <find>setpr</find>
       <find>add</find>
@@ -169,6 +153,9 @@
       <find>run()</find>
       <find>run</find>
       <find>system.out.prin</find>
+      <find>pr(</find>
+      <find>compa</find>
+      <find>comparei</find>
     </findStrings>
     <replaceStrings>
       <replace>double</replace>
@@ -218,10 +205,8 @@
         <option value="$PROJECT_DIR$/src/main/java/Controller/QueryDisplayController.java" />
         <option value="$PROJECT_DIR$/src/main/java/ViewChanger.java" />
         <option value="$PROJECT_DIR$/src/main/resources/desplay_docs.fxml" />
-        <option value="$PROJECT_DIR$/src/main/java/Model/Index/PostingOfCities.java" />
         <option value="$PROJECT_DIR$/src/main/java/View/AbstractView.java" />
         <option value="$PROJECT_DIR$/src/main/java/View/IndexView.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Main.java" />
         <option value="$PROJECT_DIR$/src/main/resources/search_view.fxml" />
         <option value="$PROJECT_DIR$/src/main/java/Model/Retrieve/AddSemanticToQuery.java" />
         <option value="$PROJECT_DIR$/src/main/java/View/ViewChanger.java" />
@@ -229,6 +214,8 @@
         <option value="$PROJECT_DIR$/src/main/java/View/SavedViewData.java" />
         <option value="$PROJECT_DIR$/src/main/java/View/SearchView.java" />
         <option value="$PROJECT_DIR$/src/main/java/Controller/SearchController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Model/Index/PostingOfCities.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java" />
       </list>
     </option>
@@ -257,10 +244,13 @@
       <select />
     </treeState>
   </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-15" />
-    <option name="width" value="1628" />
-    <option name="height" value="1715" />
+    <option name="x" value="-7" />
+    <option name="width" value="974" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -268,7 +258,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -308,6 +297,32 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SearchEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SearchEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Model" type="462c0819:PsiDirectoryNode" />
+              <item name="Index" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SearchEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SearchEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Model" type="462c0819:PsiDirectoryNode" />
+              <item name="Retrieve" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SearchEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SearchEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="View" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -321,7 +336,9 @@
           <select />
         </subPane>
       </pane>
+      <pane id="AndroidView" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -364,29 +381,54 @@
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="SearchEngine" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <method v="2">
+      <method>
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <method v="2">
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+      <method>
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
       <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
       <properties />
       <listeners />
-      <method v="2">
+      <method>
         <option name="Make" enabled="true" />
       </method>
     </configuration>
@@ -423,6 +465,7 @@
       <workItem from="1546115995296" duration="318000" />
       <workItem from="1546116322958" duration="1435000" />
       <workItem from="1546163446140" duration="20277000" />
+      <workItem from="1546193737703" duration="4620000" />
     </task>
     <task id="LOCAL-00001" summary="New structure + searcher + + TermInfo">
       <created>1545497393143</created>
@@ -568,7 +611,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="121554000" />
+    <option name="totallyTimeSpent" value="126174000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -580,67 +623,67 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="-6" width="1293" height="693" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20080972" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Designer" order="2" />
-      <window_info id="Image Layers" order="3" />
-      <window_info id="Capture Tool" order="4" />
-      <window_info id="UI Designer" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49959514" weight="0.3291815" />
-      <window_info anchor="bottom" id="Debug" order="2" weight="0.09430605" />
-      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
-      <window_info active="true" anchor="bottom" id="Run" order="5" sideWeight="0.4979757" visible="true" weight="0.2580071" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5020243" side_tool="true" weight="0.2580071" />
-      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.49959514" weight="0.32740214" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.49959514" weight="0.32731137" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info id="Image Layers" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5020243" side_tool="true" weight="0.2580071" />
       <window_info anchor="right" id="Maven Projects" order="8" weight="0.32955465" />
+      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info active="true" anchor="bottom" id="Run" order="5" sideWeight="0.4979757" visible="true" weight="0.25611052" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info id="Capture Tool" order="4" />
+      <window_info id="Designer" order="2" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20052083" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info id="UI Designer" order="5" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="2" weight="0.25611052" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49959514" weight="0.3291815" />
     </layout>
     <layout-to-restore>
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="bottom" id="Run" order="5" sideWeight="0.4979757" visible="true" weight="0.2580071" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20080972" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Designer" order="2" />
-      <window_info id="Image Layers" order="3" />
-      <window_info id="Capture Tool" order="4" />
-      <window_info id="UI Designer" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49959514" weight="0.3291815" />
-      <window_info anchor="bottom" id="Debug" order="2" weight="0.3985122" />
-      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
-      <window_info anchor="bottom" id="Run" order="5" sideWeight="0.4979757" visible="true" weight="0.2580071" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Designer" order="2" />
+      <window_info id="UI Designer" order="5" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49959514" weight="0.3291815" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="bottom" id="Debug" order="2" weight="0.3985122" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5020243" side_tool="true" weight="0.2580071" />
+      <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
+      <window_info id="Capture Tool" order="4" />
+      <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.49959514" weight="0.32740214" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="right" id="Database" order="6" />
-      <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="right" id="Maven Projects" order="8" weight="0.32955465" />
+      <window_info id="Favorites" order="6" side_tool="true" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -683,6 +726,7 @@
           <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
+      <option name="time" value="3" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -763,13 +807,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="53" column="8" selection-start-line="53" selection-start-column="8" selection-end-line="76" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/SplitToFileThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="485">
-          <caret line="32" column="2" selection-start-line="32" selection-start-column="2" selection-end-line="45" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -865,13 +902,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Query.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="23" column="60" selection-start-line="23" selection-start-column="60" selection-end-line="23" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/GetCity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
@@ -886,24 +916,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/DocDisplayInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Controller/QueryDisplayController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="14" column="5" lean-forward="true" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#436#437#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/DocDisplayInfo.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/Controller/QueryDisplayController.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/UpdateCitiesInfoThread.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -911,31 +925,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/PostingOfCities.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="250" column="28" selection-start-line="250" selection-start-column="28" selection-end-line="250" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/View/AbstractView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
-          <folding>
-            <element signature="e#217#218#0" expanded="true" />
-            <element signature="e#262#263#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/View/AbstractView.java" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_171/javafx-src.zip!/javafx/fxml/JavaFXBuilderFactory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
           <caret line="86" selection-start-line="86" selection-end-line="86" />
-          <folding>
-            <element signature="e#2263#2264#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -943,10 +937,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="97">
           <caret line="3052" selection-start-line="3052" selection-end-line="3052" />
-          <folding>
-            <element signature="e#79010#79011#0" expanded="true" />
-            <element signature="e#79046#79047#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -971,114 +961,67 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/desplay_docs.fxml">
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="21" column="52" selection-start-line="21" selection-start-column="52" selection-end-line="21" selection-end-column="52" />
+    <entry file="file://$PROJECT_DIR$/src/main/resources/desplay_docs.fxml" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/View/QueryDisplayerView.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/View/ViewChanger.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/resources/search_view.fxml" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/View/SavedViewData.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/Controller/SearchController.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/PostingOfCities.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="413">
+          <caret line="191" column="9" lean-forward="true" selection-start-line="191" selection-start-column="9" selection-end-line="191" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Query.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="50" selection-start-line="10" selection-start-column="50" selection-end-line="10" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#345#346#0" expanded="true" />
-            <element signature="e#373#374#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="385">
+          <caret line="95" column="24" selection-start-line="95" selection-start-column="24" selection-end-line="95" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/View/QueryDisplayerView.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Index/SplitToFileThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="53" column="29" lean-forward="true" selection-start-line="53" selection-start-column="29" selection-end-line="53" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1759#1760#0" expanded="true" />
-            <element signature="e#1799#1800#0" expanded="true" />
-            <element signature="e#1691#1692#0" expanded="true" />
-            <element signature="e#1727#1728#0" expanded="true" />
-            <element signature="e#1766#1767#0" expanded="true" />
-            <element signature="e#1805#1806#0" expanded="true" />
-            <element signature="e#1851#1852#0" expanded="true" />
-            <element signature="e#1893#1894#0" expanded="true" />
-            <element signature="e#1945#1946#0" expanded="true" />
-            <element signature="e#1993#1994#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/View/ViewChanger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="68" column="22" lean-forward="true" selection-start-line="68" selection-start-column="22" selection-end-line="68" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/search_view.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="21" column="97" lean-forward="true" selection-start-line="21" selection-start-column="97" selection-end-line="21" selection-end-column="97" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/View/SavedViewData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="17" column="12" lean-forward="true" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1444#1445#0" expanded="true" />
-            <element signature="e#1479#1480#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="383">
+          <caret line="35" column="23" lean-forward="true" selection-start-line="35" selection-start-column="23" selection-end-line="35" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/View/SearchView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="288" lean-forward="true" selection-start-line="288" selection-end-line="288" />
+        <state relative-caret-position="2575">
+          <caret line="341" selection-start-line="341" selection-end-line="341" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Controller/SearchController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="147" column="23" selection-start-line="147" selection-start-column="23" selection-end-line="147" selection-end-column="23" />
+        <state relative-caret-position="247">
+          <caret line="17" column="35" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1458#1459#0" expanded="true" />
-            <element signature="e#1489#1490#0" expanded="true" />
-            <element signature="e#1539#1540#0" expanded="true" />
-            <element signature="e#1579#1580#0" expanded="true" />
+            <element signature="e#863#864#0" expanded="true" />
+            <element signature="e#891#892#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Model/Retrieve/Searcher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="254" column="30" selection-start-line="254" selection-start-column="30" selection-end-line="254" selection-end-column="30" />
+        <state relative-caret-position="446">
+          <caret line="259" column="21" selection-start-line="259" selection-start-column="21" selection-end-line="259" selection-end-column="21" />
           <folding>
-            <element signature="e#1907#1908#0" expanded="true" />
-            <element signature="e#1944#1945#0" expanded="true" />
-            <element signature="e#21050#21051#0" expanded="true" />
-            <element signature="e#21082#21083#0" expanded="true" />
-            <element signature="e#21284#21285#0" expanded="true" />
-            <element signature="e#21320#21321#0" expanded="true" />
-            <element signature="e#21476#21477#0" expanded="true" />
-            <element signature="e#21520#21521#0" expanded="true" />
-            <element signature="e#21574#21575#0" expanded="true" />
-            <element signature="e#21636#21637#0" expanded="true" />
-            <element signature="e#21682#21683#0" expanded="true" />
-            <element signature="e#21773#21774#0" expanded="true" />
+            <element signature="e#21152#21153#0" expanded="true" />
+            <element signature="e#21184#21185#0" expanded="true" />
+            <element signature="e#21386#21387#0" expanded="true" />
+            <element signature="e#21422#21423#0" expanded="true" />
+            <element signature="e#21578#21579#0" expanded="true" />
+            <element signature="e#21622#21623#0" expanded="true" />
+            <element signature="e#21676#21677#0" expanded="true" />
+            <element signature="e#21738#21739#0" expanded="true" />
+            <element signature="e#21784#21785#0" expanded="true" />
+            <element signature="e#21875#21876#0" expanded="true" />
           </folding>
         </state>
       </provider>

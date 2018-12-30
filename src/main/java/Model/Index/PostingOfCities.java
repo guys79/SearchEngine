@@ -169,11 +169,15 @@ public class PostingOfCities implements Callable<Boolean>{
      */
     public void addCity(String city, int doc,HashSet sity){
         this.mutex.lock();
-        if(city == null || city.length() ==0)
+        if(city == null || city.length() ==0) {
+            this.mutex.unlock();
             return;
+        }
         char note = (""+city.charAt(0)).toLowerCase().charAt(0);
-        if(note<'a' || note>'z')
+        if(note<'a' || note>'z') {
+            this.mutex.unlock();
             return;
+        }
         //we get the list of arrays that we need to append the array to
         HashMap<Integer,HashSet<Integer>> cityDoc;
         if (!DetailsOnCitys_doc.containsKey(city)) {

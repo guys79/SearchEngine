@@ -133,14 +133,14 @@ public class Searcher {
         char note = (("" + term.charAt(0)).toLowerCase()).charAt(0);
 
         //Reduction.. Convert the term to 1+ ascii value
-        if (!(note >= 'a' && note <= 'z')) {
+       /* if (!(note >= 'a' && note <= 'z')) {
             String termOther = "1";//The files that refer to others are the files that starts with 1
             for (int i = 0; i < term.length(); i++) {
                 termOther = termOther +"^"+ (int) (term.charAt(i));
             }
 
             term = termOther+"^"+(int)('_');
-        }
+        }*/
 
 
         getFileNameRec(term, fileNames, 0, postingFileNames.size() - 1);
@@ -162,26 +162,27 @@ public class Searcher {
         final int middle = (start + end) / 2;//Get the middle index
         String fullName = this.postingFileNames.get(middle);
         String name = fullName.substring(0,fullName.indexOf("_"));
-        int comp = name.compareToIgnoreCase(term);
-        boolean equal = comp==0 || (name+"^"+(int)'_').compareToIgnoreCase(term)==0 ;
+        int comp = compareIrgular(name,term);
+        System.out.println("term "+term+" name "+name+" result "+comp);
+
         //Problem
         if (middle == start && comp > 0) {
             return;
         }
 
-        if (equal) {
-            String fullFileName = this.postingFileNames.get(middle);
-            String fileName = fullFileName.substring(0,fullFileName.indexOf("_"));
+        if (comp==0) {
+            String fullFileName = fullName;
+            String fileName = name;
             int index = middle;
 
-            while (equal) {
+            while (comp == 0) {
                 fileNames.add(fullFileName);
                 index--;
                 if(index<0)
                     break;
                 fullFileName = this.postingFileNames.get(index);
                 fileName = fullFileName.substring(0,fullFileName.indexOf("_"));
-                equal = fileName.equalsIgnoreCase(term) ||(fileName+"^"+(int)'_').equalsIgnoreCase(term);
+                comp = compareIrgular(fileName,term);
             }
             if(index>=0) {
                 fullFileName = this.postingFileNames.get(index);
@@ -192,8 +193,8 @@ public class Searcher {
             while (index<this.postingFileNames.size()) {
                 fullFileName = this.postingFileNames.get(index);
                 fileName = fullFileName.substring(0,fullFileName.indexOf("_"));
-                equal = fileName.equalsIgnoreCase(term) ||(fileName+"^"+(int)'_').equalsIgnoreCase(term);
-                if(!equal)
+                comp = compareIrgular(fileName,term);
+                if(comp!=0)
                     break;
                 fileNames.add(fullFileName);
                 index++;
@@ -203,7 +204,7 @@ public class Searcher {
 
         String nextName = this.postingFileNames.get(middle + 1);
         nextName = nextName.substring(0,nextName.indexOf("_"));
-        if (comp < 0 && (middle == end || nextName.compareToIgnoreCase(term) > 0)) {
+        if (comp < 0 && (middle == end || compareIrgular(nextName,term)>0)) {
 
             fileNames.add(fullName);
             return;
@@ -247,6 +248,26 @@ public class Searcher {
 
     }
 
+    public int compareIrgular(String fileName,String term)
+    {
+
+        if(fileName.equals("1^^_"))
+            return 1;
+        char note =(""+term.charAt(0)).toLowerCase().charAt(0);
+        if(note>='a' && note<='z')
+            return fileName.compareToIgnoreCase(term);
+        if(fileName.charAt(0)!='1')
+            return 1;
+        String [] split = fileName.split("\\^");
+        String fileNameRestore = "";
+        for(int i=1;i<split.length;i++)
+        {
+            fileNameRestore+= (char)(Integer.parseInt(split[i]));
+
+        }
+        return fileNameRestore.compareToIgnoreCase(term);
+    }
+
     /**
      * This function will get all the information about all the terms that are in the given list
      * @param terms - The given terms that we want to check
@@ -258,6 +279,7 @@ public class Searcher {
 
         //Getting the names of the files that will contain the terms
         HashMap<String,List<String>> fileNamesAndTerms = this.getTermsAndFiles(terms);
+        System.out.println(fileNamesAndTerms);
 
         Set<String> keys = fileNamesAndTerms.keySet();
         Future<HashSet<TermInfo>> [] futures = new Future[keys.size()];
@@ -433,7 +455,7 @@ public class Searcher {
             query =new SemanticQuery(queryText,postingFilesPath,stem);
 
 
-      //  System.out.println(query.getQueryAsList());
+
         HashSet<TermInfo> queryData =this.getRelevantData(query);
 
 

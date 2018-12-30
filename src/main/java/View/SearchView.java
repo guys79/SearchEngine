@@ -8,12 +8,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.util.Pair;
 
 import java.net.URL;
 import java.util.*;
 import java.util.ResourceBundle;
 
-public class SearchView implements Initializable{
+public class SearchView extends AbstractView{
     @FXML
     public Button postingFilePath;//The button that will browse and get the path of the Posting file
     @FXML
@@ -37,26 +38,36 @@ public class SearchView implements Initializable{
 
 
     public SearchController controller;
-    public HashMap<String,String[]> releventDoctoQuery;
+    public HashSet<String> releventDoctoQuery;
     public String postingPath;
     public String querisPath;
     public boolean didLoadCities;
+    private SavedViewData savedViewData;
 
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+        this.savedViewData = null;
         this.RUN.setDisable(true);
         this.Brows.setDisable(true);
         this.stemCheckBox.setDisable(true);
-        this.releventDoctoQuery = new HashMap<>();
+        this.releventDoctoQuery = new HashSet<>();
         disableLoadCities();
         postingPath= "";
         querisPath= "";
         this.controller=new SearchController();
         controller.setView(this);
+
         checkInitStemming();
+        this.qeuriesToChoose.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+
+            String query = (String)newSelection;
+                viewChanger.goToDisplayQueryResult(query,this.controller.run(query),savedViewData);
+
+            });
+
     }
     private void disableLoadCities()
     {
@@ -71,6 +82,31 @@ public class SearchView implements Initializable{
         checkRun();
     }
 
+    private void saveCurrentData()
+    {
+        this.savedViewData=new SavedViewData(this.controller.getSearcher(),this.stemCheckBox.isDisabled(),this.stemCheckBox.isSelected(),semanticCheckBox.isSelected(),this.postingPath,this.querisPath,this.releventDoctoQuery);
+    }
+    public void configure(SavedViewData savedViewData)
+    {
+        this.controller.setSearcher(savedViewData.getSearcher());
+        this.stemCheckBox.setSelected(savedViewData.isStem());
+        this.stemCheckBox.setDisable(savedViewData.isStemButtonDisabled());
+        this.semanticCheckBox.setSelected(savedViewData.isSemantic());
+        this.postingPath = savedViewData.getPostingPath();
+        this.postingFilePath.setStyle("-fx-background-color: #3CB371;");
+        this.releventDoctoQuery = savedViewData.getQuries();
+        this.querisPath = savedViewData.getQuriesPath();
+        this.querisFilePath.setStyle("-fx-background-color: #3CB371;");
+        loadCitiesButtonPress();
+
+        checkStart();
+        checkRun();
+        checkInitStemming();
+        displayQueries();
+        this.savedViewData = savedViewData;
+
+
+    }
     /**
      * This function will choose a path to the posting file
      */
@@ -132,7 +168,7 @@ public class SearchView implements Initializable{
 
         ObservableList<String> list = FXCollections.observableArrayList();
         citys.setItems(list);
-        List<String> namesOfCitys = controller.getNamesOfCitys();
+        List<String> namesOfCitys = controller.getNamesOfCitys(this.getStem());
         namesOfCitys.sort(String::compareToIgnoreCase);
         System.out.println("this is" + namesOfCitys);
         for (int i = 0; i < namesOfCitys.size(); i++) {
@@ -143,6 +179,9 @@ public class SearchView implements Initializable{
         checkStart();
         checkRun();
     }
+
+
+
     /**
      * This function will choose a path to the corpus file
      */
@@ -248,25 +287,27 @@ public class SearchView implements Initializable{
      */
     public void Brows()
     {
+
         controller.brows();
         displayQueries();
+        saveCurrentData();
     }
 
     private void displayQueries() {
-        System.out.println(releventDoctoQuery.size());
-        System.out.println("vjhkjhvliygliuyg");
         ObservableList<String> list = FXCollections.observableArrayList();
         qeuriesToChoose.setItems(list);
-        for (String query :this.releventDoctoQuery.keySet()) {
-            System.out.println("hello"+query);
+        for (String query :this.releventDoctoQuery) {
             list.add(query);
         }
         qeuriesToChoose.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
 
     public void run(){
-        controller.run();
+
+        String query = this.oneQuery.getText();
+        controller.run(query);
         displayQueries();
+        saveCurrentData();
     }
 
 }

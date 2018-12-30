@@ -1,65 +1,19 @@
-import Model.Index.DocumentReturnValue;
-import Model.Index.Parser;
-import Model.Retrieve.*;
+import View.ViewChanger;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.*;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 
 public class Main extends Application {
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(ClassLoader.getSystemResource("search_view.fxml"));
-        //Parent root = FXMLLoader.load(ClassLoader.getSystemResource("view.fxml"));
-        primaryStage.setScene(new Scene(root, 900, 400));
-        primaryStage.setResizable(false);
-        primaryStage.setTitle("Search Engine Project");
-        primaryStage.show();
-        long start = System.nanoTime();
-        //String pathToCorpus = "C:\\Users\\guy schlesinger\\Downloads\\corpus\\d";
-        /*String pathToCorpus = "C:\\Users\\guy schlesinger\\Downloads\\corpus\\corpus";
-        String pathToStopWords = "C:\\Users\\guy schlesinger\\Downloads\\stop_words.txt";
-        String des = "C:\\Users\\guy schlesinger\\Downloads\\corpus\\neee";
-        Indexer indexer = new Indexer(pathToCorpus, pathToStopWords, des, true);
-        try {
-
-            indexer.parseDocumentsThread();
-            long elapsedTime = System.nanoTime() - start;
-            System.out.println("the size of the dictionary " + indexer.getDicSize());
-            System.out.println(indexer.getListOfFileNames());
-            System.out.println(elapsedTime / 1000000000 + " second ~ " + (elapsedTime / 1000000000) / 60 + " minutes and " + (elapsedTime / 1000000000) % 60 + " seconds");
-            indexer.loadDictionary();
-            System.out.println(indexer.getDicSize());
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            indexer.shutDownNow();
-        }*/
+        ViewChanger viewChanger = new ViewChanger();
+        viewChanger.setPrimaryStage(primaryStage);
+        viewChanger.goToSearch();
     }
 
 
     public static void main(String[] args) {
         launch(args);
-        //while (true) {
-        //test();
-        //}
-        //test2();
-        //test3();
-
-        System.out.println("done");
-
-
-//
     }
 }

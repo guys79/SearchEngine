@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="693.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.QueryDisplayerView">
    <children>
-      <Label id="Docs1" layoutX="34.0" layoutY="71.0" prefHeight="17.0" prefWidth="625.0" text="Label" />
-      <Label id="Docs2" layoutX="34.0" layoutY="112.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
-      <Label id="Docs3" layoutX="34.0" layoutY="148.0" prefHeight="17.0" prefWidth="637.0" text="Label" />
-      <Label id="Docs7" layoutX="34.0" layoutY="298.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
-      <Label id="Docs6" layoutX="34.0" layoutY="256.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
-      <Label id="Docs5" layoutX="34.0" layoutY="220.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
-      <Label id="Docs4" layoutX="34.0" layoutY="185.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
-      <Label id="Docs10" layoutX="34.0" layoutY="404.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
-      <Label id="Docs8" layoutX="34.0" layoutY="335.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
-      <Label id="Docs9" layoutX="34.0" layoutY="367.0" prefHeight="17.0" prefWidth="648.0" text="Label" />
-      <Label layoutX="251.0" layoutY="26.0" prefHeight="17.0" prefWidth="191.0" text="the relavent docs to the query are:" />
+      <Label fx:id="query_text" alignment="CENTER" prefHeight="67.0" prefWidth="900.0" text="The relevant documents to the query:">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <TableView fx:id="tableView" layoutY="67.0" prefHeight="345.0" prefWidth="900.0">
+        <columns>
+          <TableColumn fx:id="docIdColumnTableView" prefWidth="403.0" text="Document ID" />
+          <TableColumn fx:id="entitiesColumnTableView" prefWidth="497.0" text="Entities" />
+        </columns>
+      </TableView>
+      <Button fx:id="goBackButton" layoutY="412.0" mnemonicParsing="false" onAction="#goBack" prefHeight="49.0" prefWidth="900.0" text="Go Back" />
    </children>
 </Pane>

@@ -167,9 +167,14 @@ public class PostingOfCities implements Callable<Boolean>{
      * @param sity- this is the set of positions in the doc
      * @return- the name of the city
      */
-    public String addCity(String city, int doc,HashSet sity){
+    public void addCity(String city, int doc,HashSet sity){
         this.mutex.lock();
-        //we get the list of arrays that we need to append the arrey to
+        if(city == null || city.length() ==0)
+            return;
+        char note = (""+city.charAt(0)).toLowerCase().charAt(0);
+        if(note<'a' || note>'z')
+            return;
+        //we get the list of arrays that we need to append the array to
         HashMap<Integer,HashSet<Integer>> cityDoc;
         if (!DetailsOnCitys_doc.containsKey(city)) {
             //we add to the dict
@@ -244,7 +249,6 @@ public class PostingOfCities implements Callable<Boolean>{
             DetailsOnCitys_web.put(city, arrOfWeb);
         }
         this.mutex.unlock();
-        return city;
     }
 
 

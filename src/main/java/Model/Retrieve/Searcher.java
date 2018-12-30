@@ -36,8 +36,10 @@ public class Searcher {
     private double averageDocLength;
     private List<String> namesOfCitys;
 
-    public Searcher(String postingFilesPath){
+    public Searcher(String postingFilesPath,boolean isStemmed){
         this.postingFilesPath =postingFilesPath;
+        this.stem = isStemmed;
+        this.semantic = false;
     }
 
     public Searcher(String postingFilesPath,boolean stem,String [] relaventCities,boolean semantic) {
@@ -65,6 +67,7 @@ public class Searcher {
         //Entities
         this.entityRetrieval = new EntityRetrieval(this.postingFilesPath+"\\"+"entities"+"&"+stem+".txt");
         futureEntity = executorService.submit(this.entityRetrieval);
+        executorService.shutdown();
         
         
         //Initializing the data structures
@@ -256,11 +259,12 @@ public class Searcher {
         Set<String> keys = fileNamesAndTerms.keySet();
         Future<HashSet<TermInfo>> [] futures = new Future[keys.size()];
         int i = 0;
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
         //For each file, get the data about the terms
         for(String key:keys)
         {
             //public RetrieveTermInfo(String fileName, HashSet<String> terms,String postingFilePath)
-            futures[i] = this.executorService.submit(new RetrieveTermInfo(key,new HashSet(fileNamesAndTerms.get(key)),this.postingFilesPath));
+            futures[i] = executorService.submit(new RetrieveTermInfo(key,new HashSet(fileNamesAndTerms.get(key)),this.postingFilesPath));
             i++;
         }
 
@@ -303,8 +307,8 @@ public class Searcher {
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
+            executorService.shutdown();
         }
-
         return new HashSet<>(tempDic.values());
 
     }
@@ -417,7 +421,7 @@ public class Searcher {
 
     }
 
-    public String [] getMostRelevantDocNum(String queryText)
+    public int [] getMostRelevantDocNum(String queryText)
     {
 
         Query query;
@@ -496,16 +500,8 @@ public class Searcher {
         //pr(docsToReturn);
         //pr2(scores);
         //boolean flag = true;
-        for(int i=0;i<NUM_OF_DOCS_TO_RETURN;i++)
-        {
-            if(docsToReturn[i]==-1)
-                docNames[i] = "";
-            else
-                docNames[i] = this.documentPostingInformation.getDetailsOnDocs(docsToReturn[i]).getDocName();
-
-        }
-
-        return docNames;
+        return docsToReturn;
+        //return docNames;
     }
 
     private double update(double [] scores, int [] id,int doc,double score,double minValue)
@@ -589,6 +585,42 @@ public class Searcher {
        //     return myFalse;
       //  }
         return  myTrue;
+    }
+
+    /**
+     * This function will return whether we search in the stemmed posting files or not
+     * @return - True if we stemmed
+     */
+    public boolean getStem()
+    {
+        return this.stem;
+    }
+
+    /**
+     * This function will return whether we used semantics in order to find the most relevant document
+     * @return - True if we used semantics
+     */
+    public boolean getSemantic()
+    {
+        return this.semantic;
+    }
+
+    /**
+     * This fnction will return the posting file path used
+     * @return - The posting file path
+     */
+    public String getPostingFile()
+    {
+        return this.postingFilesPath;
+    }
+
+    public List<String> getEntities(int docId)
+    {
+        return this.entityRetrieval.getEntities(docId);
+    }
+    public String getDocName(int docId)
+    {
+        return this.documentPostingInformation.getDetailsOnDocs(docId).getDocName();
     }
 
 }

@@ -4,47 +4,53 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
  * This class will handle the change between views
  */
 public class ViewChanger {
 
-    private static Stage primaryStage;//The primary stage
+    private Stage primaryStage;//The primary stage
+    private FXMLLoader fxmlLoader;
 
     /**
      * This constructor
      *
-     * @param primaryStage - The primary stage
      */
-    private ViewChanger(Stage primaryStage) {
+    public ViewChanger() {
     }
 
     /**
-     * This function will set the primary stage n the ViewChanger
-     * @param primaryStage -The given primaryStage
+     * This function will set the primary stage n the View.ViewChanger
+     * @param givenPrimaryStage -The given primaryStage
      */
-    public void setPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+    public void setPrimaryStage(Stage givenPrimaryStage) {
+        primaryStage = givenPrimaryStage;
     }
+
 
     /**
      * This function will receive the function's name and will change the primary stage accordingly
      * @param fileName - The name of the fxml file
      */
-    private static void change(String fileName)
+    private void change(String fileName)
     {
-        Parent root = null;
         try {
-            root = FXMLLoader.load(ClassLoader.getSystemResource(fileName));
-            primaryStage.setScene(new Scene(root, 900, 400));
+            fxmlLoader = new FXMLLoader(getClass().getResource("/"+fileName));
+            Parent root= (Parent) fxmlLoader.load();
+/*            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fileName));
+            root = fxmlLoader.load();*/
+            AbstractView abstractView = fxmlLoader.getController();
+            abstractView.setViewChanger(this);
+            primaryStage.setScene(new Scene(root, 900, 461));
             primaryStage.setResizable(false);
             primaryStage.setTitle("Search Engine Project");
             primaryStage.show();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -60,16 +66,28 @@ public class ViewChanger {
     /**
      * This function will change the primary stage to be the stage of the search (where you can retrieve docs)
      */
-    public static void goToSearch()
+    public void goToSearch()
     {
         change("search_view.fxml");
     }
     /**
+     * This function will change the primary stage to be the stage of the search (where you can retrieve docs)
+     */
+    public void goToSearch(SavedViewData savedViewData)
+    {
+        change("search_view.fxml");
+        SearchView searchView = fxmlLoader.getController();
+        searchView.configure(savedViewData);
+    }
+    /**
      * This function will change the primary stage to be the stage of the query result display
      */
-    public static void goToDisplayQueryResult()
+    public void goToDisplayQueryResult(String query, Pair<String, List<String>>[] docs,SavedViewData savedViewData)
     {
         change("desplay_docs.fxml");
+        QueryDisplayerView queryDisplayerView = fxmlLoader.getController();
+        queryDisplayerView.setQueryAndAnswers(query,docs,savedViewData);
+
     }
 
 

@@ -51,13 +51,18 @@ public class QueryDisplayerView extends AbstractView {
     }
     private void displayResults()
     {
+        boolean flag = false;
         //For every key..
         ObservableList<QueryDisplayTableContent> items = FXCollections.observableArrayList();
         for(int i=0;i<this.relevanDocs.length;i++)
         {
-            System.out.println(this.relevanDocs[i].getKey());
-            items.add(new QueryDisplayTableContent(this.relevanDocs[i].getKey(),this.getEntities(this.relevanDocs[i].getValue())));
+            if(relevanDocs[i] !=null) {
+                flag = true;
+                items.add(new QueryDisplayTableContent(this.relevanDocs[i].getKey(), this.getEntities(this.relevanDocs[i].getValue())));
+            }
         }
+        if(!flag)
+            items.add(new QueryDisplayTableContent("No Results Found",""));
         this.tableView.setItems(items);
     }
     private String getEntities(List<String> entities)
@@ -105,6 +110,8 @@ public class QueryDisplayerView extends AbstractView {
             this.entities = entities;
         }
     }
+
+
 }
 
 

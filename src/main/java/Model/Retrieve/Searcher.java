@@ -42,9 +42,12 @@ public class Searcher {
         this.semantic = false;
     }
 
-    public Searcher(String postingFilesPath,boolean stem,String [] relaventCities,boolean semantic) {
-        System.out.println(postingFilesPath);
-        // TODO: 12/23/2018 Where get the futures??
+    public String[] getRelaventCities() {
+        return relaventCities;
+    }
+
+    public Searcher(String postingFilesPath, boolean stem, String [] relaventCities, boolean semantic) {
+
         this.executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
         this.stem = stem;
         this.postingFilesPath =postingFilesPath;
@@ -94,7 +97,7 @@ public class Searcher {
         }
         //Sorting the names so that we will be able to preform binary search
         this.postingFileNames.sort(String::compareToIgnoreCase);
-        System.out.println(this.postingFileNames);
+
 
         try {
             System.out.println("getting city");
@@ -255,7 +258,7 @@ public class Searcher {
 
         //Getting the names of the files that will contain the terms
         HashMap<String,List<String>> fileNamesAndTerms = this.getTermsAndFiles(terms);
-       // System.out.println(fileNamesAndTerms);
+
         Set<String> keys = fileNamesAndTerms.keySet();
         Future<HashSet<TermInfo>> [] futures = new Future[keys.size()];
         int i = 0;
@@ -317,8 +320,6 @@ public class Searcher {
     {
         //Getting the terms of the query as a list
         List<String> queryTerms = query.getQueryAsList();
-        System.out.println(queryTerms);
-        //System.out.println(queryTerms);
         //Check the terms data
         HashSet<TermInfo> termInfos = this.getTheInformationAboutTheTerms(queryTerms);
         //If there are cities as filter

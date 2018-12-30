@@ -26,7 +26,7 @@ public class SearchController {
 
     public void initializeSeacherIfNeeded(String postingFIlesPath, boolean stem, boolean semantics,String [] cities)
     {
-        if(checkIfNeedToInitialize(stem,semantics,postingFIlesPath))
+        if(checkIfNeedToInitialize(stem,semantics,postingFIlesPath,cities))
         {
             this.searcher = new Searcher(postingFIlesPath,stem,cities,semantics);
         }
@@ -142,8 +142,23 @@ public class SearchController {
      * @param postingPath - The location of the posting files
      * @return - True if we need to iitialize the searcher
      */
-    private boolean checkIfNeedToInitialize(boolean stem, boolean semantic, String postingPath)
+    private boolean checkIfNeedToInitialize(boolean stem, boolean semantic, String postingPath,String []cities)
     {
-        return this.searcher == null || (!(this.searcher.getStem()== stem && this.searcher.getSemantic() == semantic && this.searcher.getPostingFile().equals(postingPath)));
+        if(this.searcher == null)
+            return true;
+        String [] citiesSearcher = this.searcher.getRelaventCities();
+        HashSet<String> citiesAsHash = new HashSet<>();
+        for(int i=0;i<citiesSearcher.length;i++)
+        {
+            citiesAsHash.add(citiesSearcher[i]);
+        }
+        for(int i=0;i<cities.length;i++)
+        {
+            if(citiesAsHash.contains(cities[i]))
+                citiesAsHash.remove(cities[i]);
+        }
+        if(citiesAsHash.size()!=0)
+            return true;
+        return  (!(this.searcher.getStem()== stem && this.searcher.getSemantic() == semantic && this.searcher.getPostingFile().equals(postingPath)));
     }
 }

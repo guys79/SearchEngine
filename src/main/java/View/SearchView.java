@@ -43,12 +43,14 @@ public class SearchView extends AbstractView{
     public String querisPath;
     public boolean didLoadCities;
     private SavedViewData savedViewData;
+    private String summoningFunctionName;
 
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+        this.summoningFunctionName = "";
         this.savedViewData = null;
         this.RUN.setDisable(true);
         this.Brows.setDisable(true);
@@ -84,7 +86,7 @@ public class SearchView extends AbstractView{
 
     private void saveCurrentData()
     {
-        this.savedViewData=new SavedViewData(this.controller.getSearcher(),this.stemCheckBox.isDisabled(),this.stemCheckBox.isSelected(),semanticCheckBox.isSelected(),this.postingPath,this.querisPath,this.releventDoctoQuery);
+        this.savedViewData=new SavedViewData(this.controller.getSearcher(),this.stemCheckBox.isDisabled(),this.stemCheckBox.isSelected(),semanticCheckBox.isSelected(),this.postingPath,this.querisPath,this.releventDoctoQuery,summoningFunctionName);
     }
     public void configure(SavedViewData savedViewData)
     {
@@ -97,6 +99,10 @@ public class SearchView extends AbstractView{
         this.releventDoctoQuery = savedViewData.getQuries();
         this.querisPath = savedViewData.getQuriesPath();
         this.querisFilePath.setStyle("-fx-background-color: #3CB371;");
+        this.summoningFunctionName = savedViewData.getFunctionName();
+
+
+
         loadCitiesButtonPress();
 
         checkStart();
@@ -104,9 +110,27 @@ public class SearchView extends AbstractView{
         checkInitStemming();
         displayQueries();
         this.savedViewData = savedViewData;
+        disableAll();
+        if(this.summoningFunctionName.equals("run"))
+        {
+            this.RUN.setDisable(false);
+        }
 
 
     }
+
+    public void disableAll()
+    {
+        this.postingFilePath.setDisable(true);
+        this.querisFilePath.setDisable(true);
+        this.stemCheckBox.setDisable(true);
+        this.semanticCheckBox.setDisable(true);
+        this.Brows.setDisable(true);
+        this.RUN.setDisable(true);
+
+    }
+
+
     /**
      * This function will choose a path to the posting file
      */
@@ -287,10 +311,11 @@ public class SearchView extends AbstractView{
      */
     public void Brows()
     {
-
         controller.brows();
         displayQueries();
+        this.summoningFunctionName = "brows";
         saveCurrentData();
+        disableAll();
     }
 
     private void displayQueries() {
@@ -303,11 +328,14 @@ public class SearchView extends AbstractView{
     }
 
     public void run(){
-
         String query = this.oneQuery.getText();
         controller.run(query);
         displayQueries();
+        this.summoningFunctionName = "run";
         saveCurrentData();
+        //disableAll();
+        ///this.RUN.setDisable(false);
+        viewChanger.goToDisplayQueryResult(query,this.controller.run(query),savedViewData);
     }
 
 }

@@ -20,6 +20,11 @@ public class UpdateCitiesInfoThread implements Callable<Boolean>{
         this.postingOfCities = postingOfCities;
         this.cityInfo = cityInfo;
     }
+
+    /**
+     * This function will update the info about the cities using a thread
+     * @return - True if the process was successful
+     */
     @Override
     public Boolean call() {
         try {

@@ -16,6 +16,12 @@ public class Ranker {
     private HashSet<TermInfo> queryTermInfo;//The hashSet of termInfo of the query
     private int numOfDocs;//Number of docs
 
+    /**
+     * The constructor of the class
+     * @param queryTermInfo - The information about the terms of the query
+     * @param averageDocLength - The average document length
+     * @param numOfDocs - The number of docs in the corpus
+     */
     public Ranker(HashSet<TermInfo> queryTermInfo,double averageDocLength,int numOfDocs)
     {
         this.averageDocLength = averageDocLength;
@@ -27,6 +33,11 @@ public class Ranker {
 
     }
 
+    /**
+     * This function will give a single document a grade considering the given query terms information
+     * @param document - The given document
+     * @return - The grade that the document got
+     */
     public double Rank(DocInfo document)
     {
         //We will use the BM25
@@ -35,18 +46,21 @@ public class Ranker {
 
         return bm25;
     }
-    
+
+    /**
+     * This function will use the BM25 retrieval function to grade the document
+     * @param document - The given document
+     * @return - The grade that the BM25 returnes
+     */
     private double BM25(DocInfo document)
     {
-        if(document.getDocNum() == 413857)
-        {
-            System.out.println("dasda");
-        }
         double rank = 0;
         for(TermInfo termInfo: queryTermInfo)
         {
             int df = termInfo.getDf();
             double idf = Math.log(this.numOfDocs*1.0/df)/Math.log(2);
+            //Normalized
+            idf = idf/(idf+1);
             int tf =0;
             Object temp = termInfo.docIdTfMap.get(document.getDocNum());
             if(temp!=null)
@@ -55,13 +69,29 @@ public class Ranker {
             }
             int docLength = document.getLength();
             double weight = termInfo.getWeight();
+            double tfWeight = tfInQuery(termInfo.getTfInQuery());
 
             //The BM25 formula
-            rank+= idf*((tf*(this.k+1))/(tf+this.k*(1-this.beta+beta*(docLength/this.averageDocLength)))) * weight;
+            rank+= idf*((tf*(this.k+1))/(tf+this.k*(1-this.beta+beta*(docLength/this.averageDocLength)))) * weight * tfWeight;
         }
         return rank;
     }
 
+    /**
+     * This function will get the weight of the term in the query
+     * @param tf - The given tf
+     * @return - The calculated weight
+     */
+    private double tfInQuery(int tf)
+    {
+        double sum = 0;
+        for(int i=1;i<=tf;i++)
+        {
+            sum+=1.0/i;
+        }
+        return sum;
+
+    }
     /**
      * This function will return the beta that is a part of the BM25 equation
      * @return - The beta

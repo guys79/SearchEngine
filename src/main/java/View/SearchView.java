@@ -4,12 +4,9 @@ import Controller.SearchController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.util.Pair;
-
 import java.net.URL;
 import java.util.*;
 import java.util.ResourceBundle;
@@ -24,33 +21,37 @@ public class SearchView extends AbstractView{
     @FXML
     public CheckBox semanticCheckBox;//If checked, we will stem the terms
     @FXML
-    public ListView citys;
+    public ListView citys;//The ListView of cities
     @FXML
-    public Button Brows;
+    public Button Brows;//The Browse button
     @FXML
-    public Button RUN;
+    public Button RUN;//The run button
     @FXML
-    public Button loadCities_btn;
+    public Button loadCities_btn;//The load cities button
     @FXML
-    public Button reset;
+    public Button reset;//The reset button
     @FXML
-    public TextField oneQuery;
+    public TextField oneQuery;//The TextField
     @FXML
-    public ListView qeuriesToChoose;
+    public ListView qeuriesToChoose;//The listView of queries
     @FXML
-    Button goToIndex;
+    public Button goToIndex;//The Go Index button
 
 
-    public SearchController controller;
-    public HashSet<String> releventDoctoQuery;
-    public String postingPath;
-    public String querisPath;
-    public boolean didLoadCities;
-    private SavedViewData savedViewData;
-    private String summoningFunctionName;
+    public SearchController controller;//The controller
+    public HashSet<String> releventDoctoQuery;//The queries
+    public String postingPath;//The posting file path
+    public String querisPath;//The queries file path
+    public boolean didLoadCities;//True if we have already loaded the cities
+    private SavedViewData savedViewData;//The data that we save on the view
+    private String summoningFunctionName;//The name of the function that saved the data last
 
 
-
+    /**
+     * This function will initialize the instance of this class
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -77,10 +78,17 @@ public class SearchView extends AbstractView{
 
     }
 
+    /**
+     * This function will redirect the view to the indexer view
+     */
     public void goToIndex()
     {
         this.viewChanger.goToIndex();
     }
+
+    /**
+     * This function will reset the settings of the searcher
+     */
     public void resetSettings()
     {
         this.summoningFunctionName = "";
@@ -104,23 +112,58 @@ public class SearchView extends AbstractView{
         citys.getItems().clear();
         checkInitStemming();
     }
+
+    /**
+     * This function will disable the Load cities button
+     */
     private void disableLoadCities()
     {
         this.loadCities_btn.setDisable(true);
         this.didLoadCities = false;
     }
-    private void checkInitStemming()
-    {
-        this.stemCheckBox.setSelected(true);
-    }
-    public void setOneQuery(){
-        checkRun();
+
+    /**
+     * This function will set the stemming check box
+     * @return - True if the posting file is valid
+     */
+    private boolean checkInitStemming() {
+
+        if(this.postingFilePath!=null) {
+            boolean validTrue = this.controller.checkForMustHavePostingFiles(true) && this.controller.checkForPostingFiles(true);
+            boolean validFalse = this.controller.checkForPostingFiles(false) && this.controller.checkForMustHavePostingFiles(false);
+            if (validFalse || validTrue) {
+                this.loadCities_btn.setDisable(false);
+                this.postingFilePath.setStyle("-fx-background-color: #3CB371;");
+                if (validFalse && validTrue) {
+                    this.stemCheckBox.setDisable(false);
+                } else if (validFalse) {
+                    this.stemCheckBox.setDisable(true);
+                    this.stemCheckBox.setSelected(false);
+                } else {
+                    this.stemCheckBox.setDisable(true);
+                    this.stemCheckBox.setSelected(true);
+                }
+                return true;
+
+            }
+        }
+        return false;
     }
 
+
+    /**
+     * This function will save the current data of the view
+     */
     private void saveCurrentData()
     {
         this.savedViewData=new SavedViewData(this.controller.getSearcher(),this.stemCheckBox.isDisabled(),this.stemCheckBox.isSelected(),semanticCheckBox.isSelected(),this.postingPath,this.querisPath,this.releventDoctoQuery,summoningFunctionName);
     }
+
+
+    /**
+     * This function will receive data and will config the view with that data
+     * @param savedViewData - The given data
+     */
     public void configure(SavedViewData savedViewData)
     {
         this.controller.setSearcher(savedViewData.getSearcher());
@@ -152,6 +195,9 @@ public class SearchView extends AbstractView{
 
     }
 
+    /**
+     * This function will disable most of the nodes in the view
+     */
     public void disableAll()
     {
         this.postingFilePath.setDisable(true);
@@ -173,36 +219,11 @@ public class SearchView extends AbstractView{
         path =getDirectoryAbstractPath("posting path");
         if(path!=null)
         {
-                this.postingPath = path;
-
-             boolean validTrue = this.controller.checkForMustHavePostingFiles(true) && this.controller.checkForPostingFiles(true);
-             boolean validFalse = this.controller.checkForPostingFiles(false) && this.controller.checkForMustHavePostingFiles(false) ;
-        /*    System.out.println("validTrue");
-            System.out.println("Must have - "+ this.controller.checkForMustHavePostingFiles(true));
-            System.out.println("Posting - "+ this.controller.checkForPostingFiles(true));
-            System.out.println("validFalse");
-            System.out.println("Must have - "+ this.controller.checkForMustHavePostingFiles(false));
-            System.out.println("Posting - "+ this.controller.checkForPostingFiles(false));*/
-             if(validFalse || validTrue)
-             {
-                 this.loadCities_btn.setDisable(false);
-                 this.postingFilePath.setStyle("-fx-background-color: #3CB371;");
-                 if(validFalse && validTrue)
-                 {
-                     this.stemCheckBox.setDisable(false);
-                 }
-                 else if(validFalse)
-                 {
-                     this.stemCheckBox.setDisable(true);
-                     this.stemCheckBox.setSelected(false);
-                 }
-                 else
-                 {
-                     this.stemCheckBox.setDisable(true);
-                     this.stemCheckBox.setSelected(true);
-                 }
-                 checkStart();
-                 checkRun();
+            this.postingPath = path;
+            if(checkInitStemming())
+            {
+               checkStart();
+               checkRun();
              }
              else
              {
@@ -219,7 +240,9 @@ public class SearchView extends AbstractView{
 
     }
 
-
+    /**
+     * This function will load the cities to the listView
+     */
     public void loadCitiesButtonPress() {
 
 
@@ -227,7 +250,6 @@ public class SearchView extends AbstractView{
         citys.setItems(list);
         List<String> namesOfCitys = controller.getNamesOfCitys(this.getStem());
         namesOfCitys.sort(String::compareToIgnoreCase);
-        System.out.println("this is" + namesOfCitys);
         for (int i = 0; i < namesOfCitys.size(); i++) {
             list.add(namesOfCitys.get(i));
         }
@@ -262,7 +284,7 @@ public class SearchView extends AbstractView{
         Brows.setDisable(!(!this.querisPath.equals("") && !this.postingPath.equals("") && didLoadCities));
     }
 
-    private void checkRun(){
+    public void checkRun(){
         RUN.setDisable(!(!this.postingPath.equals("")&& didLoadCities));
     }
 
@@ -320,6 +342,10 @@ public class SearchView extends AbstractView{
         return this.semanticCheckBox.isSelected();
     }
 
+    /**
+     * This function will return the relevant cities
+     * @return - The relevant cities (filter)
+     */
     public String[] getReleventCitys(){
         ObservableList<String> selectedItems =  citys.getSelectionModel().getSelectedItems();
         String [] itemsToReturn= new String[selectedItems.size()];
@@ -332,16 +358,17 @@ public class SearchView extends AbstractView{
         return itemsToReturn;
     }
 
+    /**
+     * This function will return the posting file path
+     * @return - The posting file path
+     */
     public String getPostingPath(){
         return postingPath;
     }
 
-    public String getQueriesPath() {
-        return querisPath;
-    }
 
     /**
-     * This function will start the indexing
+     * This function will get and display the queries
      */
     public void Brows()
     {
@@ -352,6 +379,9 @@ public class SearchView extends AbstractView{
         disableAll();
     }
 
+    /**
+     * This function will display the queries
+     */
     private void displayQueries() {
         ObservableList<String> list = FXCollections.observableArrayList();
         qeuriesToChoose.setItems(list);
@@ -361,14 +391,15 @@ public class SearchView extends AbstractView{
         qeuriesToChoose.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
 
+    /**
+     * This function will run the Search Engine on the query
+     */
     public void run(){
         String query = this.oneQuery.getText();
         controller.run(query);
         displayQueries();
         this.summoningFunctionName = "run";
         saveCurrentData();
-        //disableAll();
-        ///this.RUN.setDisable(false);
         viewChanger.goToDisplayQueryResult(query,this.controller.run(query),savedViewData);
     }
 

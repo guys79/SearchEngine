@@ -2,14 +2,20 @@ package Model.Index;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.concurrent.Callable;
 
 public class EntityIndexer implements Callable<Boolean> {
 
-    private String path;
-    private HashMap<Integer,String []> entities;
-    private HashMap<String, int []> mainDictionary;
+    private String path;//The path to the entity file
+    private HashMap<Integer,String []> entities;//The map of entities and doc numbers
+    private HashMap<String, int []> mainDictionary;//The main dictionary
+
+    /**
+     * The constructor
+     * @param path - The path to the entity file
+     * @param entities - The map of entities and doc numbers
+     * @param mainDictionary - The main dictionary
+     */
     public EntityIndexer(String path,HashMap<Integer,String []> entities,HashMap<String, int []> mainDictionary)
     {
         this.path =path;
@@ -17,12 +23,16 @@ public class EntityIndexer implements Callable<Boolean> {
         this.mainDictionary = mainDictionary;
     }
 
-
+    /**
+     * This function will upload all the data to the file
+     * @return - True if the process is successful
+     * @throws Exception
+     */
     @Override
     public Boolean call() throws Exception {
 
         StringBuilder stringBuilder = new StringBuilder();
-        int maxSize = 5;
+        int maxSize;
         String [] entityDoc;
         for(int docNum:this.entities.keySet())
         {
@@ -43,6 +53,11 @@ public class EntityIndexer implements Callable<Boolean> {
         return upload(stringBuilder);
     }
 
+    /**
+     * This function will upload the information in the StringBuilder to the file
+     * @param stringBuilder - The given StringBuilder
+     * @return - True if the process is successful
+     */
     private boolean upload(StringBuilder stringBuilder)
     {
         File fileTowWiteTo = new File(this.path);

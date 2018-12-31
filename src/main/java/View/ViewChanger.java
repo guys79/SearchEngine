@@ -79,8 +79,12 @@ public class ViewChanger {
         SearchView searchView = fxmlLoader.getController();
         searchView.configure(savedViewData);
     }
+
     /**
      * This function will change the primary stage to be the stage of the query result display
+     * @param query - The query
+     * @param docs - The relevant docs
+     * @param savedViewData - The data that we saved on the SearchView
      */
     public void goToDisplayQueryResult(String query, Pair<String, List<String>>[] docs,SavedViewData savedViewData)
     {

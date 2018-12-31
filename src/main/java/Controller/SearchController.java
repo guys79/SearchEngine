@@ -1,29 +1,43 @@
 package Controller;
 
-import Model.Retrieve.GetCity;
 import Model.Retrieve.GetQuery;
 import Model.Retrieve.Searcher;
 import View.SearchView;
-import View.ViewChanger;
 import javafx.util.Pair;
 
 import java.io.File;
-import java.util.Dictionary;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * This class is the controller of the Search scene
+ */
 public class SearchController {
     private SearchView view;//The view
-    private Searcher searcher;
+    private Searcher searcher;//The searcher
 
+    /**
+     * This constructor
+     */
     public SearchController(){
         searcher=null;
     }
 
+    /**
+     * This function will set the view of the class
+     * @param searchView - The given view
+     */
     public void setView(SearchView searchView) {
         this.view= searchView;
     }
 
+    /**
+     * This function will check if the Searcher needs to be initialized again, If so it will initialize it
+     * @param postingFIlesPath - The posting file path
+     * @param stem - True if we want to check the stemmed posting files
+     * @param semantics - True if we want to use semantics
+     * @param cities - The list of cities filter
+     */
     public void initializeSeacherIfNeeded(String postingFIlesPath, boolean stem, boolean semantics,String [] cities)
     {
         if(checkIfNeedToInitialize(stem,semantics,postingFIlesPath,cities))
@@ -31,12 +45,17 @@ public class SearchController {
             this.searcher = new Searcher(postingFIlesPath,stem,cities,semantics);
         }
     }
+
+    /**
+     * This function will get the queries and will add them to the view
+     */
     public void brows() {
         boolean isStem= view.getStem();
         String[] citys = view.getReleventCitys();
         String postingPath = view.getPostingPath();
         boolean isSemantic = view.getSemantic();
         initializeSeacherIfNeeded(postingPath,isStem,isSemantic,citys);
+
         String queryPath= view.querisPath;
         view.releventDoctoQuery = new HashSet<>();
         GetQuery q= new GetQuery(queryPath);
@@ -47,20 +66,37 @@ public class SearchController {
         }
     }
 
-
+    /**
+     * This function will return the searcher
+     * @return - The searcher
+     */
     public Searcher getSearcher() {
         return searcher;
     }
 
+    /**
+     * This function will set the searcher
+     * @param searcher - The given searcher
+     */
     public void setSearcher(Searcher searcher) {
         this.searcher = searcher;
     }
 
+    /**
+     * This function will return the name of the cities
+     * @param isStemmed -True if we want to look at the stemmed posting files
+     * @return - The list of cities that we have indexed
+     */
     public List<String> getNamesOfCitys(boolean isStemmed){
         Searcher s= new Searcher(view.getPostingPath(),isStemmed);
         return s.getNamesOfCitys();
     }
 
+    /**
+     * This function will run a single query, will retrieve the
+     * @param query - The given query
+     * @return - The docNames and their entities
+     */
     public Pair<String,List<String>> [] run(String query) {
         boolean isStem= view.getStem();
         String[] citys = view.getReleventCitys();
@@ -79,13 +115,12 @@ public class SearchController {
         }
         return docNames;
     }
-    private void print(String [] array)
-    {
-        for(int i=0;i<array.length;i++)
-        {
-            System.out.println(array[i]);
-        }
-    }
+
+    /**
+     * This function will check if the necessary files are in the posting directory
+     * @param stem - True if we want to look at the stemmed posting files
+     * @return - Return True if all of the necessary files are in the posting directory
+     */
     public boolean checkForMustHavePostingFiles(boolean stem)
     {
         String postingPath = this.view.getPostingPath();
@@ -112,6 +147,12 @@ public class SearchController {
         }
         return false;
     }
+
+    /**
+     * Ths function will check that there is at least 1 posting file that we can retrieve info from
+     * @param stem - True if we want to look at the stemmed posting files
+     * @return - True if there is at least 1 posting file that we can retrieve info from
+     */
     public boolean checkForPostingFiles(boolean stem)
     {
 

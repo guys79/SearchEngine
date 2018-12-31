@@ -30,22 +30,37 @@ public class Searcher {
                                           //The first cell in the array is the df, and the second is cf
     private GetCity cityPostingInformation;//The class that we will use to get data on the cities
     private GetDoc documentPostingInformation;//The class that we will use to get data on the cities
-    private EntityRetrieval entityRetrieval;
-    private boolean semantic;
-    private int numOfDoc;
-    private double averageDocLength;
-    private List<String> namesOfCitys;
+    private EntityRetrieval entityRetrieval;//The entity retriever
+    private boolean semantic;//True if we want to use semantics
+    private int numOfDoc;//The number of documents
+    private double averageDocLength;//The average document length
 
+    /**
+     * A constructor of the class
+     * @param postingFilesPath - The posting file path
+     * @param isStemmed - True if we want to retrieve data from the stemmed posting files
+     */
     public Searcher(String postingFilesPath,boolean isStemmed){
         this.postingFilesPath =postingFilesPath;
         this.stem = isStemmed;
         this.semantic = false;
     }
 
+    /**
+     * This function will return the array of relevant cities
+     * @return - The list of relevant cities
+     */
     public String[] getRelaventCities() {
         return relaventCities;
     }
 
+    /**
+     * A constructor of the class
+     * @param postingFilesPath - The posting file path
+     * @param stem - True if we want to retrieve data from the stemmed posting files
+     * @param relaventCities - The cities that are that has to be associated
+     * @param semantic - true if we want to use semantics
+     */
     public Searcher(String postingFilesPath, boolean stem, String [] relaventCities, boolean semantic) {
 
         this.executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
@@ -70,7 +85,7 @@ public class Searcher {
         //Entities
         this.entityRetrieval = new EntityRetrieval(this.postingFilesPath+"\\"+"entities"+"&"+stem+".txt");
         futureEntity = executorService.submit(this.entityRetrieval);
-        executorService.shutdown();
+
         
         
         //Initializing the data structures
@@ -108,20 +123,26 @@ public class Searcher {
             futureEntity.get();
             System.out.println("getting dictionary");
             this.mainMap =futureMap.get();
+            shutDown();
         } catch (InterruptedException e) {
+            shutDown();
             e.printStackTrace();
         } catch (ExecutionException e) {
+            shutDown();
             e.printStackTrace();
         }
 
 
     }
 
-
+    /**
+     * This function will shut down the searcher retrieval threadpool
+     */
     public void shutDown()
     {
         this.executorService.shutdown();
     }
+
     /**
      * This function will return the name of the file(s) that contains the term
      *
@@ -130,19 +151,6 @@ public class Searcher {
      */
     public List<String> getFileName(String term) {
         ArrayList<String> fileNames = new ArrayList<>();
-        char note = (("" + term.charAt(0)).toLowerCase()).charAt(0);
-
-        //Reduction.. Convert the term to 1+ ascii value
-       /* if (!(note >= 'a' && note <= 'z')) {
-            String termOther = "1";//The files that refer to others are the files that starts with 1
-            for (int i = 0; i < term.length(); i++) {
-                termOther = termOther +"^"+ (int) (term.charAt(i));
-            }
-
-            term = termOther+"^"+(int)('_');
-        }*/
-
-
         getFileNameRec(term, fileNames, 0, postingFileNames.size() - 1);
 
         return fileNames;
@@ -162,13 +170,8 @@ public class Searcher {
         final int middle = (start + end) / 2;//Get the middle index
         String fullName = this.postingFileNames.get(middle);
         String name = fullName.substring(0,fullName.indexOf("_"));
-        if(name.equals("1^49^48^48"))
-        {
-            System.out.println("f");
-        }
-        int comp = compareIrgular(name,term);
-        System.out.println("term "+term+" name "+name+" result "+comp);
 
+        int comp = compareIrgular(name,term);
         //Problem
         if (middle == start && comp > 0) {
             return;
@@ -252,6 +255,14 @@ public class Searcher {
 
     }
 
+    /**
+     * This function will compare a term to a file name
+     * @param fileName - The file name
+     * @param term - the term
+     * @return - positive number - if the file name is "bigger" than the term
+     *         - negative number - if the file name is "smaller" than the term
+     *         - zero - if the file name is equal
+     */
     public int compareIrgular(String fileName,String term)
     {
 
@@ -345,6 +356,11 @@ public class Searcher {
 
     }
 
+    /**
+     * This function will return the relevant information about a query
+     * @param query - The given query
+     * @return - The information about the query
+     */
     private HashSet<TermInfo> getRelevantData(Query query)
     {
         //Getting the terms of the query as a list
@@ -410,6 +426,14 @@ public class Searcher {
         }
         return termInfos;
     }
+
+    /**
+     * This function will check if the nformation about the term is from a valid document (according to the city filter)
+     * @param docNum - The number of doc
+     * @param termInfos - The docs that the city appears in them
+     * @param docsWithTitle - The docs that the cities are int he title
+     * @return - True if the document is a valid information source
+     */
     private boolean checkIfInTermInfo(int docNum,HashSet<TermInfo> termInfos,HashSet<Integer> docsWithTitle)
     {
         if(docsWithTitle.contains(docNum))
@@ -422,6 +446,11 @@ public class Searcher {
         return false;
     }
 
+    /**
+     * This function will update the number of scanned docs and their average length if there are cities in the city filter
+     * @param termInfos - The docs that the city appears in them
+     * @param docsWithTitle - The docs that the cities are int he title
+     */
     private void sizesOfRelevantDocsCity(HashSet<TermInfo> termInfos,HashSet<Integer> docsWithTitle)
     {
 
@@ -442,16 +471,25 @@ public class Searcher {
 
 
     }
+
+    /**
+     * This function will update the number of scanned docs and their average length if there are cities in the city filter
+     */
     private void sizesOfRelevantDocsNoCity()
     {
 
-       this.numOfDoc = this.documentPostingInformation.getNumOdDocs();
+       this.numOfDoc = this.documentPostingInformation.getNumOfDocs();
        this.averageDocLength = this.documentPostingInformation.getAverageLength();
 
 
 
     }
 
+    /**
+     * This function will return the most relevant docs to the given
+     * @param queryText -The query as a text
+     * @return - The array of relevant doc id's
+     */
     public int [] getMostRelevantDocNum(String queryText)
     {
 
@@ -465,7 +503,7 @@ public class Searcher {
         HashSet<TermInfo> queryData =this.getRelevantData(query);
 
 
-        //Updating the df
+        //Updating the df and tf in the query
 
         int [] info;
         for(TermInfo termInfo:queryData)
@@ -474,6 +512,8 @@ public class Searcher {
             if(info==null)
                 info = this.mainMap.get(termInfo.getTerm().toUpperCase());
             termInfo.setDf(info[0]);
+
+            termInfo.setTfInQuery(query.getNumOfOccurrences(termInfo.getTerm()));
         }
 
         if(this.semantic)
@@ -525,9 +565,9 @@ public class Searcher {
 
 
         sortByScore(scores,docsToReturn);
-        pr(docsToReturn);
-        pr2(scores);
-        String [] docNames = new String[NUM_OF_DOCS_TO_RETURN];
+       // pr(docsToReturn);
+        //pr2(scores);
+        //String [] docNames = new String[NUM_OF_DOCS_TO_RETURN];
         //pr(docsToReturn);
         //pr2(scores);
         //boolean flag = true;
@@ -535,6 +575,15 @@ public class Searcher {
         //return docNames;
     }
 
+    /**
+     * This function will update the array of relevant docs with the given doc if needed
+     * @param scores - The array of scores
+     * @param id - The array of doc id's
+     * @param doc - The doc id
+     * @param score - The score of the doc
+     * @param minValue - The minimum value in the array of scores
+     * @return - The new minimum value
+     */
     private double update(double [] scores, int [] id,int doc,double score,double minValue)
     {
         int index = -1;
@@ -562,6 +611,11 @@ public class Searcher {
 
     }
 
+    /**
+     * This function will sort the id's array in accordance to the given scores array
+     * @param scores - The list of scores
+     * @param id - The list of id's
+     */
     private void sortByScore(double [] scores, int [] id) {
         double[] scoresCopy = new double[scores.length];
         int[] idCopy = new int[id.length];
@@ -592,21 +646,11 @@ public class Searcher {
         }
 
     }
-    private void pr(int []a)
-    {
-        for(int i=0;i<a.length;i++)
-        {
-            System.out.println(a[i]);
-        }
-    }
-    private void pr2(double []a)
-    {
-        for(int i=0;i<a.length;i++)
-        {
-            System.out.println(a[i]);
-        }
-    }
 
+    /**
+     * This function will return the names of the cities that we have indexed
+     * @return - A list of the cities that we have indexed
+     */
     public List<String> getNamesOfCitys(){
         GetCity getCity = new GetCity(this.postingFilesPath+"\\"+"citys"+"&"+stem+".txt");
         List<String> myTrue= getCity.getNamesOfCitys();
@@ -640,10 +684,21 @@ public class Searcher {
         return this.postingFilesPath;
     }
 
+    /**
+     * This function will return the entities of the document
+     * @param docId - The doc id
+     * @return - A list of the entities
+     */
     public List<String> getEntities(int docId)
     {
         return this.entityRetrieval.getEntities(docId);
     }
+
+    /**
+     * This function will return the name of the doc with te given id
+     * @param docId - The given doc id
+     * @return - The doc name
+     */
     public String getDocName(int docId)
     {
         return this.documentPostingInformation.getDetailsOnDocs(docId).getDocName();

@@ -67,6 +67,11 @@ public class ParserThread implements Callable<ParserThreadReturnValue>
 
     }
 
+    /**
+     * This function will parse the document and update all the necessary things
+     * @return - The parser return value
+     * @throws Exception
+     */
     @Override
     public ParserThreadReturnValue call() throws Exception {
         try {

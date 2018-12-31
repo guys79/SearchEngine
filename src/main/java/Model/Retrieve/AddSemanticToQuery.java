@@ -1,7 +1,6 @@
 package Model.Retrieve;
 
 import Model.Index.StopWordsHolder;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,13 +13,23 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 
-
+/**
+ * This class will add the stemmed words to the query
+ */
 public class AddSemanticToQuery implements Callable<Boolean> {
 
-    private String term;
-    private SemanticQuery semanticQuery;
-    private int maxWords;
-    private StopWordsHolder stopWordsHolder;
+    private String term;//The term of which we want to gt info on
+    private SemanticQuery semanticQuery;//The query
+    private int maxWords;//The number of words that we want to retrieve
+    private StopWordsHolder stopWordsHolder;//The stopWords holder
+
+    /**
+     * The constructor
+     * @param semanticQuery - The term of which we want to gt info on
+     * @param term - The query
+     * @param maxWords - The number of semantic words that we want to get
+     * @param stopWordsPath - The path to the stopWords file
+     */
     public AddSemanticToQuery(SemanticQuery semanticQuery,String term,int maxWords,String stopWordsPath)
     {
         this.term = term;
@@ -30,6 +39,10 @@ public class AddSemanticToQuery implements Callable<Boolean> {
 
     }
 
+    /**
+     * This function will get the information about the semantic words and will add it to the query
+     * @return - True if the process was successful
+     */
     private boolean getAndUploadData()
     {
 
@@ -62,6 +75,11 @@ public class AddSemanticToQuery implements Callable<Boolean> {
         return false;
     }
 
+    /**
+     * This function will return the wanted information from the top matched words
+     * @param input - The
+     * @return - The information from the API
+     */
     private HashMap<String,Double> getTopTerms(String input)
     {
 
@@ -87,6 +105,12 @@ public class AddSemanticToQuery implements Callable<Boolean> {
         return topTerms;
 
     }
+
+    /**
+     * This function will add the data about the semantic to the query as a Callable
+     * @return
+     * @throws Exception
+     */
     @Override
     public Boolean call() throws Exception {
         return getAndUploadData();

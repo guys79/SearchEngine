@@ -2,7 +2,6 @@ package Model.Retrieve;
 
 import Model.Index.DocumentReturnValue;
 import Model.Index.Parser;
-import Model.Index.StopWordsHolder;
 import org.tartarus.snowball.SnowballStemmer;
 import org.tartarus.snowball.ext.porterStemmer;
 import sun.awt.Mutex;
@@ -10,11 +9,14 @@ import sun.awt.Mutex;
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * This class represents a single query that uses semantics
+ */
 public class SemanticQuery extends Query {
 
 
-    private HashMap<String,Double>termsAndScores;
-    private Mutex mutex;
+    private HashMap<String,Double>termsAndScores;//The key - term, The value - it's weight
+    private Mutex mutex;//A mutex
     /**
      * The constructor
      * This function will parse the query and process it
@@ -102,17 +104,21 @@ public class SemanticQuery extends Query {
         }
 
 
-        //System.out.println(this.termsAndScores.size()+" in total");
-
     }
+
+    /**
+     * This function will save The original term and the semantics and their weights
+     * @param original - The original term
+     * @param sTermsAndScores - The other terms and their scores that they got from the API
+     */
     public void addTermsAndScores(String original,HashMap<String,Double> sTermsAndScores)
     {
         this.mutex.lock();
-       // System.out.println(sTermsAndScores.size()+1);
         this.termsAndScores.put(original,1.0);
+
         //If there are no semantic words
         if(sTermsAndScores.size()==0) {
-
+            this.mutex.unlock();
             return;
         }
 
@@ -146,17 +152,27 @@ public class SemanticQuery extends Query {
                 }
             }
             this.termsAndScores.put(key,scoreToAdd);
+            this.termsAndTf.put(key,1);
         }
         this.mutex.unlock();
 
 
     }
 
+    /**
+     * This function will return the query as a list of terms
+     * @return - A list of terms
+     */
     @Override
     public List<String> getQueryAsList() {
         return new ArrayList<>(this.termsAndScores.keySet());
     }
 
+    /**
+     * This function will return the weight of the query
+     * @param term
+     * @return
+     */
     public double getWeight(String term)
     {
         return this.termsAndScores.get(term.toLowerCase());

@@ -32,7 +32,7 @@ public class IndexView extends AbstractView {
     public TableView dictionaryTableView;//The table view
     public TableColumn termTableColumn;//The column of the terms
     public TableColumn cfTableColumn;//The column of the cf
-    public Button goToSearch;
+    public Button goToSearch;//The Button that will redirect to the search view
     private String corpusPath;//The path to the corpus
     private String postingPath;//The path to the posting
     private IndexController controller;//The controller

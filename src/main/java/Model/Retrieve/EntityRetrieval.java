@@ -6,10 +6,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+/**
+ * This class will retrieve the information about the entities from the entities file as a callable
+ */
 public class EntityRetrieval implements Callable<Boolean> {
 
-    private String path;
-    private HashMap<Integer,List<String>> entities;
+    private String path;//The path to the entities file
+    private HashMap<Integer,List<String>> entities; // The map that we will save the information in
+
+    /**
+     * The constructor
+     * @param path - The path to the entities file
+     */
     public EntityRetrieval(String path)
     {
         this.path = path;
@@ -17,6 +25,11 @@ public class EntityRetrieval implements Callable<Boolean> {
     }
 
 
+    /**
+     * This function will load the content of the file
+     * @return - True if the process was successful
+     * @throws Exception
+     */
     @Override
     public Boolean call() throws Exception {
         return readContent();
@@ -62,6 +75,11 @@ public class EntityRetrieval implements Callable<Boolean> {
         return false;
     }
 
+    /**
+     * This funcrion will return the entities of the document
+     * @param docNum - The document number
+     * @return - The list of entities
+     */
     public List<String> getEntities(int docNum)
     {
         return this.entities.get(docNum);

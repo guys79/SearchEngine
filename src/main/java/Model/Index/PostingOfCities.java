@@ -61,7 +61,6 @@ public class PostingOfCities implements Callable<Boolean>{
         try (FileWriter fw = new FileWriter(file, true);
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
-            String str;
             int size = nameOfCitys.size();
             String cityName;
             String detailsWeb;
@@ -255,7 +254,11 @@ public class PostingOfCities implements Callable<Boolean>{
         this.mutex.unlock();
     }
 
-
+    /**
+     * This function will upload the city data to the file
+     * @return - True if the process was successful
+     * @throws Exception
+     */
     @Override
     public Boolean call() throws Exception {
         return this.uploadToFile();

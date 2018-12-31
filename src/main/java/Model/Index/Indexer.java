@@ -22,9 +22,9 @@ public class Indexer {
     private List<String> fileNames;//The list of new file names. This list will contain the names of the final posting files
     private LanguageIndexer languageIndexer;//The languageIndexer .This class will index the languages
     private AddDictionaryToFile addDictionaryToFile;//This class will add the dictionary into a file
-    private List<String> namesOfNonTermPostingFiles;
-    private HashMap<Integer,String []> entities;
-    private Mutex entityMutex;
+    private List<String> namesOfNonTermPostingFiles;//The names of the non Term posting files (entities, allDocs and so on)
+    private HashMap<Integer,String []> entities;//The map of entities and documents
+    private Mutex entityMutex;//The entity mutex
 
 
     /**
@@ -71,6 +71,11 @@ public class Indexer {
 
     }
 
+    /**
+     * This function will copy the stopWords file to the posting
+     * @param source - The original file
+     * @param dest - The destination file
+     */
     public void copyStopWords(File source,File dest)
     {
         InputStream inputStream = null;
@@ -569,6 +574,11 @@ public class Indexer {
         return "";
     }
 
+    /**
+     * This function will add the doc and entities to the map of docs and entities
+     * @param docNum - The docNumber
+     * @param entities - The entities in that doc
+     */
     public void addEntities(int docNum,String [] entities)
     {
         this.entityMutex.lock();

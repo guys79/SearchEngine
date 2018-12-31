@@ -10,6 +10,7 @@ public class TermInfo {
     public HashMap<Integer,Integer> docIdTfMap;//This map is the map of docId as the key and the tf as value
     private int df;//The document frequency
     private double weight;//The weight of the term
+    private int tfInQuery;//The term frequency of the term in the query
 
     /**
      * The constructor
@@ -17,7 +18,7 @@ public class TermInfo {
      * @param docId - The docId
      * @param tf - The term frequency of the term in the doc
      */
-    public  TermInfo(String term, int docId, int tf)
+    public TermInfo(String term, int docId, int tf)
     {
         this.term = term;
         this.docIdTfMap = new HashMap<>();
@@ -103,5 +104,21 @@ public class TermInfo {
      */
     public double getWeight() {
         return weight;
+    }
+
+    /**
+     * This function will return the term frequency of the term in the query
+     * @return - The term frequency of the term in the query
+     */
+    public int getTfInQuery() {
+        return tfInQuery;
+    }
+
+    /**
+     * This function will set the term frequency of the term in the query
+     * @param tfInQuery - The given term frequency of the term in the query
+     */
+    public void setTfInQuery(int tfInQuery) {
+        this.tfInQuery = tfInQuery;
     }
 }

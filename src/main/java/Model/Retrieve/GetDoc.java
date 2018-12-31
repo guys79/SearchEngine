@@ -84,19 +84,22 @@ public class GetDoc implements Callable<Boolean> {
      * @return- the data on the doc (a DocInfo )
      */
     public DocInfo getDetailsOnDocs(int docNum){
-
             return this.DocInfo.get(docNum);
-
-
-
-
     }
 
+    /**
+     * This function will return the average length of the documents
+     * @return - The average length of the documents
+     */
     public double getAverageLength() {
         return averageLength;
     }
 
-    public int getNumOdDocs() {
+    /**
+     * This function will return the number of docs
+     * @return - The number of docs
+     */
+    public int getNumOfDocs() {
         return numOdDocs;
     }
 

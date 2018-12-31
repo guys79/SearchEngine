@@ -282,7 +282,6 @@ public class Searcher {
         }
         fileNameRestore+="_";
         term+="_";
-        System.out.println(fileNameRestore+ " restored name");
         return fileNameRestore.compareToIgnoreCase(term);
     }
 

@@ -1,7 +1,10 @@
 package View;
 
+import Model.Retrieve.QueryInfo;
 import Model.Retrieve.Searcher;
+import javafx.util.Pair;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -16,6 +19,7 @@ public class SavedViewData {
     private String quriesPath;// The queries file path
     private HashSet<String> quries;//The queries
     private String functionName;//The name of the function that updated the data
+    public HashMap<String,Pair<QueryInfo,String []>> queriesAndResults;//The queries and their results
 
     /**
      * The constructor of the class
@@ -27,8 +31,9 @@ public class SavedViewData {
      * @param quriesPath - The queries file path
      * @param quries - The queries
      * @param functionName - The name of the function that updated the data
+     * @param queriesAndResults - The queries and their results
      */
-    public SavedViewData(Searcher searcher,boolean isStemButtonDisabled,boolean isStem,boolean isSemantic,String postingPath,String quriesPath,HashSet<String>quries,String functionName)
+    public SavedViewData(Searcher searcher,boolean isStemButtonDisabled,boolean isStem,boolean isSemantic,String postingPath,String quriesPath,HashSet<String>quries,String functionName,HashMap<String,Pair<QueryInfo,String []>> queriesAndResults)
     {
         this.functionName = functionName;
         this.searcher = searcher;
@@ -38,6 +43,7 @@ public class SavedViewData {
         this.postingPath = postingPath;
         this.quriesPath = quriesPath;
         this.quries = quries;
+        this.queriesAndResults = queriesAndResults;
     }
 
     /**

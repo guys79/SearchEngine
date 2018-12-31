@@ -26,7 +26,7 @@ public class Ranker {
     {
         this.averageDocLength = averageDocLength;
         this.numOfDocs = numOfDocs;
-        this.k=1.5;
+        this.k=1.2;
         this.beta = 0.75;
         this.queryTermInfo = queryTermInfo;
         
@@ -58,9 +58,12 @@ public class Ranker {
         for(TermInfo termInfo: queryTermInfo)
         {
             int df = termInfo.getDf();
-            double idf = Math.log(this.numOfDocs*1.0/df)/Math.log(2);
+            double idf = Math.log(this.numOfDocs*1.0/df)/Math.log(10);
+
+            //double idf = Math.log(this.numOfDocs*1.0/df)/Math.log(2);
             //Normalized
-            idf = idf/(idf+1);
+            //idf = idf/(idf+1);
+            //idf = Math.pow(idf,1/1.5);
             int tf =0;
             Object temp = termInfo.docIdTfMap.get(document.getDocNum());
             if(temp!=null)
@@ -69,8 +72,12 @@ public class Ranker {
             }
             int docLength = document.getLength();
             double weight = termInfo.getWeight();
-            double tfWeight = tfInQuery(termInfo.getTfInQuery());
-
+           /* double tfWeight = tfInQuery(termInfo.getTfInQuery());
+            if(tfWeight==0)
+            {
+                tfWeight = 1;
+            }*/
+            double tfWeight = 1;
             //The BM25 formula
             rank+= idf*((tf*(this.k+1))/(tf+this.k*(1-this.beta+beta*(docLength/this.averageDocLength)))) * weight * tfWeight;
         }

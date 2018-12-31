@@ -1,6 +1,8 @@
 package Controller;
 
 import Model.Retrieve.GetQuery;
+import Model.Retrieve.Query;
+import Model.Retrieve.QueryInfo;
 import Model.Retrieve.Searcher;
 import View.SearchView;
 import javafx.util.Pair;
@@ -47,7 +49,7 @@ public class SearchController {
     }
 
     /**
-     * This function will get the queries and will add them to the view
+     * This function will get the queries and their results will add them to the view
      */
     public void brows() {
         boolean isStem= view.getStem();
@@ -59,10 +61,24 @@ public class SearchController {
         String queryPath= view.querisPath;
         view.releventDoctoQuery = new HashSet<>();
         GetQuery q= new GetQuery(queryPath);
-        String s= q.getNextQuery();
-        while(s!=null){
+        QueryInfo queryInfo = q.getNextQuery();
+        String s;
+        while(queryInfo!=null){
+            s = queryInfo.getMyQuery();
             view.releventDoctoQuery.add(s);
-            s=q.getNextQuery();
+            System.out.println(s+"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+            int [] docId = searcher.getMostRelevantDocNum(s);
+            String[] docNames = new String[docId.length];
+            for(int i=0;i<docNames.length;i++)
+            {
+                if(docId[i]==-1)
+                    docNames[i] = null;
+                else
+                    docNames[i] = this.searcher.getDocName(docId[i]);
+
+            }
+            view.queriesAndResults.put(queryInfo.getMyQuery(),new Pair<>(queryInfo,docNames));
+            queryInfo=q.getNextQuery();
         }
     }
 
@@ -93,7 +109,7 @@ public class SearchController {
     }
 
     /**
-     * This function will run a single query, will retrieve the
+     * This function will run a single query and will retrieve the relevant docs
      * @param query - The given query
      * @return - The docNames and their entities
      */
@@ -104,16 +120,22 @@ public class SearchController {
         boolean isSemantic = view.getSemantic();
         initializeSeacherIfNeeded(postingPath,isStem,isSemantic,citys);
         int [] docId = searcher.getMostRelevantDocNum(query);
-        Pair<String,List<String>>[] docNames = new Pair[docId.length];
-        for(int i=0;i<docNames.length;i++)
+        Pair<String,List<String>>[] docsInfo = new Pair[docId.length];
+        String [] docNames = new String[docId.length];
+        String name;
+        for(int i=0;i<docsInfo.length;i++)
         {
             if(docId[i]==-1)
-                docNames[i] = null;
-            else
-                docNames[i] = new Pair<String,List<String>>(this.searcher.getDocName(docId[i]),this.searcher.getEntities(docId[i]));
+                docsInfo[i] = null;
+            else {
+                name = this.searcher.getDocName(docId[i]);
+                docsInfo[i] = new Pair<String, List<String>>(name, this.searcher.getEntities(docId[i]));
+                docNames[i] = name;
+            }
 
         }
-        return docNames;
+        //view.queriesAndResults.put(query,docNames);
+        return docsInfo;
     }
 
     /**

@@ -1,12 +1,16 @@
 package View;
 
 import Controller.SearchController;
+import Model.Retrieve.QueryInfo;
+import Model.Retrieve.StoreQueriesData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.util.Pair;
+
 import java.net.URL;
 import java.util.*;
 import java.util.ResourceBundle;
@@ -15,7 +19,7 @@ public class SearchView extends AbstractView{
     @FXML
     public Button postingFilePath;//The button that will browse and get the path of the Posting file
     @FXML
-    public Button querisFilePath;//The button that will browse and get the path of the queries file
+    public Button browse;//The button that will browse and get the path of the queries file
     @FXML
     public CheckBox stemCheckBox;//If checked, we will stem the terms
     @FXML
@@ -23,7 +27,7 @@ public class SearchView extends AbstractView{
     @FXML
     public ListView citys;//The ListView of cities
     @FXML
-    public Button Brows;//The Browse button
+    public Button save;//The Browse button
     @FXML
     public Button RUN;//The run button
     @FXML
@@ -37,15 +41,15 @@ public class SearchView extends AbstractView{
     @FXML
     public Button goToIndex;//The Go Index button
 
-
     public SearchController controller;//The controller
     public HashSet<String> releventDoctoQuery;//The queries
     public String postingPath;//The posting file path
+    public HashMap<String,Pair<QueryInfo,String []>> queriesAndResults;//The queries and their results
     public String querisPath;//The queries file path
     public boolean didLoadCities;//True if we have already loaded the cities
     private SavedViewData savedViewData;//The data that we save on the view
     private String summoningFunctionName;//The name of the function that saved the data last
-
+    private String resultsName;
 
     /**
      * This function will initialize the instance of this class
@@ -55,10 +59,12 @@ public class SearchView extends AbstractView{
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+        resultsName="results.txt";
         this.summoningFunctionName = "";
+        this.queriesAndResults = new HashMap<>();
         this.savedViewData = null;
         this.RUN.setDisable(true);
-        this.Brows.setDisable(true);
+        this.browse.setDisable(true);
         this.stemCheckBox.setDisable(true);
         this.releventDoctoQuery = new HashSet<>();
         disableLoadCities();
@@ -67,7 +73,7 @@ public class SearchView extends AbstractView{
         this.controller=new SearchController();
         controller.setView(this);
         this.postingFilePath.setStyle("-fx-background-color: #000000;");
-        this.querisFilePath.setStyle("-fx-background-color: #000000;");
+        this.browse.setStyle("-fx-background-color: #000000;");
         checkInitStemming();
         this.qeuriesToChoose.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 
@@ -91,20 +97,20 @@ public class SearchView extends AbstractView{
      */
     public void resetSettings()
     {
+
         this.summoningFunctionName = "";
         this.savedViewData = null;
         this.RUN.setDisable(true);
-        this.Brows.setDisable(true);
+        this.browse.setDisable(true);
         this.stemCheckBox.setDisable(true);
         this.releventDoctoQuery = new HashSet<>();
         disableLoadCities();
         postingPath= "";
         querisPath= "";
         this.postingFilePath.setStyle("-fx-background-color: #000000;");
-        this.querisFilePath.setStyle("-fx-background-color: #000000;");
+        this.browse.setStyle("-fx-background-color: #000000;");
         this.semanticCheckBox.setSelected(false);
         this.postingFilePath.setDisable(false);
-        this.querisFilePath.setDisable(false);
         this.semanticCheckBox.setDisable(false);
         this.qeuriesToChoose.getItems().clear();
         this.controller=new SearchController();
@@ -128,7 +134,7 @@ public class SearchView extends AbstractView{
      */
     private boolean checkInitStemming() {
 
-        if(this.postingFilePath!=null) {
+        if(this.postingPath!=null && !this.postingPath.equals("")) {
             boolean validTrue = this.controller.checkForMustHavePostingFiles(true) && this.controller.checkForPostingFiles(true);
             boolean validFalse = this.controller.checkForPostingFiles(false) && this.controller.checkForMustHavePostingFiles(false);
             if (validFalse || validTrue) {
@@ -136,6 +142,7 @@ public class SearchView extends AbstractView{
                 this.postingFilePath.setStyle("-fx-background-color: #3CB371;");
                 if (validFalse && validTrue) {
                     this.stemCheckBox.setDisable(false);
+                    this.stemCheckBox.setSelected(true);
                 } else if (validFalse) {
                     this.stemCheckBox.setDisable(true);
                     this.stemCheckBox.setSelected(false);
@@ -156,7 +163,7 @@ public class SearchView extends AbstractView{
      */
     private void saveCurrentData()
     {
-        this.savedViewData=new SavedViewData(this.controller.getSearcher(),this.stemCheckBox.isDisabled(),this.stemCheckBox.isSelected(),semanticCheckBox.isSelected(),this.postingPath,this.querisPath,this.releventDoctoQuery,summoningFunctionName);
+        this.savedViewData=new SavedViewData(this.controller.getSearcher(),this.stemCheckBox.isDisabled(),this.stemCheckBox.isSelected(),semanticCheckBox.isSelected(),this.postingPath,this.querisPath,this.releventDoctoQuery,summoningFunctionName,this.queriesAndResults);
     }
 
 
@@ -174,9 +181,9 @@ public class SearchView extends AbstractView{
         this.postingFilePath.setStyle("-fx-background-color: #3CB371;");
         this.releventDoctoQuery = savedViewData.getQuries();
         this.querisPath = savedViewData.getQuriesPath();
-        this.querisFilePath.setStyle("-fx-background-color: #3CB371;");
+        this.browse.setStyle("-fx-background-color: #3CB371;");
         this.summoningFunctionName = savedViewData.getFunctionName();
-
+        this.queriesAndResults = savedViewData.queriesAndResults;
 
 
         loadCitiesButtonPress();
@@ -201,10 +208,10 @@ public class SearchView extends AbstractView{
     public void disableAll()
     {
         this.postingFilePath.setDisable(true);
-        this.querisFilePath.setDisable(true);
+        this.browse.setDisable(true);
         this.stemCheckBox.setDisable(true);
         this.semanticCheckBox.setDisable(true);
-        this.Brows.setDisable(true);
+        this.browse.setDisable(true);
         this.RUN.setDisable(true);
 
     }
@@ -268,12 +275,15 @@ public class SearchView extends AbstractView{
         String path;
         path = getAbstractFilePath("queries path");
         if (path != null) {
-            this.querisFilePath.setStyle("-fx-background-color: #3CB371;");
+            this.browse.setStyle("-fx-background-color: #3CB371;");
             this.querisPath = path;
-            checkStart();
+            Brows();
+            disableAll();
         } else {
-            this.querisFilePath.setStyle("-fx-background-color: #B22222;");
+            this.browse.setStyle("-fx-background-color: #B22222;");
         }
+
+
     }
 
         /**
@@ -281,7 +291,7 @@ public class SearchView extends AbstractView{
          */
     public void checkStart()
     {
-        Brows.setDisable(!(!this.querisPath.equals("") && !this.postingPath.equals("") && didLoadCities));
+        browse.setDisable(!(!this.postingPath.equals("") && didLoadCities));
     }
 
     public void checkRun(){
@@ -352,7 +362,6 @@ public class SearchView extends AbstractView{
         int i=0;
         for(String s : selectedItems){
             itemsToReturn[i]=s;
-            System.out.println(s);
             i++;
         }
         return itemsToReturn;
@@ -401,6 +410,22 @@ public class SearchView extends AbstractView{
         this.summoningFunctionName = "run";
         saveCurrentData();
         viewChanger.goToDisplayQueryResult(query,this.controller.run(query),savedViewData);
+    }
+
+    /**
+     * This function will save the results in a file
+     */
+    public void saveInFile()
+    {
+        String path = getDirectoryAbstractPath("Choose results");
+        if(path!=null)
+        {
+            path = path+"\\"+this.resultsName;
+            StoreQueriesData storeQueriesData = new StoreQueriesData(path);
+            storeQueriesData.addToStorage(this.queriesAndResults);
+            this.queriesAndResults = new HashMap<>();
+        }
+
     }
 
 }

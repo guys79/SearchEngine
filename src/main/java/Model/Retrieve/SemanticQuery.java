@@ -27,7 +27,7 @@ public class SemanticQuery extends Query {
      */
     public SemanticQuery(String query, String postingPath, boolean stem) {
         super(query, postingPath, stem);
-        final int NUM_OF_WORDS_PER_TERM=7;
+        final int NUM_OF_WORDS_PER_TERM=3;
         this.termsAndScores = new HashMap<>();
         this.mutex = new Mutex();
         HashSet<String> termsToCheckSemantic;
@@ -81,7 +81,7 @@ public class SemanticQuery extends Query {
         executorService.shutdown();
         if(stem)
         {
-            HashMap<String,Double>stemmedTermsAndScores = new HashMap<>();
+            HashMap<String,Double> stemmedTermsAndScores = new HashMap<>();
             SnowballStemmer stemmer = new porterStemmer();
             String stemmed;
             Iterator iterator = this.termsAndScores.entrySet().iterator();
@@ -123,7 +123,7 @@ public class SemanticQuery extends Query {
         }
 
 
-        double divideBy = 1.1;
+        double divideBy = 1.8;
         double max = Double.MIN_VALUE;
         double score;
         for(String key:sTermsAndScores.keySet())
@@ -175,6 +175,9 @@ public class SemanticQuery extends Query {
      */
     public double getWeight(String term)
     {
+        System.out.println(term+" term");
+        System.out.println(termsAndScores+" dic");
+        System.out.println(this.termsAndScores.get(term.toLowerCase())+" value");
         return this.termsAndScores.get(term.toLowerCase());
     }
 }

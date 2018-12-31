@@ -65,7 +65,7 @@ public class AddSemanticToQuery implements Callable<Boolean> {
             }
             inputStreamReader.close();
             bufferedReader.close();
-            this.semanticQuery.addTermsAndScores(this.term,mapToAdd);
+            this.semanticQuery.addTermsAndScores(this.term.toLowerCase(),mapToAdd);
             return true;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -96,7 +96,7 @@ public class AddSemanticToQuery implements Callable<Boolean> {
             if(!this.stopWordsHolder.isStopWord(name)&&!topTerms.containsKey(name))
             {
              //  System.out.println(name +" "+count);
-                topTerms.put(name, jsonObject.getDouble("score"));
+                topTerms.put(name.toLowerCase(), jsonObject.getDouble("score"));
                 count++;
             }
         }

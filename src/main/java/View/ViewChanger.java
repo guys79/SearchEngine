@@ -41,8 +41,6 @@ public class ViewChanger {
         try {
             fxmlLoader = new FXMLLoader(getClass().getResource("/"+fileName));
             Parent root= (Parent) fxmlLoader.load();
-/*            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fileName));
-            root = fxmlLoader.load();*/
             AbstractView abstractView = fxmlLoader.getController();
             abstractView.setViewChanger(this);
             primaryStage.setScene(new Scene(root, 900, 461));

@@ -35,6 +35,10 @@ public class SemanticQuery extends Query {
             Parser parserNotStemmed = new Parser(postingPath, "", false);
             DocumentReturnValue parsedQueryNotStemmed = parserNotStemmed.motherOfAllFunctions(query);
             termsToCheckSemantic = new HashSet<>(parsedQueryNotStemmed.getDictionaryOfWords().keySet());
+            for(String term:parsedQueryNotStemmed.getDictionaryOfUniqueTerms().keySet())
+            {
+                this.termsAndScores.put(term,1.0);
+            }
 
 
         }
@@ -47,6 +51,8 @@ public class SemanticQuery extends Query {
                 note = (""+this.terms[i].charAt(0)).toLowerCase().charAt(0);
                 if(note>='a' && note<='z')
                     termsToCheckSemantic.add(this.terms[i]);
+                else
+                    this.termsAndScores.put(this.terms[i],1.0);
             }
         }
 

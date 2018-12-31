@@ -162,6 +162,10 @@ public class Searcher {
         final int middle = (start + end) / 2;//Get the middle index
         String fullName = this.postingFileNames.get(middle);
         String name = fullName.substring(0,fullName.indexOf("_"));
+        if(name.equals("1^49^48^48"))
+        {
+            System.out.println("f");
+        }
         int comp = compareIrgular(name,term);
         System.out.println("term "+term+" name "+name+" result "+comp);
 
@@ -265,6 +269,9 @@ public class Searcher {
             fileNameRestore+= (char)(Integer.parseInt(split[i]));
 
         }
+        fileNameRestore+="_";
+        term+="_";
+        System.out.println(fileNameRestore+ " restored name");
         return fileNameRestore.compareToIgnoreCase(term);
     }
 
@@ -342,6 +349,7 @@ public class Searcher {
     {
         //Getting the terms of the query as a list
         List<String> queryTerms = query.getQueryAsList();
+        System.out.println(queryTerms);
         //Check the terms data
         HashSet<TermInfo> termInfos = this.getTheInformationAboutTheTerms(queryTerms);
         //If there are cities as filter
@@ -454,8 +462,6 @@ public class Searcher {
         else
             query =new SemanticQuery(queryText,postingFilesPath,stem);
 
-
-
         HashSet<TermInfo> queryData =this.getRelevantData(query);
 
 
@@ -519,6 +525,8 @@ public class Searcher {
 
 
         sortByScore(scores,docsToReturn);
+        pr(docsToReturn);
+        pr2(scores);
         String [] docNames = new String[NUM_OF_DOCS_TO_RETURN];
         //pr(docsToReturn);
         //pr2(scores);
@@ -600,13 +608,8 @@ public class Searcher {
     }
 
     public List<String> getNamesOfCitys(){
-        GetCity getCity = new GetCity(this.postingFilesPath+"\\"+"citys"+"&"+true+".txt");
-        GetCity getCity1 = new GetCity(this.postingFilesPath+"\\"+"citys"+"&"+false+".txt");
+        GetCity getCity = new GetCity(this.postingFilesPath+"\\"+"citys"+"&"+stem+".txt");
         List<String> myTrue= getCity.getNamesOfCitys();
-        //List<String> myFalse= getCity1.getNamesOfCitys();
-      //  if(myFalse!=null){
-       //     return myFalse;
-      //  }
         return  myTrue;
     }
 

@@ -32,6 +32,8 @@ public class SearchView extends AbstractView{
     @FXML
     public Button loadCities_btn;
     @FXML
+    public Button reset;
+    @FXML
     public TextField oneQuery;
     @FXML
     public ListView qeuriesToChoose;
@@ -61,7 +63,8 @@ public class SearchView extends AbstractView{
         querisPath= "";
         this.controller=new SearchController();
         controller.setView(this);
-
+        this.postingFilePath.setStyle("-fx-background-color: #000000;");
+        this.querisFilePath.setStyle("-fx-background-color: #000000;");
         checkInitStemming();
         this.qeuriesToChoose.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 
@@ -70,6 +73,29 @@ public class SearchView extends AbstractView{
 
             });
 
+    }
+    public void resetSettings()
+    {
+        this.summoningFunctionName = "";
+        this.savedViewData = null;
+        this.RUN.setDisable(true);
+        this.Brows.setDisable(true);
+        this.stemCheckBox.setDisable(true);
+        this.releventDoctoQuery = new HashSet<>();
+        disableLoadCities();
+        postingPath= "";
+        querisPath= "";
+        this.postingFilePath.setStyle("-fx-background-color: #000000;");
+        this.querisFilePath.setStyle("-fx-background-color: #000000;");
+        this.semanticCheckBox.setSelected(false);
+        this.postingFilePath.setDisable(false);
+        this.querisFilePath.setDisable(false);
+        this.semanticCheckBox.setDisable(false);
+        this.qeuriesToChoose.getItems().clear();
+        this.controller=new SearchController();
+        controller.setView(this);
+        citys.getItems().clear();
+        checkInitStemming();
     }
     private void disableLoadCities()
     {
@@ -293,6 +319,7 @@ public class SearchView extends AbstractView{
         int i=0;
         for(String s : selectedItems){
             itemsToReturn[i]=s;
+            System.out.println(s);
             i++;
         }
         return itemsToReturn;

@@ -8,20 +8,21 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //ViewChanger viewChanger = new ViewChanger();
-        //viewChanger.setPrimaryStage(primaryStage);
-        //viewChanger.goToSearch();
+       ViewChanger viewChanger = new ViewChanger();
+        viewChanger.setPrimaryStage(primaryStage);
+        viewChanger.goToSearch();
         //viewChanger.goToIndex();
-        String posting = "C:\\Users\\guys79\\Desktop\\posting";
+        //String posting = "C:\\Users\\guys79\\Desktop\\posting";
         //public Searcher(String postingFilesPath, boolean stem, String [] relaventCities, boolean semantic) {
-        Searcher searcher = new Searcher(posting,true,new String[0],false);
-        int [] id = searcher.getMostRelevantDocNum("100 million dollars");
+        //Searcher searcher = new Searcher(posting,true,new String[0],false);
+        //int [] id = searcher.getMostRelevantDocNum("between 9 t0 10");
+        //System.out.println(searcher.getDocName(id[0]));
         //double num = Math.pow(10,255);
-        int comp = compareIrgular("1^49^48^48","100 M Dollars");
-        System.out.println(comp);
+        //int comp = compareIrgular("1^49^48^48","100 M Dollars");
+        //System.out.println(comp);
 
 
-       // pr(id);
+      //pr(id);
     }
 
 

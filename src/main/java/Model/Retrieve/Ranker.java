@@ -29,7 +29,6 @@ public class Ranker {
 
     public double Rank(DocInfo document)
     {
-        // TODO: 25/12/2018 smoothing?
         //We will use the BM25
 
         double bm25 = this.BM25(document);
@@ -39,7 +38,10 @@ public class Ranker {
     
     private double BM25(DocInfo document)
     {
-
+        if(document.getDocNum() == 413857)
+        {
+            System.out.println("dasda");
+        }
         double rank = 0;
         for(TermInfo termInfo: queryTermInfo)
         {

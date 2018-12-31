@@ -37,7 +37,7 @@ public class QueryDisplayerView extends AbstractView {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.goBackButton.setStyle("-fx-background-color: #B22222;");
+        this.goBackButton.setStyle("-fx-background-color: #6495ED;");
         this.controller=new QueryDisplayController();
         controller.setView(this);
         docIdColumnTableView.setCellValueFactory(new PropertyValueFactory<QueryDisplayTableContent, String>("docID"));

@@ -66,7 +66,6 @@ public class SearchController {
         while(queryInfo!=null){
             s = queryInfo.getMyQuery();
             view.releventDoctoQuery.add(s);
-            System.out.println(s+"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
             int [] docId = searcher.getMostRelevantDocNum(s);
             String[] docNames = new String[docId.length];
             for(int i=0;i<docNames.length;i++)

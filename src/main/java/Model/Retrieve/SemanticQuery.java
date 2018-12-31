@@ -175,9 +175,7 @@ public class SemanticQuery extends Query {
      */
     public double getWeight(String term)
     {
-        System.out.println(term+" term");
-        System.out.println(termsAndScores+" dic");
-        System.out.println(this.termsAndScores.get(term.toLowerCase())+" value");
+
         return this.termsAndScores.get(term.toLowerCase());
     }
 }

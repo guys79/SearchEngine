@@ -296,7 +296,6 @@ public class Searcher {
 
         //Getting the names of the files that will contain the terms
         HashMap<String,List<String>> fileNamesAndTerms = this.getTermsAndFiles(terms);
-        System.out.println(fileNamesAndTerms);
 
         Set<String> keys = fileNamesAndTerms.keySet();
         Future<HashSet<TermInfo>> [] futures = new Future[keys.size()];
@@ -364,7 +363,6 @@ public class Searcher {
     {
         //Getting the terms of the query as a list
         List<String> queryTerms = query.getQueryAsList();
-        System.out.println(queryTerms);
         //Check the terms data
         HashSet<TermInfo> termInfos = this.getTheInformationAboutTheTerms(queryTerms);
         //If there are cities as filter

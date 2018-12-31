@@ -42,7 +42,6 @@ public class StoreQueriesData {
             String [] docs;
             String toWrite;
             String [] keysInOrder = queryNumSorted(data);
-            print(keysInOrder);
             for (int i=0;i<keysInOrder.length;i++) {
                 toWrite="";
                 infoOnQuery = data.get(keysInOrder[i]);
@@ -93,10 +92,5 @@ public class StoreQueriesData {
         }
         return keysInOrder;
     }
-    private void print(String [] keysInOrder)
-    {
-        for (int i=0;i<keysInOrder.length;i++) {
-            System.out.println(keysInOrder[i]);
-        }
-    }
+
 }

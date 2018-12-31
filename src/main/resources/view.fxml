@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.IndexView">
+<GridPane alignment="center" hgap="10" prefHeight="461.0" prefWidth="900.0" vgap="10" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.IndexView">
     <children>
         <BorderPane prefHeight="250.0" prefWidth="789.0">
             <left>
@@ -37,22 +37,22 @@
                                 <RowConstraints />
                             </rowConstraints>
                             <children>
-                                <Button fx:id="postingFilePath" onAction="#choosePostingPath" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Select Posting" textFill="WHITE" GridPane.rowIndex="1" />
+                                <Button fx:id="postingFilePath" mnemonicParsing="false" onAction="#choosePostingPath" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Select Posting" textFill="WHITE" GridPane.rowIndex="1" />
                                 <Text fx:id="postingFilePathText" text="" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets left="5.0" />
                                     </GridPane.margin>
                                 </Text>
-                                <Button  fx:id="corpusFilePath" onAction="#chooseCorpusPath" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Select Corpus" textFill="WHITE" GridPane.rowIndex="2" />
-                                <Text  fx:id="corpusFilePathText" text="" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <Button fx:id="corpusFilePath" mnemonicParsing="false" onAction="#chooseCorpusPath" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Select Corpus" textFill="WHITE" GridPane.rowIndex="2" />
+                                <Text fx:id="corpusFilePathText" text="" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets left="7.0" />
                                     </GridPane.margin>
                                 </Text>
 
-                                <Button  fx:id="startBtn" onAction="#start" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #000000;" text="Start" textFill="WHITE" GridPane.rowIndex="4" />
-                                <Separator  prefHeight="200.0" GridPane.columnIndex="2" GridPane.rowSpan="7" />
-                                <Button  fx:id="resetBtn" onAction="#reset" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Reset" textFill="WHITE" GridPane.rowIndex="3" />
+                                <Button fx:id="startBtn" mnemonicParsing="false" onAction="#start" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #000000;" text="Start" textFill="WHITE" GridPane.rowIndex="4" />
+                                <Separator prefHeight="200.0" GridPane.columnIndex="2" GridPane.rowSpan="7" />
+                                <Button fx:id="resetBtn" mnemonicParsing="false" onAction="#reset" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #000000;" text="Reset" textFill="WHITE" GridPane.rowIndex="3" />
                                 <CheckBox fx:id="stemCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Use stemming" GridPane.rowIndex="5" />
                                 <ComboBox fx:id="languagesComboBox" prefWidth="150.0" promptText="Language" />
                             </children>
@@ -61,10 +61,10 @@
                 </VBox>
             </left>
             <center>
-                <TableView  prefHeight="250.0" prefWidth="333.0" BorderPane.alignment="CENTER" fx:id="dictionaryTableView">
+                <TableView fx:id="dictionaryTableView" prefHeight="250.0" prefWidth="333.0" BorderPane.alignment="CENTER">
                     <columns>
-                        <TableColumn  fx:id="termTableColumn" prefWidth="192.0" text="Term Name" />
-                        <TableColumn  fx:id="cfTableColumn" prefWidth="165.0" text="Collection frequency" />
+                        <TableColumn fx:id="termTableColumn" prefWidth="192.0" text="Term Name" />
+                        <TableColumn fx:id="cfTableColumn" prefWidth="165.0" text="Collection frequency" />
                     </columns>
                 </TableView>
 
@@ -72,40 +72,40 @@
             <right>
                 <GridPane prefHeight="225.0" prefWidth="267.0" BorderPane.alignment="CENTER">
                     <columnConstraints>
-                        <ColumnConstraints  maxWidth="162.0" minWidth="10.0" prefWidth="133.0" />
-                        <ColumnConstraints  maxWidth="204.0" minWidth="10.0" prefWidth="104.0" />
-                        <ColumnConstraints  maxWidth="204.0" minWidth="0.0" prefWidth="10.0" />
+                        <ColumnConstraints maxWidth="162.0" minWidth="10.0" prefWidth="133.0" />
+                        <ColumnConstraints maxWidth="204.0" minWidth="10.0" prefWidth="104.0" />
+                        <ColumnConstraints maxWidth="204.0" minWidth="0.0" prefWidth="10.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0"  />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0"  />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
                         <RowConstraints minHeight="5.0" prefHeight="5.0" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0"  />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0"  />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
                     </rowConstraints>
                     <children>
-                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" text="Document quantity" GridPane.rowIndex="1" />
-                        <Text  strokeType="OUTSIDE" fx:id="documentQuantityText" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Document quantity" GridPane.rowIndex="1" />
+                        <Text fx:id="documentQuantityText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Terms quantity" GridPane.rowIndex="2" />
-                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" fx:id="termQuantityText" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Text fx:id="termQuantityText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total Time" GridPane.rowIndex="3" />
-                        <Text  strokeType="OUTSIDE" strokeWidth="0.0" fx:id="totalTimeText" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <Text fx:id="totalTimeText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                             <font>
                                 <Font name="System Bold" size="12.0" />
                             </font>
                         </Text>
-                        <Button fx:id="viewDictionaryButton" onAction="#viewDictionary" mnemonicParsing="false" style="-fx-background-color: #000000;" text="View dictionary" textFill="WHITE" GridPane.rowIndex="5" />
-                        <Button fx:id="loadDictionaryButton" onAction="#loadDictionary" mnemonicParsing="false" style="-fx-background-color: #000000;" text="Load Dictionary" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Button fx:id="viewDictionaryButton" mnemonicParsing="false" onAction="#viewDictionary" style="-fx-background-color: #000000;" text="View dictionary" textFill="WHITE" GridPane.rowIndex="5" />
+                        <Button fx:id="loadDictionaryButton" mnemonicParsing="false" onAction="#loadDictionary" style="-fx-background-color: #000000;" text="Load Dictionary" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
                         <Separator halignment="RIGHT" orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="2" GridPane.rowSpan="7">
                             <GridPane.margin>
@@ -118,11 +118,13 @@
                     </padding>
                 </GridPane>
             </right></BorderPane>
+      <Button fx:id="goToSearch" mnemonicParsing="false" onAction="#goToSearch" prefHeight="51.0" prefWidth="790.0" style="-fx-background-color: #6495ED;" text="Go To Search" GridPane.rowIndex="1" GridPane.rowSpan="2147483647" />
     </children>
     <columnConstraints>
         <ColumnConstraints />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints />
+      <RowConstraints />
     </rowConstraints>
 </GridPane>

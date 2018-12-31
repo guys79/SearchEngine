@@ -32,6 +32,7 @@ public class IndexView extends AbstractView {
     public TableView dictionaryTableView;//The table view
     public TableColumn termTableColumn;//The column of the terms
     public TableColumn cfTableColumn;//The column of the cf
+    public Button goToSearch;
     private String corpusPath;//The path to the corpus
     private String postingPath;//The path to the posting
     private IndexController controller;//The controller
@@ -206,6 +207,12 @@ public class IndexView extends AbstractView {
         this.loadDictionaryButton.setDisable(false);
     }
 
+
+    public void goToSearch()
+    {
+        this.viewChanger.goToSearch();
+    }
+
     /**
      * This function will return if the checkBox is selected.
      * @return - True if the checkBox is selected, False otherwise
@@ -298,5 +305,8 @@ public class IndexView extends AbstractView {
         public void setTerm(String term) {
             this.term = term;
         }
+
+
+
     }
 }

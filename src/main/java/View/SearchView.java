@@ -37,6 +37,8 @@ public class SearchView extends AbstractView{
     public TextField oneQuery;
     @FXML
     public ListView qeuriesToChoose;
+    @FXML
+    Button goToIndex;
 
 
     public SearchController controller;
@@ -73,6 +75,11 @@ public class SearchView extends AbstractView{
 
             });
 
+    }
+
+    public void goToIndex()
+    {
+        this.viewChanger.goToIndex();
     }
     public void resetSettings()
     {

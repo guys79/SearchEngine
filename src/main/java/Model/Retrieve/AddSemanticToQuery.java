@@ -108,7 +108,7 @@ public class AddSemanticToQuery implements Callable<Boolean> {
 
     /**
      * This function will add the data about the semantic to the query as a Callable
-     * @return
+     * @return - True if the process was successful
      * @throws Exception
      */
     @Override

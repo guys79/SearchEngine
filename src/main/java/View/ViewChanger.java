@@ -70,6 +70,7 @@ public class ViewChanger {
     }
     /**
      * This function will change the primary stage to be the stage of the search (where you can retrieve docs)
+     * @param savedViewData - The data we saved on SearcherView
      */
     public void goToSearch(SavedViewData savedViewData)
     {

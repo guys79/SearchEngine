@@ -170,8 +170,8 @@ public class SemanticQuery extends Query {
 
     /**
      * This function will return the weight of the query
-     * @param term
-     * @return
+     * @param term - The given term
+     * @return - The weight of the term
      */
     public double getWeight(String term)
     {

@@ -164,7 +164,6 @@ public class PostingOfCities implements Callable<Boolean>{
      * @param city- the city to be saved
      * @param doc- the doc that the city is in
      * @param sity- this is the set of positions in the doc
-     * @return- the name of the city
      */
     public void addCity(String city, int doc,HashSet sity){
         this.mutex.lock();

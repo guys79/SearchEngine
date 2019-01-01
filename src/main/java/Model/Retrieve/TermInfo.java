@@ -25,6 +25,7 @@ public class TermInfo {
         this.docIdTfMap.put(docId,tf);
         this.df=0;
         this.weight = 1;
+        this.tfInQuery = 0;
     }
 
     /**
@@ -37,6 +38,7 @@ public class TermInfo {
         this.docIdTfMap = new HashMap<>();
         this.df=0;
         this.weight = 1;
+        this.tfInQuery = 0;
     }
 
     /**

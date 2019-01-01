@@ -120,7 +120,7 @@ public class RetrieveTermInfo implements Callable<HashSet<TermInfo>> {
 
     /**
      * This function will return all of the data about the terms that the file contains
-     * @return
+     * @return - True if the process was successful
      * @throws Exception
      */
     @Override

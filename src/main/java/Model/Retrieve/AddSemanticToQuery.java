@@ -95,13 +95,13 @@ public class AddSemanticToQuery implements Callable<Boolean> {
             name = jsonObject.getString("word").split(" ")[0];
             if(!this.stopWordsHolder.isStopWord(name)&&!topTerms.containsKey(name))
             {
-             //  System.out.println(name +" "+count);
+                //  System.out.println(name +" "+count);
                 topTerms.put(name.toLowerCase(), jsonObject.getDouble("score"));
                 count++;
             }
         }
 
-       // System.out.println(this.term +" "+topTerms);
+        // System.out.println(this.term +" "+topTerms);
         return topTerms;
 
     }

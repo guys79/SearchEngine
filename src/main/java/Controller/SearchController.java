@@ -10,6 +10,7 @@ import javafx.util.Pair;
 import java.io.File;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 /**
  * This class is the controller of the Search scene
@@ -133,7 +134,8 @@ public class SearchController {
             }
 
         }
-        //view.queriesAndResults.put(query,docNames);
+        Random random = new Random();
+        view.queriesAndResults.put(query,new Pair<>(new QueryInfo(random.nextInt(900)+100,query),docNames));
         return docsInfo;
     }
 

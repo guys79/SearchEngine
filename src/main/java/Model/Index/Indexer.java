@@ -101,22 +101,11 @@ public class Indexer {
     }
 
     /**
-     * This function will delete the posting files and will reset the main dictionary
+     * This function will reset the main dictionary
+     * @return True if the process was successful
      */
     public void reset()
     {
-
-        List<String> postingFileNames = this.getListOfFileNames();
-        List<String> nonPostingFileNames = this.getNamesOfNonTermPostingFiles();
-
-        for(int i=0;i<postingFileNames.size();i++)
-        {
-            new File(postFilePath+"\\"+postingFileNames.get(i)+".txt").delete();
-        }
-        for(int i=0;i<nonPostingFileNames.size();i++)
-        {
-            new File(postFilePath+"\\"+nonPostingFileNames.get(i)+".txt").delete();
-        }
         this.mainDictionary = new HashMap<>();
     }
 

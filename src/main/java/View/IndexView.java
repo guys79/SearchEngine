@@ -2,9 +2,10 @@ package View;
 
 
 import Controller.IndexController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
@@ -78,7 +79,15 @@ public class IndexView extends AbstractView {
      */
     public void reset()
     {
-        this.controller.reset();
+        boolean flag = this.controller.reset();
+        if(flag)
+        {
+            this.resetBtn.setStyle("-fx-background-color: #3CB371;");
+        }
+        else
+        {
+            this.resetBtn.setStyle("-fx-background-color: #B22222;");
+        }
     }
 
     /**
@@ -94,9 +103,17 @@ public class IndexView extends AbstractView {
         this.postingPath ="";
         this.controller=new IndexController();
         controller.setView(this);
+        this.resetBtn.setDisable(true);
         termTableColumn.setCellValueFactory(new PropertyValueFactory<TableContent, String>("term"));
         cfTableColumn.setCellValueFactory(new PropertyValueFactory<TableContent,Integer>("cf"));
+        this.resetBtn.setStyle("-fx-background-color: #000000;");
         loadDictionaryButton.setDisable(true);
+        stemCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                resetBtn.setStyle("-fx-background-color: #000000;");
+            }
+        });
 
     }
 
@@ -132,6 +149,8 @@ public class IndexView extends AbstractView {
         {
             this.postingFilePath.setStyle("-fx-background-color: #3CB371;");
             this.postingPath=path;
+            this.resetBtn.setDisable(false);
+            resetBtn.setStyle("-fx-background-color: #000000;");
             checkStart();
             checkLoad();
         }

@@ -21,17 +21,36 @@ public class IndexController {
         indexer = null;
     }
 
+
     /**
-     * This function will delete the posting files and will reset the dictionary
+     * This function will delete the posting files and will reset the main dictionary
+     * @return True if the process was successfuk
      */
-    public void reset()
+    public boolean reset()
     {
+        String postFilePath = view.getPostingPath();
+        boolean stem = view.getStem();
+        File file = new File(postFilePath);
+        File [] children =file.listFiles();
+        boolean flag= true;
+        String end = ""+stem+".txt";
+        for(int i=0;i<children.length;i++)
+        {
+            if(children[i].getName().substring(children[i].getName().length()-end.length()).equals(end))
+                flag = flag && children[i].delete();
+        }
+        File check = new File(postFilePath+"\\"+"dictionary"+"&"+!stem+".txt");
+        if(!check.exists())
+        {
+            File stopWords = new File(postFilePath+"\\stop_words.txt");
+            flag = flag && stopWords.delete();
+        }
         if(indexer!=null)
         {
-        this.indexer.reset();
+            indexer.reset();
         }
+        return flag;
     }
-
     /**
      * This function will set the view of the instance of the IndexController class
      *
